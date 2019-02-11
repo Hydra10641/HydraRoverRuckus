@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 public class ControlMovementOmni {
 
     //Welcome, this is the team 10641(Hydra) code for the OMNI locomotion system, first applied in the Rover Ruckus season.
-    //First of all, we declare 4 attributes of type Dc Motor, corresponding to the motors used in the robot.
+    //First of all, we declare 4 attributes of type Dc Motor, corresponding to the motors used on the robot locomotion.
 
     private DcMotor leftFrontWheel = null, leftBackWheel = null, rightFrontWheel = null, rightBackWheel = null;
     public void ControlMovementOmni(DcMotor leftFrontWheel, DcMotor leftBackWheel,
