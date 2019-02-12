@@ -4,14 +4,15 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class NormalWheels {
 
-    /*Welcome, this is the team 10641(Hydra) code for the normals wheels locomotion system, first applied in the Rover Ruckus season.
-    First of all, we declare 2 attributes of type Dc Motor, corresponding to the motors used on the robot locomotion.*/
+    /*Welcome, this is the team 10641(Hydra) code for the normals wheels locomotion system, first applied in the
+     *Rover Ruckus season.
+     *First of all, we declare 2 attributes of type Dc Motor, corresponding to the motors used on the robot locomotion.*/
 
     private DcMotor rightWheel = null, leftWheel = null;
 
     public void normalWheels(DcMotor leftWheel, DcMotor rightWheel) {
         this.rightWheel = rightWheel;
-        this.leftWheel = this.leftWheel;
+        this.leftWheel = leftWheel;
     }
 
     /*Here we create three methods that we will use repetitively in the methods for locomotion. The description of each
@@ -40,6 +41,8 @@ public class NormalWheels {
         }
     }
 
+    //standardOn() and standardCount() are responsible for the robot standard movements (front and back).
+
     public void standardOn(int power) {
         resetMotorAndEncoder();
         setMotorsPower(power, power);
@@ -51,7 +54,7 @@ public class NormalWheels {
         resetMotorAndEncoder();
     }
 
-    // spin() and spinOn() are responsible for robot spin.
+    // spinOn() and spinCount() are responsible for robot spin.
 
     public void spinOn(int power) {
         resetMotorAndEncoder();
@@ -60,6 +63,22 @@ public class NormalWheels {
 
     public void spinCount(int power, float encoderCount) {
         spinOn(power);
+        waitEncoderCount(encoderCount);
+        resetMotorAndEncoder();
+    }
+
+    // spinSideOn() and spinSideCount() are responsible for robot spin with only one side pair of motors
+
+    public void spinSideOn(int power, String side){
+        resetMotorAndEncoder();
+        if(side.equals("Right")){
+            setMotorsPower(0, 0);
+        } else {
+            setMotorsPower(power, power);
+        }
+    }
+    public void spinSideCount(int power, String side, float encoderCount){
+        spinSideOn(power, side);
         waitEncoderCount(encoderCount);
         resetMotorAndEncoder();
     }
