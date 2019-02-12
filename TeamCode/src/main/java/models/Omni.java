@@ -1,15 +1,16 @@
 package models;
 
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class Omni {
 
-    //Welcome, this is the team 10641(Hydra) code for the OMNI locomotion system, first applied in the Rover Ruckus season.
-    //First of all, we declare 4 attributes of type Dc Motor, corresponding to the motors used on the robot locomotion.
+    /*Welcome, this is the team 10641(Hydra) code for the OMNI locomotion system, first applied in the Rover Ruckus season.
+    First of all, we declare 4 attributes of type Dc Motor, corresponding to the motors used on the robot locomotion.*/
 
     private DcMotor leftFrontWheel = null, leftBackWheel = null, rightFrontWheel = null, rightBackWheel = null;
 
-    public Omni(DcMotor leftFrontWheel, DcMotor leftBackWheel,
+    public void omni(DcMotor leftFrontWheel, DcMotor leftBackWheel,
                 DcMotor rightFrontWheel, DcMotor rightBackWheel){
         this.leftFrontWheel = leftFrontWheel;
         this.leftBackWheel = leftBackWheel;
@@ -22,10 +23,12 @@ public class Omni {
 
     public void resetMotorAndEncoder(){
         // This method will stop all the locomotion motors and reset their encoders
+        setMotorsPower(0, 0, 0, 0);
         leftFrontWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftBackWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFrontWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightBackWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
     }
     public void setMotorsPower(int leftFrontPower, int leftBackPower, int rightFrontPower, int rightBackPower){
         // This method is responsible to energize the motors
@@ -55,7 +58,7 @@ public class Omni {
         resetMotorAndEncoder();
         setMotorsPower(power, power, power, power);
     }
-    public void standard(int power, float encoderCount){
+    public void standardCount(int power, float encoderCount){
         standardOn(power);
         waitEncoderCount(encoderCount);
         resetMotorAndEncoder();
@@ -67,7 +70,7 @@ public class Omni {
         resetMotorAndEncoder();
         setMotorsPower(power, power, -power, -power);
     }
-    public void spin(int power, float encoderCount){
+    public void spinCount(int power, float encoderCount){
         spinOn(power);
         waitEncoderCount(encoderCount);
         resetMotorAndEncoder();
@@ -79,7 +82,7 @@ public class Omni {
         resetMotorAndEncoder();
         setMotorsPower(-power, power, power, -power);
     }
-    public void sidewalk (int power, float encoderCount){
+    public void sidewalkCount(int power, float encoderCount){
         sidewalkOn(power);
         waitEncoderCount(encoderCount);
         resetMotorAndEncoder();
@@ -98,7 +101,7 @@ public class Omni {
             setMotorsPower(power, power, 0, 0);
         }
     }
-    public void spinSide (int power, String side, float encoderCount){
+    public void spinSideCount(int power, String side, float encoderCount){
         spinSideOn(power, side);
         waitEncoderCount(encoderCount);
         resetMotorAndEncoder();
@@ -114,7 +117,7 @@ public class Omni {
             setMotorsPower(power, 0, 0, power);
         }
     }
-    public void diagonal(int power, String direction, float encoderCount){
+    public void diagonalCount(int power, String direction, float encoderCount){
         diagonalOn(power, direction);
         waitEncoderCount(encoderCount);
         resetMotorAndEncoder();
