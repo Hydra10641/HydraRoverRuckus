@@ -2,6 +2,9 @@ package models;
 
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
+@Disabled
 
 public class Omni {
 
@@ -52,7 +55,7 @@ public class Omni {
      *programmer (in the order: resetMotorAndEncoder (), setMotorsPower ()), and another similar method that will use the
      *encoder (in order: standardEntry (), waitEncoderCount , resetMotorAndEncoder ()).*/
 
-    //standard() and standardOn() are responsible for the robot standard movements (front and back).
+    //standardOn() and standardCount() are responsible for the robot standard movements (front and back).
 
     public void standardOn(int power){
         resetMotorAndEncoder();
@@ -64,7 +67,7 @@ public class Omni {
         resetMotorAndEncoder();
     }
 
-    // spin() and spinOn() are responsible for robot spin.
+    // spinOn() and spinCount() are responsible for robot spin.
 
     public void spinOn(int power){
         resetMotorAndEncoder();
@@ -76,7 +79,7 @@ public class Omni {
         resetMotorAndEncoder();
     }
 
-    // sidewalk() and sidewalkOn() are responsible for the robot sidewalks (moves on Y axis).
+    // sidewalkOn() and sidewalkCount() are responsible for the robot sidewalks (moves on Y axis).
 
     public void sidewalkOn(int power){
         resetMotorAndEncoder();
@@ -91,7 +94,7 @@ public class Omni {
     /* As the next moves will have four directions, we will work with an extra parameter, a string that will define the
      *direction of movement (right or left)*/
 
-    // spinSide() and spinSideOn() are responsible for robot spin with only one side pair of motors
+    // spinSideOn() and spinSideCount() are responsible for robot spin with only one side pair of motors
 
     public void spinSideOn(int power, String side){
         resetMotorAndEncoder();
@@ -107,7 +110,7 @@ public class Omni {
         resetMotorAndEncoder();
     }
 
-    // diagonalOn() and diagonal() are responsible for the robot XY movements
+    // diagonalOn() and diagonalCount() are responsible for the robot XY movements
 
     public void diagonalOn(int power, String direction){
         resetMotorAndEncoder();
