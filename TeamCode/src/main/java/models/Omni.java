@@ -86,6 +86,7 @@ public class Omni {
                 break;
             case "spinSideRight":
                 setMotorsPower(0, 0, power, power);
+                break;
         }
     }
 
