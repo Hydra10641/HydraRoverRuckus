@@ -2,27 +2,25 @@ package models;
 
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-
-@Disabled
 
 public class Omni {
 
     /*Welcome, this is the team 10641(Hydra) code for the OMNI locomotion system, first applied in the Rover Ruckus season.
-    First of all, we declare 4 attributes of type Dc Motor, corresponding to the motors used on the robot locomotion.*/
+     *First of all, we declare 4 attributes of type Dc Motor, corresponding to the motors used on the robot locomotion.*/
 
     private DcMotor leftFrontWheel = null, leftBackWheel = null, rightFrontWheel = null, rightBackWheel = null;
 
-    public void omni(DcMotor leftFrontWheel, DcMotor leftBackWheel,
-                DcMotor rightFrontWheel, DcMotor rightBackWheel){
+    Omni(DcMotor leftFrontWheel, DcMotor leftBackWheel,
+         DcMotor rightFrontWheel, DcMotor rightBackWheel){
         this.leftFrontWheel = leftFrontWheel;
         this.leftBackWheel = leftBackWheel;
         this.rightFrontWheel = rightFrontWheel;
         this.rightBackWheel = rightBackWheel;
     }
 
-    /*Here we create three methods that we will use repetitively in the methods for locomotion. The description of each
-     *one is within the same.*/
+    /* Here we create three methods that we will use repetitively in the methods for locomotion. The description of each
+     * one is within the same.
+     * */
 
     public void resetMotorAndEncoder(){
         // This method will stop all the locomotion motors and reset their encoders
@@ -51,78 +49,50 @@ public class Omni {
                 Math.abs(rightBackWheel.getCurrentPosition()) <= Math.abs(encoderCount)){ }
     }
 
-    /*We will use a pattern for the methods, where we will create a method to call in the configuration proposed by the
-     *programmer (in the order: resetMotorAndEncoder (), setMotorsPower ()), and another similar method that will use the
-     *encoder (in order: standardEntry (), waitEncoderCount , resetMotorAndEncoder ()).*/
+    /* We will use a pattern for the methods, where we will create a method to call in the configuration proposed by the
+     * programmer (in the order: resetMotorAndEncoder (), setMotorsPower ()), and another similar method that will use the
+     * encoder (in order: standardEntry (), waitEncoderCount , resetMotorAndEncoder ())
+     * */
 
-    //standardOn() and standardCount() are responsible for the robot standard movements (front and back).
-
-    public void standardOn(int power){
+    /* walkOnBy() and walkCount() are responsible for the robot movements.
+     *
+     * COMMANDS:
+     * standard = moves forward and backward
+     * spin = rotates on its central axis
+     * sidewalk = does the sidewalk move (Y axis)
+     * diagonalLeft & diagonalRight = moves on diagonal (XY)
+     * spinSideLeft & spinSideRight = rotates only one side of robot
+     * */
+    public void walkOnBy(int power, String walkType ) {
         resetMotorAndEncoder();
-        setMotorsPower(power, power, power, power);
-    }
-    public void standardCount(int power, float encoderCount){
-        standardOn(power);
-        waitEncoderCount(encoderCount);
-        resetMotorAndEncoder();
-    }
-
-    // spinOn() and spinCount() are responsible for robot spin.
-
-    public void spinOn(int power){
-        resetMotorAndEncoder();
-        setMotorsPower(power, power, -power, -power);
-    }
-    public void spinCount(int power, float encoderCount){
-        spinOn(power);
-        waitEncoderCount(encoderCount);
-        resetMotorAndEncoder();
-    }
-
-    // sidewalkOn() and sidewalkCount() are responsible for the robot sidewalks (moves on Y axis).
-
-    public void sidewalkOn(int power){
-        resetMotorAndEncoder();
-        setMotorsPower(-power, power, power, -power);
-    }
-    public void sidewalkCount(int power, float encoderCount){
-        sidewalkOn(power);
-        waitEncoderCount(encoderCount);
-        resetMotorAndEncoder();
-    }
-
-    /* As the next moves will have four directions, we will work with an extra parameter, a string that will define the
-     *direction of movement (right or left)*/
-
-    // spinSideOn() and spinSideCount() are responsible for robot spin with only one side pair of motors
-
-    public void spinSideOn(int power, String side){
-        resetMotorAndEncoder();
-        if(side.equals("Right")){
-            setMotorsPower(0, 0, power, power);
-        } else {
-            setMotorsPower(power, power, 0, 0);
+        switch(walkType) {
+            case "standard":
+                setMotorsPower(power, power, power, power);
+                break;
+            case "spin":
+                setMotorsPower(power, power, -power, -power);
+                break;
+            case "sideWalk":
+                setMotorsPower(-power, power, power, -power);
+                break;
+            case "diagonalLeft":
+                setMotorsPower(power, 0, 0, power);
+                break;
+            case "diagonalRight":
+                setMotorsPower(0, power, power, 0);
+                break;
+            case "spinSideLeft":
+                setMotorsPower(power,power, 0, 0);
+                break;
+            case "spinSideRight":
+                setMotorsPower(0, 0, power, power);
         }
     }
-    public void spinSideCount(int power, String side, float encoderCount){
-        spinSideOn(power, side);
+
+    public void walkCount (int power, float encoderCount, String walkType ){
+        walkOnBy(power, walkType);
         waitEncoderCount(encoderCount);
         resetMotorAndEncoder();
     }
 
-    // diagonalOn() and diagonalCount() are responsible for the robot XY movements
-
-    public void diagonalOn(int power, String direction){
-        resetMotorAndEncoder();
-        if(direction.equals("Right")){
-            setMotorsPower(0, power, power, 0);
-        } else{
-            setMotorsPower(power, 0, 0, power);
-        }
-    }
-    public void diagonalCount(int power, String direction, float encoderCount){
-        diagonalOn(power, direction);
-        waitEncoderCount(encoderCount);
-        resetMotorAndEncoder();
-    }
 }
