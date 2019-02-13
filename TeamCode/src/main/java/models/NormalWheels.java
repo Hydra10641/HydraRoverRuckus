@@ -10,7 +10,7 @@ public class NormalWheels {
 
     private DcMotor rightWheel = null, leftWheel = null;
 
-    public void normalWheels(DcMotor leftWheel, DcMotor rightWheel) {
+    NormalWheels(DcMotor leftWheel, DcMotor rightWheel) {
         this.rightWheel = rightWheel;
         this.leftWheel = leftWheel;
     }
