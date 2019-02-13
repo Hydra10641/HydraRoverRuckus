@@ -9,9 +9,9 @@ public class NormalWheels {
 
     private DcMotor rightWheel = null, leftWheel = null;
 
-    public void normalWheels(DcMotor leftWheel, DcMotor rightWheel) {
+    NormalWheels(DcMotor leftWheel, DcMotor rightWheel) {
         this.rightWheel = rightWheel;
-        this.leftWheel = this.leftWheel;
+        this.leftWheel = leftWheel;
     }
 
     /*Here we create three methods that we will use repetitively in the methods for locomotion. The description of each

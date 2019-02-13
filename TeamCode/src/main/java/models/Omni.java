@@ -10,7 +10,7 @@ public class Omni {
 
     private DcMotor leftFrontWheel = null, leftBackWheel = null, rightFrontWheel = null, rightBackWheel = null;
 
-    public void omni(DcMotor leftFrontWheel, DcMotor leftBackWheel,
+    Omni(DcMotor leftFrontWheel, DcMotor leftBackWheel,
                 DcMotor rightFrontWheel, DcMotor rightBackWheel){
         this.leftFrontWheel = leftFrontWheel;
         this.leftBackWheel = leftBackWheel;
@@ -53,37 +53,23 @@ public class Omni {
      *encoder (in order: standardEntry (), waitEncoderCount , resetMotorAndEncoder ()).*/
 
     //standard() and standardOn() are responsible for the robot standard movements (front and back).
-
-    public void standardOn(int power){
+    public void walkOnBy(int power, String walkType ) {
         resetMotorAndEncoder();
-        setMotorsPower(power, power, power, power);
-    }
-    public void standardCount(int power, float encoderCount){
-        standardOn(power);
-        waitEncoderCount(encoderCount);
-        resetMotorAndEncoder();
-    }
-
-    // spin() and spinOn() are responsible for robot spin.
-
-    public void spinOn(int power){
-        resetMotorAndEncoder();
-        setMotorsPower(power, power, -power, -power);
-    }
-    public void spinCount(int power, float encoderCount){
-        spinOn(power);
-        waitEncoderCount(encoderCount);
-        resetMotorAndEncoder();
+        switch(walkType) {
+            case 'standard':
+                setMotorsPower(power, power, power, power);
+            break;
+            case 'spin':
+                setMotorsPower(power, power, -power, -power);
+            break;
+            case 'sideWalk':
+                setMotorsPower(-power, power, power, -power);
+            break;
+        }
     }
 
-    // sidewalk() and sidewalkOn() are responsible for the robot sidewalks (moves on Y axis).
-
-    public void sidewalkOn(int power){
-        resetMotorAndEncoder();
-        setMotorsPower(-power, power, power, -power);
-    }
-    public void sidewalkCount(int power, float encoderCount){
-        sidewalkOn(power);
+    public void walkCount (int power, float encoderCount, String walkType ){
+        walkOnBy(power, walkType);
         waitEncoderCount(encoderCount);
         resetMotorAndEncoder();
     }

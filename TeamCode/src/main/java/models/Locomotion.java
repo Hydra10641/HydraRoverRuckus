@@ -7,7 +7,7 @@ public class Locomotion{
 
     private DcMotor leftFrontWheel = null, leftBackWheel = null, rightFrontWheel = null, rightBackWheel = null;
 
-    public void locomotion (DcMotor leftFrontWheel, DcMotor leftBackWheel, DcMotor rightFrontWheel, DcMotor rightBackWheel){
+    Locomotion (DcMotor leftFrontWheel, DcMotor leftBackWheel, DcMotor rightFrontWheel, DcMotor rightBackWheel){
         this.leftFrontWheel = leftFrontWheel;
         this.leftBackWheel = leftBackWheel;
         this.rightFrontWheel = rightFrontWheel;

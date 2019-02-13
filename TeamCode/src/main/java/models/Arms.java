@@ -9,7 +9,7 @@ public class Arms {
 
     private Servo servoDepositArmHand = null, servoDepositArmExpansion = null, servoColectArmHand = null, servoColectArmExpansion = null;
 
-    public void arms (Servo servoDepositArmHand, Servo servoDepositArmExpansion, Servo servoColectArmHand, Servo servoColectArmExpansion){
+    Arms (Servo servoDepositArmHand, Servo servoDepositArmExpansion, Servo servoColectArmHand, Servo servoColectArmExpansion){
 
         this.servoDepositArmHand = servoDepositArmHand;
         this.servoDepositArmExpansion = servoDepositArmExpansion;
