@@ -20,13 +20,10 @@ public class OpModeClass extends LinearOpMode{
                                hardwareMap.get(DcMotor.class, "motorExpansion"),
                                hardwareMap.get(DcMotor.class, "motorLander"));
 
-        /*Omni omniWheels = new Omni (hardwareMap.get(DcMotor.class, "leftFrontWheel"),
-                                    hardwareMap.get(DcMotor.class, "leftBackWheel"),
-                                    hardwareMap.get(DcMotor.class, "rightFrontWheel"),
-                                    hardwareMap.get(DcMotor.class, "rightBackWheel"));*/
-
         Wheels wheels = new Wheels(hardwareMap.get(DcMotor.class, "leftWheel"),
                                    hardwareMap.get(DcMotor.class, "rightWheel"));
 
+        EncoderConverter encoderConverter = new EncoderConverter(10.2f, 1.2f, 30.2f);
+        wheels.leftWheel.setPower((double) encoderConverter.centimeter(20.f));
     }
 }

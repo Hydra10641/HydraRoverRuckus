@@ -66,9 +66,10 @@ public class EncoderConverter {
         return ((int) convertedValue);
     }
 
-    /*
+    /* ANGULAR CONVERTER DESCRIPTION:
      *
-     * 
+     * This method is applied to curves with one motor only. Since the only thing in the calculation that is changed is the size
+     * of the radius (which is twice as large), we will use the previous method by doubling the value.
      */
 
     public int centimeterEx (int angle){
