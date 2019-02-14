@@ -2,15 +2,15 @@ package models;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-public class NormalWheels {
+public class Wheels {
 
     /*Welcome, this is the team 10641(Hydra) code for the normals wheels locomotion system, first applied in the
      *Rover Ruckus season.
      *First of all, we declare 2 attributes of type Dc Motor, corresponding to the motors used on the robot locomotion.*/
 
-    private DcMotor rightWheel = null, leftWheel = null;
+    protected DcMotor rightWheel, leftWheel;
 
-    NormalWheels(DcMotor leftWheel, DcMotor rightWheel) {
+    Wheels(DcMotor leftWheel, DcMotor rightWheel) {
         this.rightWheel = rightWheel;
         this.leftWheel = leftWheel;
     }
@@ -24,13 +24,11 @@ public class NormalWheels {
         leftWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
-
     public void setMotorsPower(int leftPower, int rightPower) {
         // This method is responsible to energize the motors
         leftWheel.setPower(leftPower / 100.0);
         rightWheel.setPower(rightPower / 100.0);
     }
-
     public void waitEncoderCount(float encoderCount) {
         /* This method is responsible to wait the encoder be equals to value required.
          *The encoder parameter (Count encoder) can be positive or negative, so we use the absolute value of the
@@ -41,45 +39,41 @@ public class NormalWheels {
         }
     }
 
-    //standardOn() and standardCount() are responsible for the robot standard movements (front and back).
+    /* We will use a pattern for the methods, where we will create a method to call in the configuration proposed by the
+     * programmer (in the order: resetMotorAndEncoder (), setMotorsPower ()), and another similar method that will use the
+     * encoder (in order: standardEntry (), waitEncoderCount , resetMotorAndEncoder ())
+     * */
 
-    public void standardOn(int power) {
+    /* walkOnBy() and walkCount() are responsible for the robot movements.
+     *
+     * COMMANDS:
+     * standard = moves forward and backward
+     * spin = rotates on its central axis
+     * spinSideLeft & spinSideRight = rotates only one side of robot
+     * */
+
+    public void walkOnBy(int power, String walkType ) {
         resetMotorAndEncoder();
-        setMotorsPower(power, power);
-    }
-
-    public void standardCount(int power, float encoderCount) {
-        standardOn(power);
-        waitEncoderCount(encoderCount);
-        resetMotorAndEncoder();
-    }
-
-    // spinOn() and spinCount() are responsible for robot spin.
-
-    public void spinOn(int power) {
-        resetMotorAndEncoder();
-        setMotorsPower(power, -power);
-    }
-
-    public void spinCount(int power, float encoderCount) {
-        spinOn(power);
-        waitEncoderCount(encoderCount);
-        resetMotorAndEncoder();
-    }
-
-    // spinSideOn() and spinSideCount() are responsible for robot spin with only one side pair of motors
-
-    public void spinSideOn(int power, String side){
-        resetMotorAndEncoder();
-        if(side.equals("Right")){
-            setMotorsPower(0, 0);
-        } else {
-            setMotorsPower(power, power);
+        switch(walkType) {
+            case "standard":
+                setMotorsPower(power, power);
+                break;
+            case "spin":
+                setMotorsPower(power,-power);
+                break;
+            case "spinSideLeft":
+                setMotorsPower(1, 0);
+                break;
+            case "spinSideRight":
+                setMotorsPower(0, 1);
+                break;
         }
     }
-    public void spinSideCount(int power, String side, float encoderCount){
-        spinSideOn(power, side);
+
+    public void walkCount (int power, float encoderCount, String walkType ){
+        walkOnBy(power, walkType);
         waitEncoderCount(encoderCount);
         resetMotorAndEncoder();
     }
+
 }

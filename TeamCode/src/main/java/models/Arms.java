@@ -1,5 +1,6 @@
 package models;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Arms {
@@ -7,22 +8,40 @@ public class Arms {
     /*Welcome, this is the team 10641(Hydra) code for the arms system, first applied in the Rover Ruckus season.
     First of all, we declare 4 attributes of type Servo, corresponding to the servos used on the arms system.*/
 
-    private Servo servoDepositArmHand = null, servoDepositArmExpansion = null, servoColectArmHand = null, servoColectArmExpansion = null;
+    protected Servo servoDeposit, servoCollect, servoWrist;
+    protected DcMotor motorExpansion, motorLander;
 
-    Arms (Servo servoDepositArmHand, Servo servoDepositArmExpansion, Servo servoColectArmHand, Servo servoColectArmExpansion){
+    Arms (Servo servoDeposit, Servo servoCollect, Servo servoWrist, DcMotor motorExpansion, DcMotor motorLander){
 
-        this.servoDepositArmHand = servoDepositArmHand;
-        this.servoDepositArmExpansion = servoDepositArmExpansion;
-        this.servoColectArmHand = servoColectArmHand;
-        this.servoColectArmExpansion = servoColectArmExpansion;
+        this.servoDeposit = servoDeposit;
+        this.servoCollect = servoCollect;
+        this.servoWrist = servoWrist;
+        this.motorExpansion = motorExpansion;
+        this.motorLander = motorLander;
     }
     /*Here we create one method that we will use to set the arms position.*/
-    public void setPosition(double position[]){
+
+    public void setArmsPosition(float position[]){
         /*We have the method set position to each one of servos.*/
-        servoDepositArmHand.setPosition(position[1]);
-        servoDepositArmExpansion.setPosition(position[2]);
-        servoColectArmHand.setPosition(position[3]);
-        servoColectArmExpansion.setPosition(position[4]);
+        servoDeposit.setPosition(position[1]);
+        servoCollect.setPosition(position[2]);
+        servoWrist.setPosition(position[3]);
+        motorExpansion.setPower(position[4]);
+    }
+
+    public void moveOnBy(int speedOrPosition, String moveType){
+        switch (moveType){
+            case "expand":
+                this.motorExpansion.setPower(speedOrPosition/100.0);
+                break;
+            case "wrist":
+                this.servoWrist.setPosition(speedOrPosition/100.0);
+                break;
+            case "deposit":
+                this.servoDeposit.setPosition(speedOrPosition/100.0);
+                break;
+        }
+
     }
 
 }

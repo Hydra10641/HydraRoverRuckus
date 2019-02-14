@@ -8,7 +8,7 @@ public class Omni {
     /*Welcome, this is the team 10641(Hydra) code for the OMNI locomotion system, first applied in the Rover Ruckus season.
      *First of all, we declare 4 attributes of type Dc Motor, corresponding to the motors used on the robot locomotion.*/
 
-    private DcMotor leftFrontWheel = null, leftBackWheel = null, rightFrontWheel = null, rightBackWheel = null;
+    private DcMotor leftFrontWheel, leftBackWheel, rightFrontWheel, rightBackWheel;
 
     Omni(DcMotor leftFrontWheel, DcMotor leftBackWheel,
          DcMotor rightFrontWheel, DcMotor rightBackWheel){
