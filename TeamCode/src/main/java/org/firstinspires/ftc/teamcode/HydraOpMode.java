@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-public class OpModeClass extends LinearOpMode {
+public class HydraOpMode extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         /*Here we declare the devices of our robot (servos, motors and sensors)
