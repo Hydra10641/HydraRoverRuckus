@@ -1,4 +1,4 @@
-package models;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
