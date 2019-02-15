@@ -7,9 +7,7 @@ public class EncoderConverter {
      *First of all, we declare 3 floats attributes, corresponding to: wheel diameter, gear ratio and the distance
      * between wheels. They will be used in the calculations of this class.*/
 
-    protected float wheelDiameter;
-    protected float gearRatio;
-    protected float distanceBetweenWheels;
+    public float wheelDiameter, gearRatio, distanceBetweenWheels;
 
     EncoderConverter( float wheelDiameter, float gearRatio, float distanceBetweenWheels){
         this.wheelDiameter = wheelDiameter;

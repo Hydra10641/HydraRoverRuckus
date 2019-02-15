@@ -8,8 +8,8 @@ public class Arms {
     /*Welcome, this is the team 10641(Hydra) code for the arms system, first applied in the Rover Ruckus season.
     First of all, we declare 4 attributes of type Servo, corresponding to the servos used on the arms system.*/
 
-    protected Servo servoDeposit, servoCollect, servoWrist;
-    protected DcMotor motorExpansion, motorLander;
+    public Servo servoDeposit, servoCollect, servoWrist;
+    public DcMotor motorExpansion, motorLander;
 
     Arms (Servo servoDeposit, Servo servoCollect, Servo servoWrist, DcMotor motorExpansion, DcMotor motorLander){
 

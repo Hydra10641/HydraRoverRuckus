@@ -6,26 +6,37 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.vuforia.TrackableResult;
 
 public class Robot {
-    private Wheels wheels;
-    private Arms arms;
-    private DistanceSensor distanceSensor;
-    private EncoderConverter encoderConverter;
+    public Wheels wheels;
+    public Arms arms;
+    public DistanceSensor distanceSensor;
+    public EncoderConverter encoderConverter;
 
-    Robot (Wheels wheels, Arms arms, DistanceSensor distanceSensor, EncoderConverter encoderConverter) {
+    Robot (DcMotor leftWheel,
+           DcMotor rightWheel,
+           Servo servoDeposit,
+           Servo servoCollect,
+           Servo servoWrist,
+           DcMotor motorExpansion,
+           DcMotor motorLander,
+           DistanceSensor distanceSensor,
+           float wheelDiameter,
+           float gearRatio,
+           float distanceBetweenWheels) {
 
-        this.wheels = new Wheels(wheels.leftWheel, wheels.rightWheel);
+        this.wheels = new Wheels(leftWheel, rightWheel);
 
-        this.arms = new Arms(arms.servoDeposit,
-                             arms.servoCollect,
-                             arms.servoWrist,
-                             arms.motorExpansion,
-                             arms.motorLander);
+        this.arms = new Arms(servoDeposit,
+                             servoCollect,
+                             servoWrist,
+                             motorExpansion,
+                             motorLander);
 
         this.distanceSensor = distanceSensor;
 
-        this.encoderConverter = new EncoderConverter(encoderConverter.wheelDiameter,
-                                                     encoderConverter.gearRatio,
-                                                     encoderConverter.distanceBetweenWheels);
+        this.encoderConverter = new EncoderConverter(wheelDiameter,
+                                                     gearRatio,
+                                                     distanceBetweenWheels);
     }
+
 
 }

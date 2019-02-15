@@ -1,6 +1,7 @@
 package models;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.Range;
 
 public class Wheels {
 
@@ -8,7 +9,7 @@ public class Wheels {
      *Rover Ruckus season.
      *First of all, we declare 2 attributes of type Dc Motor, corresponding to the motors used on the robot locomotion.*/
 
-    protected DcMotor rightWheel, leftWheel;
+    public DcMotor rightWheel, leftWheel;
 
     Wheels(DcMotor leftWheel, DcMotor rightWheel) {
         this.rightWheel = rightWheel;
@@ -24,10 +25,13 @@ public class Wheels {
         leftWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
-    public void setMotorsPower(int leftPower, int rightPower) {
+    public void setMotorsPower(float leftPower, float rightPower) {
         // This method is responsible to energize the motors
-        leftWheel.setPower(leftPower / 100.0);
-        rightWheel.setPower(rightPower / 100.0);
+        leftPower = Range.clip(leftPower,-1,1);
+        rightPower = Range.clip(rightPower, -1, 1);
+
+        leftWheel.setPower(leftPower);
+        rightWheel.setPower(rightPower);
     }
     public void waitEncoderCount(float encoderCount) {
         /* This method is responsible to wait the encoder be equals to value required.
@@ -52,7 +56,7 @@ public class Wheels {
      * spinSideLeft & spinSideRight = rotates only one side of robot
      * */
 
-    public void walkOnBy(int power, String walkType ) {
+    public void walkOnBy(float power, String walkType ) {
         resetMotorAndEncoder();
         switch(walkType) {
             case "standard":
@@ -70,7 +74,7 @@ public class Wheels {
         }
     }
 
-    public void walkCount (int power, float encoderCount, String walkType ){
+    public void walkCount (float power, float encoderCount, String walkType ){
         walkOnBy(power, walkType);
         waitEncoderCount(encoderCount);
         resetMotorAndEncoder();
