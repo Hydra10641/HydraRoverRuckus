@@ -13,6 +13,11 @@ public class OpModeClass extends LinearOpMode{
          *You can choose between the Omni locomotion system (Omni)
          *Or the locomotion system with two traction engines (Wheels)
          */
+        Robot robot = initializeRobot();
+        // wheels.leftWheel.setPower((double) encoderConverter.centimeter(20.f));
+    }
+
+    public Robot initializeRobot() {
 
         Arms servos = new Arms(hardwareMap.get(Servo.class, "servoDeposit"),
                                hardwareMap.get(Servo.class, "servoCollect"),
@@ -24,6 +29,8 @@ public class OpModeClass extends LinearOpMode{
                                    hardwareMap.get(DcMotor.class, "rightWheel"));
 
         EncoderConverter encoderConverter = new EncoderConverter(10.2f, 1.2f, 30.2f);
-        wheels.leftWheel.setPower((double) encoderConverter.centimeter(20.f));
+
+
+        return new Robot(wheels, servos, null, encoderConverter);
     }
 }
