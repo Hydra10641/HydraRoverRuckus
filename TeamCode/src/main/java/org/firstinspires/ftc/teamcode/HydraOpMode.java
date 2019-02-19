@@ -28,10 +28,17 @@ public class HydraOpMode extends LinearOpMode {
 
         // wheels.leftWheel.setPower((double) encoderConverter.centimeter(20.f));
 
-        float turn = gamepad1.left_stick_x;
-        float drive = -gamepad1.left_stick_y;
-        robot.wheels.setMotorsPower(drive + turn, drive - turn);
+        // Wait for the game to start (driver presses PLAY)
+        waitForStart();
 
+        // run until the end of the match (driver presses STOP)
+        while (opModeIsActive()){
+            float turn = gamepad1.left_stick_x;
+            float drive = -gamepad1.left_stick_y;
+            robot.wheels.setMotorsPower(drive + turn, drive - turn);
+
+
+        }
     }
 
 }
