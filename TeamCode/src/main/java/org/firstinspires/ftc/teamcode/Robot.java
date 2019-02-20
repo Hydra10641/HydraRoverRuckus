@@ -1,9 +1,8 @@
-package models;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.vuforia.TrackableResult;
 
 public class Robot {
     public Wheels wheels;

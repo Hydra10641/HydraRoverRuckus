@@ -1,11 +1,11 @@
-package models;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-public class OpModeClass extends LinearOpMode {
+public class HydraOpMode extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         /*Here we declare the devices of our robot (servos, motors and sensors)
@@ -28,10 +28,17 @@ public class OpModeClass extends LinearOpMode {
 
         // wheels.leftWheel.setPower((double) encoderConverter.centimeter(20.f));
 
-        float turn = gamepad1.left_stick_x;
-        float drive = -gamepad1.left_stick_y;
-        robot.wheels.setMotorsPower(drive + turn, drive - turn);
+        // Wait for the game to start (driver presses PLAY)
+        waitForStart();
 
+        // run until the end of the match (driver presses STOP)
+        while (opModeIsActive()){
+            float turn = gamepad1.left_stick_x;
+            float drive = -gamepad1.left_stick_y;
+            robot.wheels.setMotorsPower(drive + turn, drive - turn);
+
+
+        }
     }
 
 }
