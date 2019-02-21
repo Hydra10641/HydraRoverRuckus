@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -14,7 +15,7 @@ public class Robot {
 
     Robot (DcMotor leftWheel,
            DcMotor rightWheel,
-           Servo servoCollect,
+           CRServo servoCollect,
            Servo servoCollectWrist,
            Servo servoDepositWrist,
            DcMotor motorExpansion,
@@ -46,7 +47,7 @@ public class Robot {
            DcMotor leftBackWheel,
            DcMotor rightFrontWheel,
            DcMotor rightBackWheel,
-           Servo servoCollect,
+           CRServo servoCollect,
            Servo servoCollectWrist,
            Servo servoDepositWrist,
            DcMotor motorExpansion,
