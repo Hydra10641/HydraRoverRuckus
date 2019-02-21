@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -8,10 +9,11 @@ public class Arms {
     /*Welcome, this is the team 10641(Hydra) code for the arms system, first applied in the Rover Ruckus season.
     First of all, we declare 4 attributes of type Servo, corresponding to the servos used on the arms system.*/
 
-    public Servo servoCollect, servoCollectWrist, servoDepositWrist;
+    public Servo servoCollectWrist, servoDepositWrist;
+    public CRServo servoCollect;
     public DcMotor motorExpansion, motorLander;
 
-    Arms ( Servo servoCollect, Servo servoCollectWrist, Servo servoDepositWrist, DcMotor motorExpansion, DcMotor motorLander){
+    Arms ( CRServo servoCollect, Servo servoCollectWrist, Servo servoDepositWrist, DcMotor motorExpansion, DcMotor motorLander){
 
         this.servoCollect = servoCollect;
         this.servoCollectWrist = servoCollectWrist;
