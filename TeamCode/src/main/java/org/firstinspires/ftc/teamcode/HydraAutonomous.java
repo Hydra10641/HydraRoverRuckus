@@ -21,9 +21,9 @@ public class HydraAutonomous extends LinearOpMode {
 
         Robot hydraBot = new Robot(hardwareMap.get(DcMotor.class, "leftWheel"),
                                 hardwareMap.get(DcMotor.class, "rightWheel"),
-                                hardwareMap.get(Servo.class, "servoDeposit"),
                                 hardwareMap.get(Servo.class, "servoCollect"),
-                                hardwareMap.get(Servo.class, "servoWrist"),
+                                hardwareMap.get(Servo.class, "servoCollectWrist"),
+                                hardwareMap.get(Servo.class, "servoDepositWrist"),
                                 hardwareMap.get(DcMotor.class, "motorExpansion"),
                                 hardwareMap.get(DcMotor.class, "motorLander"),
                                 hardwareMap.get(DistanceSensor.class, "distanceSensor"),
