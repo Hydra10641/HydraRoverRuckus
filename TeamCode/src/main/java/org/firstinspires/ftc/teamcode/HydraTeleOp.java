@@ -4,6 +4,7 @@ import android.util.Range;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -23,7 +24,7 @@ public class HydraTeleOp extends LinearOpMode {
 
         Robot hydraBot = new Robot(hardwareMap.get(DcMotor.class, "leftWheel"),
                                 hardwareMap.get(DcMotor.class, "rightWheel"),
-                                hardwareMap.get(Servo.class, "servoCollect"),
+                                hardwareMap.get(CRServo.class, "servoCollect"),
                                 hardwareMap.get(Servo.class, "servoCollectWrist"),
                                 hardwareMap.get(Servo.class, "servoDepositWrist"),
                                 hardwareMap.get(DcMotor.class, "motorExpansion"),
