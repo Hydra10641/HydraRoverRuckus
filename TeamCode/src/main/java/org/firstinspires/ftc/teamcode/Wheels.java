@@ -10,10 +10,12 @@ public class Wheels {
      *First of all, we declare 2 attributes of type Dc Motor, corresponding to the motors used on the robot locomotion.*/
 
     public DcMotor rightWheel, leftWheel;
+    public EncoderConverter encoderConverter;
 
-    Wheels(DcMotor leftWheel, DcMotor rightWheel) {
+    Wheels(DcMotor leftWheel, DcMotor rightWheel, float wheelDiameter, float gearRatio, float distanceBetweenWheel) {
         this.rightWheel = rightWheel;
         this.leftWheel = leftWheel;
+        this.encoderConverter = new EncoderConverter(wheelDiameter, gearRatio, distanceBetweenWheel);
     }
 
     /*Here we create three methods that we will use repetitively in the methods for locomotion. The description of each
@@ -38,8 +40,8 @@ public class Wheels {
          *The encoder parameter (Count encoder) can be positive or negative, so we use the absolute value of the
          *supplied parameter and the encoder of the motors to limit the amount of rotation we want. We use the empty while
          *structure to serve as a hold structure */
-        while (Math.abs(leftWheel.getCurrentPosition()) <= Math.abs(encoderCount) ||
-                Math.abs(rightWheel.getCurrentPosition()) <= Math.abs(encoderCount)) {
+        while (Math.abs(leftWheel.getCurrentPosition()) < Math.abs(encoderCount) ||
+                Math.abs(rightWheel.getCurrentPosition()) < Math.abs(encoderCount)) {
         }
     }
 
@@ -76,7 +78,7 @@ public class Wheels {
 
     public void walkCount (float power, float encoderCount, String walkType ){
         walkOnBy(power, walkType);
-        waitEncoderCount(encoderCount);
+        waitEncoderCount(encoderConverter.centimeter(encoderCount));
         resetMotorAndEncoder();
     }
 

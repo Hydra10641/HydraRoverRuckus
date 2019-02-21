@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-public class HydraOpMode extends LinearOpMode {
+@TeleOp
+
+public class HydraTeleOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         /*Here we declare the devices of our robot (servos, motors and sensors)
@@ -16,7 +19,7 @@ public class HydraOpMode extends LinearOpMode {
         float gearRatio = 1.0f;
         float distanceBetweenWheels = 35.0f;
 
-        Robot robot = new Robot(hardwareMap.get(DcMotor.class, "leftWheel"),
+        Robot hydraBot = new Robot(hardwareMap.get(DcMotor.class, "leftWheel"),
                                 hardwareMap.get(DcMotor.class, "rightWheel"),
                                 hardwareMap.get(Servo.class, "servoDeposit"),
                                 hardwareMap.get(Servo.class, "servoCollect"),
@@ -35,7 +38,7 @@ public class HydraOpMode extends LinearOpMode {
         while (opModeIsActive()){
             float turn = gamepad1.left_stick_x;
             float drive = -gamepad1.left_stick_y;
-            robot.wheels.setMotorsPower(drive + turn, drive - turn);
+            hydraBot.wheels.setMotorsPower(drive + turn, drive - turn);
 
 
         }

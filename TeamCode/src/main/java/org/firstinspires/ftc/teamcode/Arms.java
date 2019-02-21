@@ -21,14 +21,6 @@ public class Arms {
     }
     /*Here we create one method that we will use to set the arms position.*/
 
-    public void setArmsPosition(float position[]){
-        /*We have the method set position to each one of servos.*/
-        servoDeposit.setPosition(position[1]);
-        servoCollect.setPosition(position[2]);
-        servoWrist.setPosition(position[3]);
-        motorExpansion.setPower(position[4]);
-    }
-
     public void moveOnBy(int speedOrPosition, String moveType){
         switch (moveType){
             case "expand":
