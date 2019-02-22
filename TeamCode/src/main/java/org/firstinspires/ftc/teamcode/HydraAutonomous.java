@@ -22,7 +22,7 @@ public class HydraAutonomous extends LinearOpMode {
 
         Robot hydraBot = new Robot(hardwareMap.get(DcMotor.class, "leftWheel"),
                                 hardwareMap.get(DcMotor.class, "rightWheel"),
-                                hardwareMap.get(CRServo.class, "servoCollect"),
+                                hardwareMap.get(CRServo.class, "crServoCollect"),
                                 hardwareMap.get(Servo.class, "servoCollectWrist"),
                                 hardwareMap.get(Servo.class, "servoDepositWrist"),
                                 hardwareMap.get(DcMotor.class, "motorExpansion"),
@@ -55,7 +55,7 @@ public class HydraAutonomous extends LinearOpMode {
         }
         hydraBot.wheels.walkCount(0.5f, 90*direcao, "spin");*/
         hydraBot.wheels.walkCount(1f, 40.0f, "standard");
-        hydraBot.arms.servoCollect.setPower(-1);
+        hydraBot.arms.crServoCollect.setPower(-1);
 
     }
 

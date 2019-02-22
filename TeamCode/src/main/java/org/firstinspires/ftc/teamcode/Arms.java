@@ -10,12 +10,12 @@ public class Arms {
     First of all, we declare 4 attributes of type Servo, corresponding to the servos used on the arms system.*/
 
     public Servo servoCollectWrist, servoDepositWrist;
-    public CRServo servoCollect;
+    public CRServo crServoCollect;
     public DcMotor motorExpansion, motorLander;
 
-    Arms ( CRServo servoCollect, Servo servoCollectWrist, Servo servoDepositWrist, DcMotor motorExpansion, DcMotor motorLander){
+    Arms (CRServo crServoCollect, Servo servoCollectWrist, Servo servoDepositWrist, DcMotor motorExpansion, DcMotor motorLander){
 
-        this.servoCollect = servoCollect;
+        this.crServoCollect = crServoCollect;
         this.servoCollectWrist = servoCollectWrist;
         this.servoDepositWrist = servoDepositWrist;
         this.motorExpansion = motorExpansion;

@@ -15,7 +15,7 @@ public class Robot {
 
     Robot (DcMotor leftWheel,
            DcMotor rightWheel,
-           CRServo servoCollect,
+           CRServo crServoCollect,
            Servo servoCollectWrist,
            Servo servoDepositWrist,
            DcMotor motorExpansion,
@@ -31,7 +31,7 @@ public class Robot {
                                  gearRatio,
                                  distanceBetweenWheels);
 
-        this.arms = new Arms(servoCollect,
+        this.arms = new Arms(crServoCollect,
                              servoCollectWrist,
                              servoDepositWrist,
                              motorExpansion,
@@ -47,7 +47,7 @@ public class Robot {
            DcMotor leftBackWheel,
            DcMotor rightFrontWheel,
            DcMotor rightBackWheel,
-           CRServo servoCollect,
+           CRServo crServoCollect,
            Servo servoCollectWrist,
            Servo servoDepositWrist,
            DcMotor motorExpansion,
@@ -65,7 +65,7 @@ public class Robot {
                              gearRatio,
                              distanceBetweenWheels);
 
-        this.arms = new Arms(servoCollect,
+        this.arms = new Arms(crServoCollect,
                              servoCollectWrist,
                              servoDepositWrist,
                              motorExpansion,
