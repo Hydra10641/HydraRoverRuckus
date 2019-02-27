@@ -11,22 +11,25 @@ public class Arms {
 
     public Servo servoCollectWrist, servoDepositWrist;
     public CRServo crServoCollect;
-    public DcMotor motorExpansion, motorLander;
+    public DcMotor motorCollectSlide, motorDepositSlide;
 
-    Arms (CRServo crServoCollect, Servo servoCollectWrist, Servo servoDepositWrist, DcMotor motorExpansion, DcMotor motorLander){
+    Arms (CRServo crServoCollect, Servo servoCollectWrist, Servo servoDepositWrist, DcMotor motorCollectSlide, DcMotor motorDepositSlide){
 
         this.crServoCollect = crServoCollect;
         this.servoCollectWrist = servoCollectWrist;
         this.servoDepositWrist = servoDepositWrist;
-        this.motorExpansion = motorExpansion;
-        this.motorLander = motorLander;
+        this.motorCollectSlide = motorCollectSlide;
+        this.motorDepositSlide = motorDepositSlide;
     }
     /*Here we create one method that we will use to set the arms position.*/
 
     public void moveOnBy(float speedOrPosition, String moveType){
         switch (moveType){
-            case "expand":
-                this.motorExpansion.setPower(speedOrPosition);
+            case "collect_slide":
+                this.motorCollectSlide.setPower(speedOrPosition);
+                break;
+            case "deposit_slide":
+                this.motorDepositSlide.setPower(speedOrPosition);
                 break;
             case "collect_wrist":
                 this.servoCollectWrist.setPosition(speedOrPosition);

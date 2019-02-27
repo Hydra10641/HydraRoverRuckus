@@ -21,13 +21,13 @@ public class HydraTeleOp extends LinearOpMode {
         float gearRatio = 1.0f;
         float distanceBetweenWheels = 35.0f;
 
-        Robot hydraBot = new Robot(hardwareMap.get(DcMotor.class, "leftWheel"),
+        Robot tesseract = new Robot(hardwareMap.get(DcMotor.class, "leftWheel"),
                                 hardwareMap.get(DcMotor.class, "rightWheel"),
                                 hardwareMap.get(CRServo.class, "crServoCollect"),
                                 hardwareMap.get(Servo.class, "servoCollectWrist"),
                                 hardwareMap.get(Servo.class, "servoDepositWrist"),
-                                hardwareMap.get(DcMotor.class, "motorExpansion"),
-                                hardwareMap.get(DcMotor.class, "motorLander"),
+                                hardwareMap.get(DcMotor.class, "motorCollectSlide"),
+                                hardwareMap.get(DcMotor.class, "motorDepositSlide"),
                                 hardwareMap.get(DistanceSensor.class, "distanceSensor"),
                                 wheelDiameter, gearRatio, distanceBetweenWheels);
 
@@ -37,12 +37,14 @@ public class HydraTeleOp extends LinearOpMode {
         waitForStart();
 
         float speed = 0;
-        float expansion = 0;
+        float collectExpansion = 0;
+        float depositExpansion = 0;
         float increment = 0.01f;
-        hydraBot.arms.crServoCollect.setPower(1); // Turn on the collect servo motor
+        tesseract.arms.crServoCollect.setPower(1); // Turn on the collect servo motor
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()){
+
             //WHEELS MOVEMENT CONTROL (STICK)
             float turn = gamepad1.left_stick_x;
             float drive = -gamepad1.left_stick_y;
@@ -68,38 +70,45 @@ public class HydraTeleOp extends LinearOpMode {
                 turn = speed;
             }
             //WHEELS MOVEMENT IMPLEMENT (DPAD AND STICK)
-            hydraBot.wheels.setMotorsPower(drive + turn, drive - turn);
+            tesseract.wheels.setMotorsPower(drive + turn, drive - turn);
 
             //WHEELS MOVEMENT CONTROL AND IMPLEMENT(BUMPERS AND TRIGGERS)
             if (gamepad1.left_bumper == true){
-                hydraBot.wheels.leftWheel.setPower(speed);
+                tesseract.wheels.leftWheel.setPower(speed);
             }
             if (gamepad1.right_bumper == true){
-                hydraBot.wheels.rightWheel.setPower(speed);
+                tesseract.wheels.rightWheel.setPower(speed);
             }
             if(gamepad1.left_trigger >= 0.3f){
-                hydraBot.wheels.leftWheel.setPower(-speed);
+                tesseract.wheels.leftWheel.setPower(-speed);
             }
             if(gamepad1.right_trigger >= 0.3f){
-                hydraBot.wheels.rightWheel.setPower(-speed);
+                tesseract.wheels.rightWheel.setPower(-speed);
             }
 
-            //ARMS CONTROL AND IMPLEMENTS (BUMPERS, TRIGGERS AND DPAD)
-            if (gamepad2.left_bumper == true || gamepad2.left_trigger >= 0.3f || gamepad2.dpad_up == true){
-                expansion -= increment;
+            //COLLECT ARMS CONTROL AND IMPLEMENTS (BUMPERS, TRIGGERS AND DPAD)
+            if (gamepad2.left_bumper == true || gamepad2.dpad_up == true){
+                collectExpansion -= increment;
             }
-            if (gamepad2.right_bumper == true || gamepad2.right_trigger >= 0.3f || gamepad2.dpad_down == true){
-                expansion += increment;
+            if (gamepad2.left_trigger >= 0.3f || gamepad2.dpad_down == true){
+                collectExpansion += increment;
             }
-            expansion = Range.clip(expansion, 0,1);
-            hydraBot.arms.moveOnBy(expansion, "expand");
+            collectExpansion = Range.clip(collectExpansion, 0,1);
+            tesseract.arms.moveOnBy(collectExpansion, "collect_slide");
+
+            //DEPOSIT ARMS CONTROL AND IMPLEMENTS (BUMPERS, TRIGGERS AND DPAD)
+            if (gamepad2.right_bumper == true || gamepad2.y == true){
+                depositExpansion -= increment;
+            }
+            if (gamepad2.right_trigger >= 0.3f || gamepad2.a == true){
+                depositExpansion += increment;
+            }
+            depositExpansion = Range.clip(depositExpansion, 0,1);
+            tesseract.arms.moveOnBy(depositExpansion, "deposit_slide");
+
             //WRIST CONTROL (STICKS)
-            hydraBot.arms.moveOnBy(Range.clip(-gamepad2.left_stick_y, 0, 1), "collect_wrist");
-            hydraBot.arms.moveOnBy(Range.clip(-gamepad2.right_stick_y, 0, 1), "deposit_wrist");
-            //LATCH/DOCK (BUTTON)
-            if (gamepad2.b == true){
-                hydraBot.arms.motorLander.setPower(1);
-            }
+            tesseract.arms.moveOnBy(Range.clip(-gamepad2.left_stick_y, 0, 1), "collect_wrist");
+            tesseract.arms.moveOnBy(Range.clip(-gamepad2.right_stick_y, 0, 1), "deposit_wrist");
         }
     }
 }

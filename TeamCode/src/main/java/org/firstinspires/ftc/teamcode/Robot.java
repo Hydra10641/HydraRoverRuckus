@@ -18,8 +18,8 @@ public class Robot {
            CRServo crServoCollect,
            Servo servoCollectWrist,
            Servo servoDepositWrist,
-           DcMotor motorExpansion,
-           DcMotor motorLander,
+           DcMotor motorCollectSlide,
+           DcMotor motorDepositSlide,
            DistanceSensor distanceSensor,
            float wheelDiameter,
            float gearRatio,
@@ -34,8 +34,8 @@ public class Robot {
         this.arms = new Arms(crServoCollect,
                              servoCollectWrist,
                              servoDepositWrist,
-                             motorExpansion,
-                             motorLander);
+                             motorCollectSlide,
+                             motorDepositSlide);
 
         this.distanceSensor = distanceSensor;
 
@@ -50,8 +50,8 @@ public class Robot {
            CRServo crServoCollect,
            Servo servoCollectWrist,
            Servo servoDepositWrist,
-           DcMotor motorExpansion,
-           DcMotor motorLander,
+           DcMotor motorCollectSlide,
+           DcMotor motorDepositSlide,
            DistanceSensor distanceSensor,
            float wheelDiameter,
            float gearRatio,
@@ -68,8 +68,8 @@ public class Robot {
         this.arms = new Arms(crServoCollect,
                              servoCollectWrist,
                              servoDepositWrist,
-                             motorExpansion,
-                             motorLander);
+                             motorCollectSlide,
+                             motorDepositSlide);
 
         this.distanceSensor = distanceSensor;
 
