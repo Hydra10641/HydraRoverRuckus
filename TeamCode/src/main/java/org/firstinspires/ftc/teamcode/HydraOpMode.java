@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 public class HydraOpMode extends LinearOpMode {
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
         /*Here we declare the devices of our robot (servos, motors and sensors)
          *You can choose between the Omni locomotion system (Omni)
          *Or the locomotion system with two traction engines (Wheels)
