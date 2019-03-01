@@ -122,6 +122,9 @@ public class HydraAutonomous extends LinearOpMode {
         } while (isEndOfRecognition(walkType, recognitionTimer.time()));
 
         tesseract.wheels.walkCount(0.75f, encoderCount, walkType);
+        tesseract.arms.crServoCollect.setPower(1); // Turn on the collect servo motor
+        tesseract.arms.moveOnBy(5, "collect_slide");
+        tesseract.arms.moveOnBy(-5, "collect_slide");
     }
 
     private void areaRecognition() {
