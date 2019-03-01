@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 public class HydraOpMode extends LinearOpMode {
+    private Robot tesseract;
+
     @Override
     public void runOpMode() {
         /*Here we declare the devices of our robot (servos, motors and sensors)
@@ -16,15 +19,15 @@ public class HydraOpMode extends LinearOpMode {
         float gearRatio = 1.0f;
         float distanceBetweenWheels = 35.0f;
 
-        Robot robot = new Robot(hardwareMap.get(DcMotor.class, "leftWheel"),
-                                hardwareMap.get(DcMotor.class, "rightWheel"),
-                                hardwareMap.get(Servo.class, "servoDeposit"),
-                                hardwareMap.get(Servo.class, "servoCollect"),
-                                hardwareMap.get(Servo.class, "servoWrist"),
-                                hardwareMap.get(DcMotor.class, "motorExpansion"),
-                                hardwareMap.get(DcMotor.class, "motorLander"),
-                                hardwareMap.get(DistanceSensor.class, "distanceSensor"),
-                                wheelDiameter, gearRatio, distanceBetweenWheels);
+        tesseract = new Robot(hardwareMap.get(DcMotor.class, "leftWheel"),
+                hardwareMap.get(DcMotor.class, "rightWheel"),
+                hardwareMap.get(CRServo.class, "crServoCollect"),
+                hardwareMap.get(Servo.class, "servoCollectWrist"),
+                hardwareMap.get(Servo.class, "servoDepositWrist"),
+                hardwareMap.get(DcMotor.class, "motorCollectSlide"),
+                hardwareMap.get(DcMotor.class, "motorDepositSlide"),
+                hardwareMap.get(DistanceSensor.class, "distanceSensor"),
+                wheelDiameter, gearRatio, distanceBetweenWheels);
 
         // wheels.leftWheel.setPower((double) encoderConverter.centimeter(20.f));
 
@@ -35,7 +38,7 @@ public class HydraOpMode extends LinearOpMode {
         while (opModeIsActive()){
             float turn = gamepad1.left_stick_x;
             float drive = -gamepad1.left_stick_y;
-            robot.wheels.setMotorsPower(drive + turn, drive - turn);
+            tesseract.wheels.setMotorsPower(drive + turn, drive - turn);
 
 
         }

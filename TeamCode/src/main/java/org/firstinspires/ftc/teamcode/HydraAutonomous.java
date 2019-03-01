@@ -56,6 +56,7 @@ public class HydraAutonomous extends LinearOpMode {
 
         dowLander();
         removeHookLander();
+
         initAr();
 
         pushMineral();
@@ -163,6 +164,10 @@ public class HydraAutonomous extends LinearOpMode {
     private void telemtryItemUpdate(Telemetry.Item item, Object data) {
         item.setValue(data);
         telemetry.update();
+    }
+
+    private void evictionOfMark() {
+        tesseract.wheels.walkCount(0.75f, 5, "spin");
     }
 
 }
