@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.vuforia.CameraCalibration;
 import com.vuforia.Frame;
 import com.vuforia.Vuforia;
@@ -29,16 +30,18 @@ import java.util.concurrent.BlockingQueue;
 @Autonomous
 
 public class HydraAutonomous extends LinearOpMode {
-    Robot tesseract;
-    VuforiaImageTarget vuforia;
-    ObjectReco objectReco;
+    private Robot tesseract;
+    private VuforiaImageTarget vuforia;
+    private ObjectReco objectReco;
 
     private ObjectReco.Position positionMineral;
     private String imageTarget;
 
-    Telemetry.Item positionMineralLog;
-    Telemetry.Item imageTargetLog;
-    Telemetry telemetry;
+    private Telemetry.Item positionMineralLog;
+    private Telemetry.Item imageTargetLog;
+    private Telemetry telemetry;
+
+    private float recognitionTime = 10;
 
     @Override
     public void runOpMode() {
@@ -110,6 +113,8 @@ public class HydraAutonomous extends LinearOpMode {
         String walkType = null;
         float encoderCount = 0;
 
+        ElapsedTime recognitionTimer = new ElapsedTime();
+        recognitionTimer.reset();
         do {
             positionMineral = objectReco.getPos();
             telemtryItemUpdate(positionMineralLog, positionMineral);
@@ -133,23 +138,26 @@ public class HydraAutonomous extends LinearOpMode {
                     encoderCount = 10;
                     break;
             }
-        } while (walkType.isEmpty());
+        } while (isEndOfRecognition(walkType, recognitionTimer.time()));
+
         tesseract.wheels.walkCount(0.75f, encoderCount, walkType);
     }
 
     private void areaRecognition() {
         vuforia.activate();
 
+        ElapsedTime recognitionTimer = new ElapsedTime();
+        recognitionTimer.reset();
         do {
             if (!vuforia.isVisible()) {
+                telemtryItemUpdate(imageTargetLog, "Não há imagem a vista");
                 vuforia.getVuMark();
             }
             else {
                 imageTarget = vuforia.getVuMarkName();
                 telemtryItemUpdate(imageTargetLog, imageTarget);
             }
-        } while (imageTarget.isEmpty());
-
+        } while (isEndOfRecognition(imageTarget, recognitionTimer.time()));
 
         switch (imageTarget) {
             case "Blue-Rover":
@@ -158,7 +166,17 @@ public class HydraAutonomous extends LinearOpMode {
             case "Red-Footprint":
                 // Ação
                 break;
+            case "Front-Craters":
+                // Ação
+                break;
+            case "Back-Space":
+                // Ação
+                break;
         }
+    }
+
+    private boolean isEndOfRecognition (String objectRA, double time) {
+        return (objectRA.isEmpty() || time > recognitionTime);
     }
 
     private void telemtryItemUpdate(Telemetry.Item item, Object data) {
