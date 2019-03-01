@@ -1,9 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -11,21 +7,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.vuforia.CameraCalibration;
-import com.vuforia.Frame;
-import com.vuforia.Vuforia;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.function.Consumer;
-import org.firstinspires.ftc.robotcore.external.function.Continuation;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.Camera;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraName;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.teamcode.AR.ObjectReco;
 import org.firstinspires.ftc.teamcode.AR.VuforiaImageTarget;
-
-import java.util.concurrent.BlockingQueue;
 
 @Autonomous
 
@@ -71,22 +56,11 @@ public class HydraAutonomous extends LinearOpMode {
 
         dowLander();
         removeHookLander();
+        initAr();
 
-        // Inserir leitura do mineral, e depois disso inserir método para girar, coletar o ouro e girar de volta
-        tesseract.wheels.walkCount(-0.5f, 90, "spin");
-        tesseract.wheels.walkCount(1f, 30.0f, "standard");
-        tesseract.wheels.walkCount(0.5f, 45, "spin");
-        tesseract.wheels.walkCount(1f, 20.0f, "standard");
-        int direcao;
-        // Inserir leitura da Imagem
-        /*if(){
-            direcao = -1;
-        } else {
-            direcao = 1;
-        }
-        tesseract.wheels.walkCount(0.5f, 90*direcao, "spin");*/
-        tesseract.wheels.walkCount(1f, 40.0f, "standard");
-        tesseract.arms.crServoCollect.setPower(-1);
+        pushMineral();
+        areaRecognition();
+
     }
 
     private void dowLander() {
@@ -107,6 +81,12 @@ public class HydraAutonomous extends LinearOpMode {
     }
 
     private void pushMineral() {
+        mineralRecognition();
+        // Valor aleatório
+        tesseract.arms.moveOnBy(5,"collect_slide");
+    }
+
+    private void mineralRecognition() {
         objectReco.activate();
         objectReco.sample();
 
@@ -146,6 +126,9 @@ public class HydraAutonomous extends LinearOpMode {
     private void areaRecognition() {
         vuforia.activate();
 
+        String walkType = null;
+        float encoderCount = 0;
+
         ElapsedTime recognitionTimer = new ElapsedTime();
         recognitionTimer.reset();
         do {
@@ -156,23 +139,21 @@ public class HydraAutonomous extends LinearOpMode {
             else {
                 imageTarget = vuforia.getVuMarkName();
                 telemtryItemUpdate(imageTargetLog, imageTarget);
+
+                encoderCount = 20;
+                switch (imageTarget) {
+                    case "Blue-Rover":
+                    case "Red-Footprint":
+                        walkType = "spinSideLeft";
+                        break;
+                    case "Front-Craters":
+                    case "Back-Space":
+                        walkType = "spinSideRight";
+                        break;
+                }
             }
         } while (isEndOfRecognition(imageTarget, recognitionTimer.time()));
-
-        switch (imageTarget) {
-            case "Blue-Rover":
-                // Ação
-                break;
-            case "Red-Footprint":
-                // Ação
-                break;
-            case "Front-Craters":
-                // Ação
-                break;
-            case "Back-Space":
-                // Ação
-                break;
-        }
+        tesseract.wheels.walkCount(0.75f, encoderCount, walkType);
     }
 
     private boolean isEndOfRecognition (String objectRA, double time) {
