@@ -9,13 +9,16 @@ public class Omni {
      *First of all, we declare 4 attributes of type Dc Motor, corresponding to the motors used on the robot locomotion.*/
 
     public DcMotor leftFrontWheel, leftBackWheel, rightFrontWheel, rightBackWheel;
+    public EncoderConverter encoderConverter;
 
     Omni(DcMotor leftFrontWheel, DcMotor leftBackWheel,
-         DcMotor rightFrontWheel, DcMotor rightBackWheel){
+         DcMotor rightFrontWheel, DcMotor rightBackWheel,
+         float wheelDiameter, float gearRatio, float distanceBetweenWheel){
         this.leftFrontWheel = leftFrontWheel;
         this.leftBackWheel = leftBackWheel;
         this.rightFrontWheel = rightFrontWheel;
         this.rightBackWheel = rightBackWheel;
+        this.encoderConverter = new EncoderConverter(wheelDiameter, gearRatio, distanceBetweenWheel);
     }
 
     /* Here we create three methods that we will use repetitively in the methods for locomotion. The description of each
@@ -92,7 +95,7 @@ public class Omni {
 
     public void walkCount (int power, float encoderCount, String walkType ){
         walkOnBy(power, walkType);
-        waitEncoderCount(encoderCount);
+        waitEncoderCount(encoderConverter.centimeter(encoderCount));
         resetMotorAndEncoder();
     }
 
