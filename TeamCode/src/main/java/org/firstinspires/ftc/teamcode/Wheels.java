@@ -27,7 +27,7 @@ public class Wheels {
         leftWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
-    public void setMotorsPower(float leftPower, float rightPower) {
+    public void setMotorsPower(double leftPower, double rightPower) {
         // This method is responsible to energize the motors
         leftPower = Range.clip(leftPower,-1,1);
         rightPower = Range.clip(rightPower, -1, 1);

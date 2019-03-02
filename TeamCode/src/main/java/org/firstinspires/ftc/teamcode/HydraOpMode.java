@@ -36,8 +36,8 @@ public class HydraOpMode extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()){
-            float turn = gamepad1.left_stick_x;
-            float drive = -gamepad1.left_stick_y;
+            double turn = gamepad1.left_stick_x;
+            double drive = -gamepad1.left_stick_y;
             tesseract.wheels.setMotorsPower(drive + turn, drive - turn);
 
 

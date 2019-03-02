@@ -18,8 +18,8 @@ public class HydraTeleOp extends LinearOpMode {
     float depositExpansion = 0;
     float increment = 0.01f;
 
-    float turn = gamepad1.left_stick_x;
-    float drive = -gamepad1.left_stick_y;
+    double turn = gamepad1.left_stick_x;
+    double drive = -gamepad1.left_stick_y;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -59,7 +59,7 @@ public class HydraTeleOp extends LinearOpMode {
             speed = Range.clip(speed, 0, 1);
             wheelsMovimentControls();
             //WHEELS MOVEMENT IMPLEMENT (DPAD AND STICK)
-            tesseract.wheels.setMotorsPower(drive + turn, drive - turn);
+            tesseract.wheels.setMotorsPower( drive + turn, drive - turn);
             wheelsMovimentControlsImplement();
             collectArmControls();
             depositArmsControls();
