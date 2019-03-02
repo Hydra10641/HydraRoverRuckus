@@ -10,7 +10,7 @@ public class HydraOpMode extends LinearOpMode {
     private Robot tesseract;
 
     @Override
-    public void runOpMode() {
+    public void runOpMode()  throws InterruptedException {
         /*Here we declare the devices of our robot (servos, motors and sensors)
          *You can choose between the Omni locomotion system (Omni)
          *Or the locomotion system with two traction engines (Wheels)

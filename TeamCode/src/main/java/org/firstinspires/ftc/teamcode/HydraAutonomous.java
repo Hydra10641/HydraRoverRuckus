@@ -29,7 +29,7 @@ public class HydraAutonomous extends LinearOpMode {
     private float recognitionTime = 10;
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
         /* Here we declare the devices of our robot (servos, motors and sensors)
          * and the Vuforia's localizer.
          * You can choose between the Omni locomotion system (Omni)
