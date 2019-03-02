@@ -5,19 +5,29 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.AR.ObjectReco;
+import org.firstinspires.ftc.teamcode.AR.VuforiaImageTarget;
 
 public class OpModeTeste extends LinearOpMode {
-    Telemetry.Item str;
-    Telemetry telemetry;
     Robot tesseract;
+    private VuforiaImageTarget vuforia;
+    private ObjectReco objectReco;
+
+    private ObjectReco.Position positionMineral;
+    private String imageTarget;
+
+    private Telemetry.Item positionMineralLog;
+    private Telemetry.Item imageTargetLog;
+    private Telemetry telemetry;
+
+    private float recognitionTime = 10;
+
 
     @Override
     public void runOpMode(){
-        str.setValue("HELLO WORD");
-        telemetry.update();
-
         float wheelDiameter = 10.0f;
         float gearRatio = 1.0f;
         float distanceBetweenWheels = 35.0f;
@@ -33,7 +43,87 @@ public class OpModeTeste extends LinearOpMode {
                 wheelDiameter, gearRatio, distanceBetweenWheels);
     }
 
+    public void testVuforia() {
+        vuforia.activate();
+
+        String walkType = null;
+        float encoderCount = 0;
+
+        ElapsedTime recognitionTimer = new ElapsedTime();
+        recognitionTimer.reset();
+        do {
+            if (!vuforia.isVisible()) {
+                telemtryItemUpdate(imageTargetLog, "Não há imagem a vista");
+                vuforia.getVuMark();
+            }
+            else {
+                imageTarget = vuforia.getVuMarkName();
+                telemtryItemUpdate(imageTargetLog, imageTarget);
+
+                encoderCount = 20;
+                switch (imageTarget) {
+                    case "Blue-Rover":
+                    case "Red-Footprint":
+                        walkType = "spinSideLeft";
+                        break;
+                    case "Front-Craters":
+                    case "Back-Space":
+                        walkType = "spinSideRight";
+                        break;
+                }
+            }
+        } while (isEndOfRecognition(imageTarget, recognitionTimer.time()));
+    }
+
+    public void testObjectReco() {
+        objectReco.activate();
+        objectReco.sample();
+
+        String walkType = null;
+        float encoderCount = 0;
+
+        ElapsedTime recognitionTimer = new ElapsedTime();
+        recognitionTimer.reset();
+        do {
+            positionMineral = objectReco.getPos();
+            telemtryItemUpdate(positionMineralLog, positionMineral);
+
+            switch (positionMineral) {
+                case UNKNOWN:
+                    walkType = null;
+                    break;
+                case CENTER:
+                    walkType = "spin";
+                    encoderCount = 0;
+                    break;
+
+                case LEFT:
+                    walkType = "spinSideLeft";
+                    encoderCount = 10;
+                    break;
+
+                case RIGHT:
+                    walkType = "spinSideRight";
+                    encoderCount = 10;
+                    break;
+            }
+        } while (isEndOfRecognition(walkType, recognitionTimer.time()));
+    }
+
+    private boolean isEndOfRecognition (String objectRA, double time) {
+        return (objectRA.isEmpty() || time > recognitionTime);
+    }
+
+    private void telemtryItemUpdate(Telemetry.Item item, Object data) {
+        item.setValue(data);
+        telemetry.update();
+    }
+
     public void movingRobot () {
         tesseract.wheels.walkCount(0.5f, 90, "spin");
+    }
+
+    public void movingServos() {
+        tesseract.arms.crServoCollect.setPower(1);
     }
 }
