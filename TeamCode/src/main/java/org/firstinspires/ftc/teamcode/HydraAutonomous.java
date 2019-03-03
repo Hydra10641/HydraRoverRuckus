@@ -65,8 +65,8 @@ public class HydraAutonomous extends LinearOpMode {
     }
 
     private void dowLander() {
-        tesseract.arms.motorDepositSlide.setTargetPosition(1152);
         tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        tesseract.arms.motorDepositSlide.setTargetPosition(1152);
     }
 
     private void removeHookLander() {
