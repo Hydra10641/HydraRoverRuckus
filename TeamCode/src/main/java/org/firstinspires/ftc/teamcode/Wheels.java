@@ -60,7 +60,7 @@ public class Wheels {
      * spinSideLeft & spinSideRight = rotates only one side of robot
      * */
 
-    public void walkOnBy(float power, String walkType ) {
+    public void walkOnBy(double power, String walkType ) {
         resetMotorAndEncoder();
         switch(walkType) {
             case "standard":
@@ -78,7 +78,7 @@ public class Wheels {
         }
     }
 
-    public void walkCount (float power, float encoderCount, String walkType ){
+    public void walkCount (double power, float encoderCount, String walkType ){
         walkOnBy(power, walkType);
         waitEncoderCount(encoderConverter.centimeter(encoderCount));
         resetMotorAndEncoder();

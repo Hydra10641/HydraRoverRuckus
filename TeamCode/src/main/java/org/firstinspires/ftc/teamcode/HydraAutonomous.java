@@ -66,14 +66,15 @@ public class HydraAutonomous extends LinearOpMode {
 
     private void dowLander() {
         tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        tesseract.arms.motorDepositSlide.setPower(0.1);
         tesseract.arms.motorDepositSlide.setTargetPosition(1152);
     }
 
     private void removeHookLander() {
-        tesseract.wheels.walkCount(0.5f, 90, "spin");
-        tesseract.wheels.walkCount(-0.75f, 10.0f, "standard");
-        tesseract.wheels.walkCount(-0.5f, 90, "spin");
-        tesseract.wheels.walkCount(0.75f, 15.0f, "standard");
+        tesseract.wheels.walkCount(0.5, 90, "spin");
+        tesseract.wheels.walkCount(-0.75, 10.0f, "standard");
+        tesseract.wheels.walkCount(-0.5, 90, "spin");
+        tesseract.wheels.walkCount(0.75, 15.0f, "standard");
     }
 
     private void initAr() {
@@ -121,7 +122,7 @@ public class HydraAutonomous extends LinearOpMode {
             }
         } while (isEndOfRecognition(walkType, recognitionTimer.time()));
 
-        tesseract.wheels.walkCount(0.75f, encoderCount, walkType);
+        tesseract.wheels.walkCount(0.75, encoderCount, walkType);
         tesseract.arms.crServoCollect.setPower(1); // Turn on the collect servo motor
         tesseract.arms.moveOnBy(5, "collect_slide");
         tesseract.arms.moveOnBy(-5, "collect_slide");
@@ -157,7 +158,7 @@ public class HydraAutonomous extends LinearOpMode {
                 }
             }
         } while (isEndOfRecognition(imageTarget, recognitionTimer.time()));
-        tesseract.wheels.walkCount(0.75f, encoderCount, walkType);
+        tesseract.wheels.walkCount(0.75, encoderCount, walkType);
     }
 
     private boolean isEndOfRecognition (String objectRA, double time) {
@@ -170,7 +171,7 @@ public class HydraAutonomous extends LinearOpMode {
     }
 
     private void evictionOfMark() {
-        tesseract.wheels.walkCount(0.75f, 5, "spin");
+        tesseract.wheels.walkCount(0.75, 5, "spin");
     }
 
 }
