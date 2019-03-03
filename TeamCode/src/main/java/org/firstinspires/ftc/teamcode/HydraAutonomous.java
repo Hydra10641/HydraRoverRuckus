@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.AR.ObjectReco;
 import org.firstinspires.ftc.teamcode.AR.VuforiaImageTarget;
 
-@Autonomous
+@Autonomous  (name = "HydraAutonomous")
 
 public class HydraAutonomous extends LinearOpMode {
     private Robot tesseract;
