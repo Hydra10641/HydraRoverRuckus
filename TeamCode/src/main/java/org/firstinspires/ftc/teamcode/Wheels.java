@@ -25,7 +25,9 @@ public class Wheels {
         // This method will stop all the locomotion motors and reset their encoders
         setMotorsPower(0, 0);
         leftWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftWheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightWheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
     public void setMotorsPower(double leftPower, double rightPower) {
         // This method is responsible to energize the motors
