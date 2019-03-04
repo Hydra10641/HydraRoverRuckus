@@ -6,13 +6,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.AR.ObjectReco;
 import org.firstinspires.ftc.teamcode.AR.VuforiaImageTarget;
-
-@Autonomous (name = "OpModeTeste")
 
 public class OpModeTeste extends LinearOpMode {
     Robot tesseract;
@@ -28,6 +25,23 @@ public class OpModeTeste extends LinearOpMode {
 
     private float recognitionTime = 10;
 
+
+    @Override
+    public void runOpMode(){
+        float wheelDiameter = 10.0f;
+        float gearRatio = 1.0f;
+        float distanceBetweenWheels = 35.0f;
+
+        tesseract = new Robot(hardwareMap.get(DcMotor.class, "leftWheel"),
+                hardwareMap.get(DcMotor.class, "rightWheel"),
+                hardwareMap.get(CRServo.class, "crServoCollect"),
+                hardwareMap.get(Servo.class, "servoCollectWrist"),
+                hardwareMap.get(Servo.class, "servoDepositWrist"),
+                hardwareMap.get(DcMotor.class, "motorCollectSlide"),
+                hardwareMap.get(DcMotor.class, "motorDepositSlide"),
+                hardwareMap.get(DistanceSensor.class, "distanceSensor"),
+                wheelDiameter, gearRatio, distanceBetweenWheels);
+    }
 
     public void testVuforia() {
         vuforia.activate();
@@ -111,23 +125,5 @@ public class OpModeTeste extends LinearOpMode {
 
     public void movingServos() {
         tesseract.arms.crServoCollect.setPower(1);
-    }
-
-
-    @Override
-    public void runOpMode(){
-        float wheelDiameter = 10.0f;
-        float gearRatio = 1.0f;
-        float distanceBetweenWheels = 35.0f;
-
-        tesseract = new Robot(hardwareMap.get(DcMotor.class, "leftWheel"),
-                hardwareMap.get(DcMotor.class, "rightWheel"),
-                hardwareMap.get(CRServo.class, "crServoCollect"),
-                hardwareMap.get(Servo.class, "servoCollectWrist"),
-                hardwareMap.get(Servo.class, "servoDepositWrist"),
-                hardwareMap.get(DcMotor.class, "motorCollectSlide"),
-                hardwareMap.get(DcMotor.class, "motorDepositSlide"),
-                hardwareMap.get(DistanceSensor.class, "distanceSensor"),
-                wheelDiameter, gearRatio, distanceBetweenWheels);
     }
 }

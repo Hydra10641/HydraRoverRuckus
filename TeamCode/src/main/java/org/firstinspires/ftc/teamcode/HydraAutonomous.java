@@ -28,6 +28,42 @@ public class HydraAutonomous extends LinearOpMode {
 
     private float recognitionTime = 10;
 
+    @Override
+    public void runOpMode() throws InterruptedException {
+        /* Here we declare the devices of our robot (servos, motors and sensors)
+         * and the Vuforia's localizer.
+         * You can choose between the Omni locomotion system (Omni)
+         * Or the locomotion system with two traction engines (Wheels)
+         */
+        float wheelDiameter = 10.0f;
+        float gearRatio = 1.0f;
+        float distanceBetweenWheels = 35.0f;
+
+        tesseract = new Robot(hardwareMap.get(DcMotor.class, "leftWheel"),
+                                hardwareMap.get(DcMotor.class, "rightWheel"),
+                                hardwareMap.get(CRServo.class, "crServoCollect"),
+                                hardwareMap.get(Servo.class, "servoCollectWrist"),
+                                hardwareMap.get(Servo.class, "servoDepositWrist"),
+                                hardwareMap.get(DcMotor.class, "motorCollectSlide"),
+                                hardwareMap.get(DcMotor.class, "motorDepositSlide"),
+                                hardwareMap.get(DistanceSensor.class, "distanceSensor"),
+                                wheelDiameter, gearRatio, distanceBetweenWheels);
+
+        // wheels.leftWheel.setPower((double) encoderConverter.centimeter(20.f));
+
+        // Wait for the game to start (driver presses PLAY)
+        waitForStart();
+
+        dowLander();
+        removeHookLander();
+
+        initAr();
+
+        pushMineral();
+        areaRecognition();
+
+    }
+
     private void dowLander() {
         tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         tesseract.arms.motorDepositSlide.setPower(0.1);
@@ -138,39 +174,4 @@ public class HydraAutonomous extends LinearOpMode {
         tesseract.wheels.walkCount(0.75, 5, "spin");
     }
 
-    @Override
-    public void runOpMode() throws InterruptedException {
-        /* Here we declare the devices of our robot (servos, motors and sensors)
-         * and the Vuforia's localizer.
-         * You can choose between the Omni locomotion system (Omni)
-         * Or the locomotion system with two traction engines (Wheels)
-         */
-        float wheelDiameter = 10.0f;
-        float gearRatio = 1.0f;
-        float distanceBetweenWheels = 35.0f;
-
-        tesseract = new Robot(hardwareMap.get(DcMotor.class, "leftWheel"),
-                hardwareMap.get(DcMotor.class, "rightWheel"),
-                hardwareMap.get(CRServo.class, "crServoCollect"),
-                hardwareMap.get(Servo.class, "servoCollectWrist"),
-                hardwareMap.get(Servo.class, "servoDepositWrist"),
-                hardwareMap.get(DcMotor.class, "motorCollectSlide"),
-                hardwareMap.get(DcMotor.class, "motorDepositSlide"),
-                hardwareMap.get(DistanceSensor.class, "distanceSensor"),
-                wheelDiameter, gearRatio, distanceBetweenWheels);
-
-        // wheels.leftWheel.setPower((double) encoderConverter.centimeter(20.f));
-
-        // Wait for the game to start (driver presses PLAY)
-        waitForStart();
-
-        dowLander();
-        removeHookLander();
-
-        initAr();
-
-        pushMineral();
-        areaRecognition();
-
-    }
 }
