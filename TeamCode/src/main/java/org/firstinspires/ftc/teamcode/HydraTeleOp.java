@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -16,10 +17,10 @@ public class HydraTeleOp extends LinearOpMode {
     float speed = 0;
     float collectExpansion = 0;
     float depositExpansion = 0;
-    float increment = 0.01f;
+    float increment = 0.1f;
 
-    double turn = gamepad1.left_stick_x;
-    double drive = -gamepad1.left_stick_y;
+    double turn;
+    double drive;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -45,22 +46,40 @@ public class HydraTeleOp extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
+        //runtime.reset();
 
         tesseract.arms.crServoCollect.setPower(1); // Turn on the collect servo motor
+        tesseract.wheels.leftWheel.setDirection(DcMotorSimple.Direction.REVERSE);
+        tesseract.wheels.rightWheel.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        tesseract.arms.motorCollectSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()){
 
-            //WHEELS MOVEMENT CONTROL (STICK)
-            turn = gamepad1.left_stick_x;
-            drive = -gamepad1.left_stick_y;
+            //Locomotion movement system
 
-            wheelsSpeedButtons();
+            setWheelsSpeed();
             speed = Range.clip(speed, 0, 1);
-            wheelsMovimentControls();
-            //WHEELS MOVEMENT IMPLEMENT (DPAD AND STICK)
-            tesseract.wheels.setMotorsPower( drive + turn, drive - turn);
-            wheelsMovimentControlsImplement();
+            if(gamepad1.left_stick_x != 0.0 || gamepad1.left_stick_y != 0.0){
+               turn = gamepad1.left_stick_x;
+               drive = -gamepad1.left_stick_y;
+               tesseract.wheels.setMotorsPower(drive + turn, drive - turn);
+            } else if (gamepad1.dpad_up || gamepad1.dpad_down || gamepad1.dpad_left || gamepad1.dpad_right){
+               moveByDpad();
+               tesseract.wheels.setMotorsPower(drive + turn, drive - turn);
+            } else if (gamepad1.left_bumper || gamepad1.right_bumper ||
+                       gamepad1.left_trigger > 0.3f || gamepad1.right_trigger > 0.3f){
+               moveByTrigger();
+            } else {
+                tesseract.wheels.setMotorsPower(0, 0);
+            }
+            telemetry.addData("Stick position", -gamepad1.left_stick_y);
+            telemetry.update();
+
+            //Arms moviment system
             collectArmControls();
             depositArmsControls();
 
@@ -69,7 +88,7 @@ public class HydraTeleOp extends LinearOpMode {
         }
     }
 
-    private void wheelsSpeedButtons() {
+   private void setWheelsSpeed() {
         if (gamepad1.y == true){
             speed += increment;
         }
@@ -78,22 +97,26 @@ public class HydraTeleOp extends LinearOpMode {
         }
     }
 
-    private void wheelsMovimentControls() {
+    private void moveByDpad() {
         if (gamepad1.dpad_up == true){
             drive = speed;
+            turn = 0;
         }
         if (gamepad1.dpad_down == true){
             drive = -speed;
+            turn = 0;
         }
         if (gamepad1.dpad_left == true){
             turn = -speed;
+            drive = 0;
         }
         if (gamepad1.dpad_right == true){
             turn = speed;
+            drive = 0;
         }
     }
 
-    private void wheelsMovimentControlsImplement() {
+    private void moveByTrigger() {
         if (gamepad1.left_bumper == true){
             tesseract.wheels.leftWheel.setPower(speed);
         }
@@ -110,23 +133,28 @@ public class HydraTeleOp extends LinearOpMode {
 
     private void collectArmControls() {
         if (gamepad2.left_bumper == true || gamepad2.dpad_up == true){
-            collectExpansion -= increment;
+            collectExpansion = 0.5f;
         }
-        if (gamepad2.left_trigger >= 0.3f || gamepad2.dpad_down == true){
-            collectExpansion += increment;
+        else if (gamepad2.left_trigger >= 0.3f || gamepad2.dpad_down == true){
+            collectExpansion = -0.5f;
         }
-        collectExpansion = Range.clip(collectExpansion, 0,1);
+        else {
+            collectExpansion = 0;
+        }
         tesseract.arms.moveOnBy(collectExpansion, "collect_slide");
+
     }
 
     private void depositArmsControls() {
         if (gamepad2.right_bumper == true || gamepad2.y == true){
-            depositExpansion -= increment;
+            depositExpansion = 0.5f;
         }
-        if (gamepad2.right_trigger >= 0.3f || gamepad2.a == true){
-            depositExpansion += increment;
+        else if (gamepad2.right_trigger >= 0.3f || gamepad2.a == true){
+            depositExpansion = -0.5f;
         }
-        depositExpansion = Range.clip(depositExpansion, 0,1);
+        else {
+            depositExpansion = 0;
+        }
         tesseract.arms.moveOnBy(depositExpansion, "deposit_slide");
     }
 }
