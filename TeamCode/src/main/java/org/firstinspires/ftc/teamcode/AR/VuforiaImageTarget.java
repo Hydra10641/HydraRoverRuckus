@@ -100,7 +100,7 @@ public class VuforiaImageTarget {
 
     //Initializes our vuforia object through the webcam without a camera monitor.
     public VuforiaImageTarget(OpMode opMode) {
-        webcam = opMode.hardwareMap.get(WebcamName.class, "UVC");
+        webcam = opMode.hardwareMap.get(WebcamName.class, "camera");
         parameters = new VuforiaLocalizer.Parameters();
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
         parameters.cameraName = webcam;
