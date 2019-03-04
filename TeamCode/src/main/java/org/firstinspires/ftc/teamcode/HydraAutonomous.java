@@ -54,7 +54,7 @@ public class HydraAutonomous extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        dowLander();
+        downLander();
         removeHookLander();
 
         initAr();
@@ -62,12 +62,16 @@ public class HydraAutonomous extends LinearOpMode {
         pushMineral();
         areaRecognition();
 
+        idle();
     }
 
-    private void dowLander() {
+    private void downLander() {
         tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        tesseract.arms.motorDepositSlide.setPower(0.1);
+        tesseract.arms.motorDepositSlide.setPower(0.5);
         tesseract.arms.motorDepositSlide.setTargetPosition(1152);
+        while(tesseract.arms.motorDepositSlide.getCurrentPosition() < 1152){
+
+        }
     }
 
     private void removeHookLander() {

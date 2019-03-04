@@ -23,19 +23,19 @@ public class Arms {
     }
     /*Here we create one method that we will use to set the arms position.*/
 
-    public void moveOnBy(float speedOrPosition, String moveType){
+    public void moveOnBy(float position, String moveType){
         switch (moveType){
             case "collect_slide":
-                this.motorCollectSlide.setPower(speedOrPosition);
+                this.motorCollectSlide.setPower(position);
                 break;
             case "deposit_slide":
-                this.motorDepositSlide.setPower(speedOrPosition);
+                this.motorDepositSlide.setPower(position);
                 break;
             case "collect_wrist":
-                this.servoCollectWrist.setPosition(speedOrPosition);
+                this.servoCollectWrist.setPosition(position);
                 break;
             case "deposit_wrist":
-                this.servoDepositWrist.setPosition(speedOrPosition);
+                this.servoDepositWrist.setPosition(position);
                 break;
         }
 
