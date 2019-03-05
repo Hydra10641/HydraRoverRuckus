@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.AR.ObjectReco;
 import org.firstinspires.ftc.teamcode.AR.VuforiaImageTarget;
 
@@ -21,6 +22,8 @@ public class HydraAutonomous extends LinearOpMode {
 
     private ObjectReco.Position positionMineral;
     private String imageTarget;
+
+    private DistanceSensor sensorRange;
 
     private Telemetry.Item positionMineralLog;
     private Telemetry.Item imageTargetLog;
@@ -38,6 +41,8 @@ public class HydraAutonomous extends LinearOpMode {
         float wheelDiameter = 10.0f;
         float gearRatio = 1.0f;
         float distanceBetweenWheels = 35.0f;
+        // you can use this as a regular DistanceSensor.
+        sensorRange = hardwareMap.get(DistanceSensor.class, "sensor_range");
 
         tesseract = new Robot(hardwareMap.get(DcMotor.class, "leftWheel"),
                                 hardwareMap.get(DcMotor.class, "rightWheel"),
@@ -61,6 +66,8 @@ public class HydraAutonomous extends LinearOpMode {
 
         pushMineral();
         areaRecognition();
+
+        evictionOfMark();
 
         idle();
     }
@@ -175,7 +182,16 @@ public class HydraAutonomous extends LinearOpMode {
     }
 
     private void evictionOfMark() {
-        tesseract.wheels.walkCount(0.75, 5, "spin");
+        float encoderCount = 5;
+        for (float count = 0; count < encoderCount; count += 0.2) {
+            if (getDistanceInCm() > 10) {
+                tesseract.wheels.walkCount(0.75, count, "spin");
+            }
+        }
+    }
+
+    private double getDistanceInCm() {
+        return sensorRange.getDistance(DistanceUnit.CM);
     }
 
 }
