@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -23,7 +23,7 @@ public class HydraAutonomous extends LinearOpMode {
     private ObjectReco.Position positionMineral;
     private String imageTarget;
 
-    private DistanceSensor sensorRange;
+    private LynxI2cColorRangeSensor sensorRange;
 
     private Telemetry.Item positionMineralLog;
     private Telemetry.Item imageTargetLog;
@@ -41,8 +41,6 @@ public class HydraAutonomous extends LinearOpMode {
         float wheelDiameter = 10.0f;
         float gearRatio = 1.0f;
         float distanceBetweenWheels = 35.0f;
-        // you can use this as a regular DistanceSensor.
-        sensorRange = hardwareMap.get(DistanceSensor.class, "sensor_range");
 
         tesseract = new Robot(hardwareMap.get(DcMotor.class, "leftWheel"),
                                 hardwareMap.get(DcMotor.class, "rightWheel"),
@@ -51,7 +49,7 @@ public class HydraAutonomous extends LinearOpMode {
                                 hardwareMap.get(Servo.class, "servoDepositWrist"),
                                 hardwareMap.get(DcMotor.class, "motorCollectSlide"),
                                 hardwareMap.get(DcMotor.class, "motorDepositSlide"),
-                                hardwareMap.get(DistanceSensor.class, "distanceSensor"),
+                                hardwareMap.get(LynxI2cColorRangeSensor.class, "distanceSensor"),
                                 wheelDiameter, gearRatio, distanceBetweenWheels);
 
         // wheels.leftWheel.setPower((double) encoderConverter.centimeter(20.f));
