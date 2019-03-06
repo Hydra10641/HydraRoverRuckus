@@ -8,6 +8,7 @@ import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.AR.ObjectReco;
@@ -23,11 +24,8 @@ public class HydraAutonomous extends LinearOpMode {
     private ObjectReco.Position positionMineral;
     private String imageTarget;
 
-    private LynxI2cColorRangeSensor sensorRange;
-
     private Telemetry.Item positionMineralLog;
     private Telemetry.Item imageTargetLog;
-    private Telemetry telemetry;
 
     private float recognitionTime = 10;
 
@@ -108,7 +106,11 @@ public class HydraAutonomous extends LinearOpMode {
         recognitionTimer.reset();
         do {
             positionMineral = objectReco.getPos();
-            telemtryItemUpdate(positionMineralLog, positionMineral);
+            if (positionMineral != null) {
+                telemtryItemUpdate(positionMineralLog, positionMineral);
+            } else {
+                telemtryItemUpdate(positionMineralLog, "Mineral nulo");
+            }
 
             switch (positionMineral) {
                 case UNKNOWN:
@@ -171,11 +173,11 @@ public class HydraAutonomous extends LinearOpMode {
     }
 
     private boolean isEndOfRecognition (String objectRA, double time) {
-        return (objectRA.isEmpty() || time > recognitionTime);
+        return (objectRA == null || time > recognitionTime);
     }
 
     private void telemtryItemUpdate(Telemetry.Item item, Object data) {
-        item.setValue(data);
+        item = telemetry.addData("OI", data);
         telemetry.update();
     }
 

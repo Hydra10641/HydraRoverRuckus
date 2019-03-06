@@ -85,7 +85,7 @@ public class HydraTeleOp extends LinearOpMode {
             collectArmControls();
             depositArmsControls();
 
-            tesseract.arms.moveOnBy(Range.clip(-gamepad2.left_stick_y, 0, 1), "collect_wrist");
+            tesseract.arms.moveOnBy(Range.clip(-gamepad2.left_stick_y, -1, 1), "collect_wrist");
             tesseract.arms.moveOnBy(Range.clip(-gamepad2.right_stick_y, 0, 1), "deposit_wrist");
         }
     }
