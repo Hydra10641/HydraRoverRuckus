@@ -80,7 +80,18 @@ public class Wheels {
 
     public void walkCount (double power, float encoderCount, String walkType ){
         walkOnBy(power, walkType);
-        waitEncoderCount(encoderConverter.centimeter(encoderCount));
+        switch(walkType) {
+            case "standard":
+                waitEncoderCount(encoderConverter.centimeter(encoderCount));
+                break;
+            case "spin":
+                waitEncoderCount(encoderConverter.centimeter((int)encoderCount));
+                break;
+            case "spinSideLeft":
+            case "spinSideRight":
+                waitEncoderCount(encoderConverter.centimeterEx((int)encoderCount));
+                break;
+        }
         resetMotorAndEncoder();
     }
 
