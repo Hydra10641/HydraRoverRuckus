@@ -24,7 +24,7 @@ public class HydraAutonomous extends LinearOpMode {
     private ObjectReco.Position positionMineral;
     private String imageTarget;
 
-    private float recognitionTime = 10;
+    private double recognitionTime = 3;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -59,8 +59,6 @@ public class HydraAutonomous extends LinearOpMode {
 
         pushMineral();
         areaRecognition();
-
-        evictionOfMark();
 
         idle();
     }
@@ -105,8 +103,6 @@ public class HydraAutonomous extends LinearOpMode {
             positionMineral = objectReco.getPos();
             if (positionMineral != null) {
                 telemtryItemUpdate("Mineral", positionMineral);
-            } else {
-                telemtryItemUpdate("Mineral", "Mineral nulo");
             }
 
             switch (positionMineral) {
@@ -114,7 +110,7 @@ public class HydraAutonomous extends LinearOpMode {
                     walkType = null;
                     break;
                 case CENTER:
-                    walkType = "spin";
+                    walkType = "standard";
                     encoderCount = 0;
                     break;
 
@@ -130,7 +126,9 @@ public class HydraAutonomous extends LinearOpMode {
             }
         } while (isEndOfRecognition(walkType, recognitionTimer.time()));
 
-        tesseract.wheels.walkCount(0.75, encoderCount, walkType);
+        if (walkType != null) {
+            tesseract.wheels.walkCount(0.75, encoderCount, walkType);
+        }
         tesseract.arms.crServoCollect.setPower(1); // Turn on the collect servo motor
         tesseract.arms.moveOnBy(5, "collect_slide");
         tesseract.arms.moveOnBy(-5, "collect_slide");
@@ -166,11 +164,14 @@ public class HydraAutonomous extends LinearOpMode {
                 }
             }
         } while (isEndOfRecognition(imageTarget, recognitionTimer.time()));
-        tesseract.wheels.walkCount(0.75, encoderCount, walkType);
+        if (walkType != null) {
+            tesseract.wheels.walkCount(0.75, encoderCount, walkType);
+            evictionOfMark();
+        }
     }
 
     private boolean isEndOfRecognition (String objectRA, double time) {
-        return (objectRA == null || time > recognitionTime);
+        return (objectRA != null || time < recognitionTime);
     }
 
     private void telemtryItemUpdate(String caption, Object data) {
