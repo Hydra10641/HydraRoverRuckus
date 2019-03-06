@@ -29,7 +29,6 @@ public class EncoderConverter {
      * rotation = distance desired * distance between wheels (diameter) * PI * gear ratio.
      */
 
-
     public int centimeter (float cmDistance){
         float convertedValue, rotation;
         rotation = cmDistance/(float)(this.wheelDiameter * this.gearRatio * Math.PI);
@@ -58,8 +57,9 @@ public class EncoderConverter {
      */
 
     public int centimeter (int angle){
-        float convertedValue, rotation;
-        rotation = (float)(angle/360 *(this.distanceBetweenWheels * this.gearRatio * Math.PI));
+        float convertedValue, arc, rotation;
+        arc = (float)(angle/360 *(this.distanceBetweenWheels * this.gearRatio * Math.PI));
+        rotation = arc/wheelDiameter;
         convertedValue = rotation * 288;
         return ((int) convertedValue);
     }
@@ -74,8 +74,4 @@ public class EncoderConverter {
         return (centimeter(angle) * 2);
     }
 
-
-    /*public int getCountsToCm() {
-        return countsToCm;
-    }*/
 }

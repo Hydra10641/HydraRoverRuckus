@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -56,10 +55,9 @@ public class HydraAutonomous extends LinearOpMode {
 
         initAr();
 
-        pushMineral();
+        captureMineral();
         areaRecognition();
-        tesseract.wheels.setMotorsPower(0, 0);
-
+        depositOfObjects();
         idle();
     }
 
@@ -74,10 +72,10 @@ public class HydraAutonomous extends LinearOpMode {
     }
 
     private void removeHookLander() {
-        tesseract.wheels.walkCount(0.5, 90, "spin");
-        tesseract.wheels.walkCount(-0.75, 10.0f, "standard");
-        tesseract.wheels.walkCount(-0.5, 90, "spin");
-        tesseract.wheels.walkCount(0.75, 15.0f, "standard");
+        tesseract.wheels.walkCount(0.25, 90, "spin");
+        tesseract.wheels.walkCount(-0.25, 10.0f, "standard");
+        tesseract.wheels.walkCount(-0.25, 90, "spin");
+        tesseract.wheels.walkCount(0.25, 15.0f, "standard");
     }
 
     private void initAr() {
@@ -85,10 +83,16 @@ public class HydraAutonomous extends LinearOpMode {
         objectReco = new ObjectReco(this, vuforia.getLocalizer());
     }
 
-    private void pushMineral() {
+    private void captureMineral() {
         mineralRecognition();
-        // Valor aleatório
-        tesseract.arms.moveOnBy(5,"collect_slide");
+        // Turn on the collect servo motor
+        tesseract.arms.crServoCollect.setPower(0.79);
+        tesseract.arms.motorCollectSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        tesseract.arms.motorCollectSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        tesseract.arms.moveOnBy(0.5f, "collect_slide");
+        tesseract.arms.motorCollectSlide.setTargetPosition(3000);
+        tesseract.arms.moveOnBy(-0.5f, "collect_slide");
+        tesseract.arms.motorCollectSlide.setTargetPosition(0);
     }
 
     private void mineralRecognition() {
@@ -130,9 +134,6 @@ public class HydraAutonomous extends LinearOpMode {
         if (walkType != null) {
             tesseract.wheels.walkCount(0.75, encoderCount, walkType);
         }
-        tesseract.arms.crServoCollect.setPower(0.79); // Turn on the collect servo motor
-        tesseract.arms.moveOnBy(5, "collect_slide");
-        tesseract.arms.moveOnBy(-5, "collect_slide");
     }
 
     private void areaRecognition() {
@@ -168,7 +169,6 @@ public class HydraAutonomous extends LinearOpMode {
         telemtryUpdate("walkType", walkType);
         if (walkType != null) {
             tesseract.wheels.walkCount(0.75, encoderCount, walkType);
-            evictionOfMark();
         }
     }
 
@@ -181,12 +181,16 @@ public class HydraAutonomous extends LinearOpMode {
         telemetry.update();
     }
 
-    private void evictionOfMark() {
+    private void depositOfObjects() {
         telemtryUpdate("Distancia", getDistanceInCm());
         while (getDistanceInCm() > 10){
             telemtryUpdate("Distancia", getDistanceInCm());
             tesseract.wheels.walkOnBy(0.75, "standard");
         }
+        tesseract.wheels.setMotorsPower(0, 0);
+        tesseract.arms.crServoCollect.setPower(-1);
+        sleep(2000);
+        tesseract.arms.crServoCollect.setPower(0);
     }
 
     private double getDistanceInCm() {
