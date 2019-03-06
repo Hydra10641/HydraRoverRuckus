@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -39,10 +40,8 @@ public class HydraTeleOp extends LinearOpMode {
                                 hardwareMap.get(Servo.class, "servoDepositWrist"),
                                 hardwareMap.get(DcMotor.class, "motorCollectSlide"),
                                 hardwareMap.get(DcMotor.class, "motorDepositSlide"),
-                                hardwareMap.get(DistanceSensor.class, "distanceSensor"),
+                                hardwareMap.get(LynxI2cColorRangeSensor.class, "distanceSensor"),
                                 wheelDiameter, gearRatio, distanceBetweenWheels);
-
-        // wheels.leftWheel.setPower((double) encoderConverter.centimeter(20.f));
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -57,9 +56,6 @@ public class HydraTeleOp extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()){
-            // Turn on the collect servo motor
-
-            tesseract.arms.crServoCollect.setPower(0.79);
 
             //Locomotion movement system
 
@@ -84,6 +80,7 @@ public class HydraTeleOp extends LinearOpMode {
             //Arms moviment system
             collectArmControls();
             depositArmsControls();
+            crServoColectControls();
 
             tesseract.arms.moveOnBy(Range.clip(-gamepad2.left_stick_y, -1, 1), "collect_wrist");
             tesseract.arms.moveOnBy(Range.clip(-gamepad2.right_stick_y, 0, 1), "deposit_wrist");
@@ -158,5 +155,15 @@ public class HydraTeleOp extends LinearOpMode {
             depositExpansion = 0;
         }
         tesseract.arms.moveOnBy(depositExpansion, "deposit_slide");
+    }
+
+    private void crServoColectControls() {
+        if(gamepad2.x == true){
+            tesseract.arms.crServoCollect.setPower(0.79);
+        }
+        if(gamepad2.b == true){
+            tesseract.arms.crServoCollect.setPower(-0.79);
+
+        }
     }
 }

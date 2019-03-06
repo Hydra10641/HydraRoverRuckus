@@ -10,7 +10,7 @@ public class Robot {
     public Wheels wheels;
     public Omni omni;
     public Arms arms;
-    public DistanceSensor  distanceSensor;
+    public LynxI2cColorRangeSensor  distanceSensor;
 
     //Robot with normal wheels
 
@@ -21,7 +21,7 @@ public class Robot {
            Servo servoDepositWrist,
            DcMotor motorCollectSlide,
            DcMotor motorDepositSlide,
-           DistanceSensor  distanceSensor,
+           LynxI2cColorRangeSensor  distanceSensor,
            float wheelDiameter,
            float gearRatio,
            float distanceBetweenWheels) {
@@ -39,7 +39,6 @@ public class Robot {
                              motorDepositSlide);
 
         this.distanceSensor = distanceSensor;
-
     }
 
     //Robot with omnidirectional wheels
@@ -53,7 +52,7 @@ public class Robot {
            Servo servoDepositWrist,
            DcMotor motorCollectSlide,
            DcMotor motorDepositSlide,
-           DistanceSensor distanceSensor,
+           LynxI2cColorRangeSensor  distanceSensor,
            float wheelDiameter,
            float gearRatio,
            float distanceBetweenWheels) {

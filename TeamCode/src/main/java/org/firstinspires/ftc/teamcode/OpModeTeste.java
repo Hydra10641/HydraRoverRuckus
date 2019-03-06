@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -39,7 +40,7 @@ public class OpModeTeste extends LinearOpMode {
                 hardwareMap.get(Servo.class, "servoDepositWrist"),
                 hardwareMap.get(DcMotor.class, "motorCollectSlide"),
                 hardwareMap.get(DcMotor.class, "motorDepositSlide"),
-                hardwareMap.get(DistanceSensor.class, "distanceSensor"),
+                hardwareMap.get(LynxI2cColorRangeSensor.class, "distanceSensor"),
                 wheelDiameter, gearRatio, distanceBetweenWheels);
     }
 

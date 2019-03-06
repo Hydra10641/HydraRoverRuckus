@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -26,7 +27,7 @@ public class HydraOpMode extends LinearOpMode {
                 hardwareMap.get(Servo.class, "servoDepositWrist"),
                 hardwareMap.get(DcMotor.class, "motorCollectSlide"),
                 hardwareMap.get(DcMotor.class, "motorDepositSlide"),
-                hardwareMap.get(DistanceSensor.class, "distanceSensor"),
+                hardwareMap.get(LynxI2cColorRangeSensor.class, "distanceSensor"),
                 wheelDiameter, gearRatio, distanceBetweenWheels);
 
         // wheels.leftWheel.setPower((double) encoderConverter.centimeter(20.f));
