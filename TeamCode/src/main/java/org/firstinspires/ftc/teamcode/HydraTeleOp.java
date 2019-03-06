@@ -59,7 +59,7 @@ public class HydraTeleOp extends LinearOpMode {
         while (opModeIsActive()){
             // Turn on the collect servo motor
 
-            tesseract.arms.crServoCollect.setPower(1);
+            tesseract.arms.crServoCollect.setPower(0.79);
 
             //Locomotion movement system
 
