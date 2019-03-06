@@ -48,7 +48,6 @@ public class HydraTeleOp extends LinearOpMode {
         waitForStart();
         //runtime.reset();
 
-        tesseract.arms.crServoCollect.setPower(1); // Turn on the collect servo motor
         tesseract.wheels.leftWheel.setDirection(DcMotorSimple.Direction.REVERSE);
         tesseract.wheels.rightWheel.setDirection(DcMotorSimple.Direction.FORWARD);
 
@@ -58,6 +57,9 @@ public class HydraTeleOp extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()){
+            // Turn on the collect servo motor
+
+            tesseract.arms.crServoCollect.setPower(1);
 
             //Locomotion movement system
 

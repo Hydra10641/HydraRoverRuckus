@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -9,7 +10,7 @@ public class Robot {
     public Wheels wheels;
     public Omni omni;
     public Arms arms;
-    public DistanceSensor distanceSensor;
+    public DistanceSensor  distanceSensor;
 
     //Robot with normal wheels
 
@@ -20,7 +21,7 @@ public class Robot {
            Servo servoDepositWrist,
            DcMotor motorCollectSlide,
            DcMotor motorDepositSlide,
-           DistanceSensor distanceSensor,
+           DistanceSensor  distanceSensor,
            float wheelDiameter,
            float gearRatio,
            float distanceBetweenWheels) {

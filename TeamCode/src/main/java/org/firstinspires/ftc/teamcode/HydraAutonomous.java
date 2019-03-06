@@ -87,7 +87,7 @@ public class HydraAutonomous extends LinearOpMode {
     }
 
     private void initAr() {
-        vuforia = new VuforiaImageTarget(this);
+        vuforia = new VuforiaImageTarget();
         objectReco = new ObjectReco(this, vuforia.getLocalizer());
     }
 
@@ -180,16 +180,14 @@ public class HydraAutonomous extends LinearOpMode {
     }
 
     private void evictionOfMark() {
-        float encoderCount = 5;
-        for (float count = 0; count < encoderCount; count += 0.2) {
-            if (getDistanceInCm() > 10) {
-                tesseract.wheels.walkCount(0.75, count, "spin");
-            }
+        while (getDistanceInCm() > 10){
+            tesseract.wheels.walkOnBy(0.75, "standard");
         }
+        tesseract.wheels.setMotorsPower(0, 0);
     }
 
     private double getDistanceInCm() {
-        return sensorRange.getDistance(DistanceUnit.CM);
+        return tesseract.distanceSensor.getDistance(DistanceUnit.CM);
     }
 
 }
