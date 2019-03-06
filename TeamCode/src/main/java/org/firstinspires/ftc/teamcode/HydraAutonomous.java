@@ -24,9 +24,6 @@ public class HydraAutonomous extends LinearOpMode {
     private ObjectReco.Position positionMineral;
     private String imageTarget;
 
-    private Telemetry.Item positionMineralLog;
-    private Telemetry.Item imageTargetLog;
-
     private float recognitionTime = 10;
 
     @Override
@@ -73,7 +70,7 @@ public class HydraAutonomous extends LinearOpMode {
         tesseract.arms.motorDepositSlide.setPower(0.5);
         tesseract.arms.motorDepositSlide.setTargetPosition(1152);
         while(tesseract.arms.motorDepositSlide.getCurrentPosition() < 1152){
-
+            telemtryItemUpdate("Posição Motor", tesseract.arms.motorDepositSlide.getCurrentPosition());
         }
     }
 
@@ -107,9 +104,9 @@ public class HydraAutonomous extends LinearOpMode {
         do {
             positionMineral = objectReco.getPos();
             if (positionMineral != null) {
-                telemtryItemUpdate(positionMineralLog, positionMineral);
+                telemtryItemUpdate("Mineral", positionMineral);
             } else {
-                telemtryItemUpdate(positionMineralLog, "Mineral nulo");
+                telemtryItemUpdate("Mineral", "Mineral nulo");
             }
 
             switch (positionMineral) {
@@ -149,12 +146,12 @@ public class HydraAutonomous extends LinearOpMode {
         recognitionTimer.reset();
         do {
             if (!vuforia.isVisible()) {
-                telemtryItemUpdate(imageTargetLog, "Não há imagem a vista");
+                telemtryItemUpdate("Image target:", "Não há imagem a vista");
                 vuforia.getVuMark();
             }
             else {
                 imageTarget = vuforia.getVuMarkName();
-                telemtryItemUpdate(imageTargetLog, imageTarget);
+                telemtryItemUpdate("Image target:", imageTarget);
 
                 encoderCount = 20;
                 switch (imageTarget) {
@@ -176,8 +173,8 @@ public class HydraAutonomous extends LinearOpMode {
         return (objectRA == null || time > recognitionTime);
     }
 
-    private void telemtryItemUpdate(Telemetry.Item item, Object data) {
-        item = telemetry.addData("OI", data);
+    private void telemtryItemUpdate(String caption, Object data) {
+        telemetry.addData(caption, data);
         telemetry.update();
     }
 
