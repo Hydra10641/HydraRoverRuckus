@@ -5,11 +5,10 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.Func;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.AR.ObjectReco;
 import org.firstinspires.ftc.teamcode.AR.VuforiaImageTarget;
@@ -35,7 +34,7 @@ public class HydraAutonomous extends LinearOpMode {
          */
         float wheelDiameter = 10.0f;
         float gearRatio = 1.0f;
-        float distanceBetweenWheels = 35.0f;
+        float distanceBetweenWheels = 34.5f;
 
         tesseract = new Robot(hardwareMap.get(DcMotor.class, "leftWheel"),
                                 hardwareMap.get(DcMotor.class, "rightWheel"),
@@ -59,16 +58,18 @@ public class HydraAutonomous extends LinearOpMode {
 
         pushMineral();
         areaRecognition();
+        tesseract.wheels.setMotorsPower(0, 0);
 
         idle();
     }
 
     private void downLander() {
+        tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         tesseract.arms.motorDepositSlide.setPower(0.5);
         tesseract.arms.motorDepositSlide.setTargetPosition(1152);
         while(tesseract.arms.motorDepositSlide.getCurrentPosition() < 1152){
-            telemtryItemUpdate("Posição Motor", tesseract.arms.motorDepositSlide.getCurrentPosition());
+            telemtryUpdate("Posição Motor", tesseract.arms.motorDepositSlide.getCurrentPosition());
         }
     }
 
@@ -102,7 +103,7 @@ public class HydraAutonomous extends LinearOpMode {
         do {
             positionMineral = objectReco.getPos();
             if (positionMineral != null) {
-                telemtryItemUpdate("Mineral", positionMineral);
+                telemtryUpdate("Mineral", positionMineral);
             }
 
             switch (positionMineral) {
@@ -129,7 +130,7 @@ public class HydraAutonomous extends LinearOpMode {
         if (walkType != null) {
             tesseract.wheels.walkCount(0.75, encoderCount, walkType);
         }
-        tesseract.arms.crServoCollect.setPower(1); // Turn on the collect servo motor
+        tesseract.arms.crServoCollect.setPower(0.79); // Turn on the collect servo motor
         tesseract.arms.moveOnBy(5, "collect_slide");
         tesseract.arms.moveOnBy(-5, "collect_slide");
     }
@@ -138,20 +139,20 @@ public class HydraAutonomous extends LinearOpMode {
         vuforia.activate();
 
         String walkType = null;
-        float encoderCount = 0;
+        int encoderCount = 0;
 
         ElapsedTime recognitionTimer = new ElapsedTime();
         recognitionTimer.reset();
         do {
             if (!vuforia.isVisible()) {
-                telemtryItemUpdate("Image target:", "Não há imagem a vista");
+                telemtryUpdate("Image target:", "Não há imagem a vista");
                 vuforia.getVuMark();
             }
             else {
                 imageTarget = vuforia.getVuMarkName();
-                telemtryItemUpdate("Image target:", imageTarget);
+                telemtryUpdate("Image target:", imageTarget);
 
-                encoderCount = 20;
+                encoderCount = 90;
                 switch (imageTarget) {
                     case "Blue-Rover":
                     case "Red-Footprint":
@@ -163,7 +164,8 @@ public class HydraAutonomous extends LinearOpMode {
                         break;
                 }
             }
-        } while (isEndOfRecognition(imageTarget, recognitionTimer.time()));
+        } while (isEndOfRecognition(walkType, recognitionTimer.time()));
+        telemtryUpdate("walkType", walkType);
         if (walkType != null) {
             tesseract.wheels.walkCount(0.75, encoderCount, walkType);
             evictionOfMark();
@@ -171,19 +173,20 @@ public class HydraAutonomous extends LinearOpMode {
     }
 
     private boolean isEndOfRecognition (String objectRA, double time) {
-        return (objectRA != null || time < recognitionTime);
+        return (objectRA == null && time < recognitionTime);
     }
 
-    private void telemtryItemUpdate(String caption, Object data) {
+    private void telemtryUpdate(String caption, Object data) {
         telemetry.addData(caption, data);
         telemetry.update();
     }
 
     private void evictionOfMark() {
+        telemtryUpdate("Distancia", getDistanceInCm());
         while (getDistanceInCm() > 10){
+            telemtryUpdate("Distancia", getDistanceInCm());
             tesseract.wheels.walkOnBy(0.75, "standard");
         }
-        tesseract.wheels.setMotorsPower(0, 0);
     }
 
     private double getDistanceInCm() {
