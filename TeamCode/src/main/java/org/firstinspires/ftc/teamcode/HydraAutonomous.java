@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.AR.VuforiaImageTarget;
 @Autonomous  (name = "HydraAutonomous")
 
 public class HydraAutonomous extends LinearOpMode {
+    // Declaring attributes
     private Robot tesseract;
     private VuforiaImageTarget vuforia;
     private ObjectReco objectReco;
@@ -22,7 +23,8 @@ public class HydraAutonomous extends LinearOpMode {
     private ObjectReco.Position positionMineral;
     private String imageTarget;
 
-    private double recognitionTime = 3;
+    private double recognitionTime = 2;
+    private int imageSearchTurn = 135;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -45,18 +47,19 @@ public class HydraAutonomous extends LinearOpMode {
                                 hardwareMap.get(LynxI2cColorRangeSensor.class, "distanceSensor"),
                                 wheelDiameter, gearRatio, distanceBetweenWheels);
 
-        // wheels.leftWheel.setPower((double) encoderConverter.centimeter(20.f));
-
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+        // Landing
         downLander();
         removeHookLander();
-
+        // Starting augmented reality and collecting gold
         initAr();
-
         captureMineral();
+        // Identifying the position of the robot in the arena
+        searchImage();
         areaRecognition();
+        // Depositing the gold and the marker and ending the autonomous opmode
         depositOfObjects();
         idle();
     }
@@ -100,7 +103,7 @@ public class HydraAutonomous extends LinearOpMode {
         objectReco.sample();
 
         String walkType = null;
-        float encoderCount = 0;
+        int encoderCount = 0;
 
         ElapsedTime recognitionTimer = new ElapsedTime();
         recognitionTimer.reset();
@@ -122,11 +125,13 @@ public class HydraAutonomous extends LinearOpMode {
                 case LEFT:
                     walkType = "spinSideLeft";
                     encoderCount = 10;
+                    imageSearchTurn = imageSearchTurn - encoderCount;
                     break;
 
                 case RIGHT:
                     walkType = "spinSideRight";
                     encoderCount = 10;
+                    imageSearchTurn = imageSearchTurn + encoderCount;
                     break;
             }
         } while (isEndOfRecognition(walkType, recognitionTimer.time()));
@@ -134,6 +139,16 @@ public class HydraAutonomous extends LinearOpMode {
         if (walkType != null) {
             tesseract.wheels.walkCount(0.75, encoderCount, walkType);
         }
+    }
+
+    private void searchImage(){
+        tesseract.wheels.walkCount(0.4, -imageSearchTurn, "spin");
+        tesseract.wheels.walkCount(0.6, 30, "standard");
+        tesseract.wheels.walkCount(0.4, 90, "spin");
+        tesseract.wheels.walkOnBy(0.6, "standard");
+        while(getDistanceInCm() > 20){
+        }
+        tesseract.wheels.resetMotorAndEncoder();
     }
 
     private void areaRecognition() {
