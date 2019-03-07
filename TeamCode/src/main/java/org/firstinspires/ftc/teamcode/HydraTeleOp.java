@@ -89,9 +89,11 @@ public class HydraTeleOp extends LinearOpMode {
 
    private void setWheelsSpeed() {
         if (gamepad1.y == true){
+            while (gamepad1.y){}
             speed += increment;
         }
         if (gamepad1.a == true){
+            while (gamepad1.a){}
             speed -= increment;
         }
     }
