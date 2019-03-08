@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -15,6 +14,10 @@ import com.qualcomm.robotcore.util.Range;
 public class HydraTeleOp extends LinearOpMode {
     Robot tesseract;
 
+    int MAX_RANGE = 30000;
+
+    int encoderCollectSlide;
+    int encoderDepositSlide;
     float speed = 0;
     float collectExpansion = 0;
     float depositExpansion = 0;
@@ -50,7 +53,9 @@ public class HydraTeleOp extends LinearOpMode {
         tesseract.wheels.leftWheel.setDirection(DcMotorSimple.Direction.REVERSE);
         tesseract.wheels.rightWheel.setDirection(DcMotorSimple.Direction.FORWARD);
 
+        tesseract.arms.motorCollectSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         tesseract.arms.motorCollectSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
@@ -61,10 +66,13 @@ public class HydraTeleOp extends LinearOpMode {
 
             setWheelsSpeed();
             speed = Range.clip(speed, 0, 1);
+            encoderCollectSlide = tesseract.arms.motorCollectSlide.getCurrentPosition();
+            encoderDepositSlide = tesseract.arms.motorDepositSlide.getCurrentPosition();
+
             if(gamepad1.left_stick_x != 0.0 || gamepad1.left_stick_y != 0.0){
-               turn = gamepad1.left_stick_x;
-               drive = -gamepad1.left_stick_y;
-               tesseract.wheels.setMotorsPower(drive + turn, drive - turn);
+               turn = gamepad1.left_stick_x/2;
+               drive = -gamepad1.left_stick_y/2;
+               tesseract.wheels.setMotorsPower(Range.clip(drive + turn,-0.5,0.5), Range.clip(drive - turn,-0.5,0.5));
             } else if (gamepad1.dpad_up || gamepad1.dpad_down || gamepad1.dpad_left || gamepad1.dpad_right){
                moveByDpad();
                tesseract.wheels.setMotorsPower(drive + turn, drive - turn);
@@ -74,16 +82,16 @@ public class HydraTeleOp extends LinearOpMode {
             } else {
                 tesseract.wheels.setMotorsPower(0, 0);
             }
-            telemetry.addData("Stick position", -gamepad1.left_stick_y);
-            telemetry.update();
 
-            //Arms moviment system
+            //Arms movement system
             collectArmControls();
             depositArmsControls();
-            crServoColectControls();
+            crServoCollectControls();
 
             tesseract.arms.moveOnBy(Range.clip(-gamepad2.left_stick_y, -1, 1), "collect_wrist");
             tesseract.arms.moveOnBy(Range.clip(-gamepad2.right_stick_y, 0, 1), "deposit_wrist");
+            telemetry.addData("EncoderCount", encoderCollectSlide);
+            telemetry.update();
         }
     }
 
@@ -96,6 +104,7 @@ public class HydraTeleOp extends LinearOpMode {
             while (gamepad1.a){}
             speed -= increment;
         }
+        Range.clip(speed, -0.5, 0.5);
     }
 
     private void moveByDpad() {
@@ -133,11 +142,14 @@ public class HydraTeleOp extends LinearOpMode {
     }
 
     private void collectArmControls() {
-        if (gamepad2.left_bumper == true || gamepad2.dpad_up == true){
-            collectExpansion = 0.5f;
+        if (encoderCollectSlide > MAX_RANGE || encoderCollectSlide < 0){
+            collectExpansion = 0;
+        }
+        else if (gamepad2.left_bumper == true || gamepad2.dpad_up == true){
+            collectExpansion = 1.0f;
         }
         else if (gamepad2.left_trigger >= 0.3f || gamepad2.dpad_down == true){
-            collectExpansion = -0.5f;
+            collectExpansion = -1.0f;
         }
         else {
             collectExpansion = 0;
@@ -147,11 +159,14 @@ public class HydraTeleOp extends LinearOpMode {
     }
 
     private void depositArmsControls() {
-        if (gamepad2.right_bumper == true || gamepad2.y == true){
-            depositExpansion = 0.5f;
+        if (encoderDepositSlide > MAX_RANGE || encoderDepositSlide < 0){
+            depositExpansion = 0;
+        }
+        else if (gamepad2.right_bumper == true || gamepad2.y == true){
+            depositExpansion = 1.0f;
         }
         else if (gamepad2.right_trigger >= 0.3f || gamepad2.a == true){
-            depositExpansion = -0.5f;
+            depositExpansion = -1.0f;
         }
         else {
             depositExpansion = 0;
@@ -159,7 +174,7 @@ public class HydraTeleOp extends LinearOpMode {
         tesseract.arms.moveOnBy(depositExpansion, "deposit_slide");
     }
 
-    private void crServoColectControls() {
+    private void crServoCollectControls() {
         if(gamepad2.x == true){
             tesseract.arms.crServoCollect.setPower(0.79);
         }
