@@ -142,34 +142,36 @@ public class HydraTeleOp extends LinearOpMode {
     }
 
     private void collectArmControls() {
-        if (encoderCollectSlide < 0 || gamepad2.left_bumper == true || gamepad2.dpad_up == true){
+        if (encoderCollectSlide > MAX_RANGE || encoderCollectSlide < 0){
+            collectExpansion = 0;
+        }
+        else if (gamepad2.left_bumper == true || gamepad2.dpad_up == true){
             collectExpansion = 1.0f;
         }
-        else if (encoderCollectSlide > MAX_RANGE || gamepad2.left_trigger >= 0.3f || gamepad2.dpad_down == true){
+        else if (gamepad2.left_trigger >= 0.3f || gamepad2.dpad_down == true){
             collectExpansion = -1.0f;
         }
         else {
             collectExpansion = 0;
         }
         tesseract.arms.moveOnBy(collectExpansion, "collect_slide");
-        telemetry.addData("CollectExpansion", collectExpansion);
-        telemetry.update();
 
     }
 
     private void depositArmsControls() {
-        if (encoderDepositSlide < 0 || gamepad2.right_bumper == true || gamepad2.y == true){
+        if (encoderDepositSlide > MAX_RANGE || encoderDepositSlide < 0){
+            depositExpansion = 0;
+        }
+        else if (gamepad2.right_bumper == true || gamepad2.y == true){
             depositExpansion = 1.0f;
         }
-        else if (encoderDepositSlide > MAX_RANGE || gamepad2.right_trigger >= 0.3f || gamepad2.a == true){
+        else if (gamepad2.right_trigger >= 0.3f || gamepad2.a == true){
             depositExpansion = -1.0f;
         }
         else {
             depositExpansion = 0;
         }
         tesseract.arms.moveOnBy(depositExpansion, "deposit_slide");
-        telemetry.addData("DepositExpansion", depositExpansion);
-        telemetry.update();
     }
 
     private void crServoCollectControls() {
