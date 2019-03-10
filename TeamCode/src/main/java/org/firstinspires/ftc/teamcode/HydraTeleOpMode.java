@@ -49,7 +49,7 @@ public class HydraTeleOpMode extends LinearOpMode {
     float speed = 0;
     float collectExpansion = 0;
     float depositExpansion = 0;
-    float increment = 0.005f;
+    float increment = 0.01f;
 
     double turn;
     double drive;
@@ -67,7 +67,8 @@ public class HydraTeleOpMode extends LinearOpMode {
         tesseract = new Robot(hardwareMap.get(DcMotor.class, "leftWheel"),
                 hardwareMap.get(DcMotor.class, "rightWheel"),
                 hardwareMap.get(CRServo.class, "crServoCollect"),
-                hardwareMap.get(Servo.class, "servoCollectWrist"),
+                hardwareMap.get(Servo.class, "servoCollectWristRight"),
+                hardwareMap.get(Servo.class, "servoCollectWristLeft"),
                 hardwareMap.get(Servo.class, "servoDepositWrist"),
                 hardwareMap.get(DcMotor.class, "motorCollectSlide"),
                 hardwareMap.get(DcMotor.class, "motorDepositSlide"),

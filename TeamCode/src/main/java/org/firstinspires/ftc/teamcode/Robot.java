@@ -17,7 +17,8 @@ public class Robot {
     Robot (DcMotor leftWheel,
            DcMotor rightWheel,
            CRServo crServoCollect,
-           Servo servoCollectWrist,
+           Servo servoCollectWristLeft,
+           Servo servoCollectWristRight,
            Servo servoDepositWrist,
            DcMotor motorCollectSlide,
            DcMotor motorDepositSlide,
@@ -33,7 +34,8 @@ public class Robot {
                                  distanceBetweenWheels);
 
         this.arms = new Arms(crServoCollect,
-                             servoCollectWrist,
+                             servoCollectWristLeft,
+                             servoCollectWristRight,
                              servoDepositWrist,
                              motorCollectSlide,
                              motorDepositSlide);
@@ -48,7 +50,8 @@ public class Robot {
            DcMotor rightFrontWheel,
            DcMotor rightBackWheel,
            CRServo crServoCollect,
-           Servo servoCollectWrist,
+           Servo servoCollectWristLeft,
+           Servo servoCollectWristRight,
            Servo servoDepositWrist,
            DcMotor motorCollectSlide,
            DcMotor motorDepositSlide,
@@ -66,7 +69,8 @@ public class Robot {
                              distanceBetweenWheels);
 
         this.arms = new Arms(crServoCollect,
-                             servoCollectWrist,
+                             servoCollectWristLeft,
+                             servoCollectWristRight,
                              servoDepositWrist,
                              motorCollectSlide,
                              motorDepositSlide);
