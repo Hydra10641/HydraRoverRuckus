@@ -69,8 +69,8 @@ public class HydraTeleOpMode extends LinearOpMode {
         tesseract = new Robot(hardwareMap.get(DcMotor.class, "leftWheel"),
                 hardwareMap.get(DcMotor.class, "rightWheel"),
                 hardwareMap.get(CRServo.class, "crServoCollect"),
-                hardwareMap.get(Servo.class, "servoCollectWristRight"),
                 hardwareMap.get(Servo.class, "servoCollectWristLeft"),
+                hardwareMap.get(Servo.class, "servoCollectWristRight"),
                 hardwareMap.get(Servo.class, "servoDepositWrist"),
                 hardwareMap.get(DcMotor.class, "motorCollectSlide"),
                 hardwareMap.get(DcMotor.class, "motorDepositSlide"),
@@ -90,7 +90,7 @@ public class HydraTeleOpMode extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             //Locomotion movement system
-
+            setWheelsSpeed();
             if(gamepad1.left_stick_y <= -0.04f || gamepad1.left_stick_y >= 0.04f ||
                gamepad1.left_stick_x <= -0.04f || gamepad1.left_stick_x >= 0.04f){
                 turn = gamepad1.left_stick_x;
@@ -99,7 +99,6 @@ public class HydraTeleOpMode extends LinearOpMode {
                 tesseract.wheels.setMotorsPower(drive + turn, drive - turn);
             }
             else if(gamepad1.dpad_up || gamepad1.dpad_down || gamepad1.dpad_left || gamepad1.dpad_right){
-                setWheelsSpeed();
                 moveDPad();
                 tesseract.wheels.walkOnBy(speed,direction);
             }
