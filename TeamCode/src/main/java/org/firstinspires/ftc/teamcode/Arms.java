@@ -9,16 +9,16 @@ public class Arms {
     /*Welcome, this is the team 10641(Hydra) code for the arms system, first applied in the Rover Ruckus season.
     First of all, we declare 4 attributes of type Servo, corresponding to the servos used on the arms system.*/
 
-    public Servo servoCollectWristLeft, servoDepositWrist, servoCollectWristRight;
+    public Servo servoCollectWrist, servoDepositWristLeft, servoDepositWristRight;
     public CRServo crServoCollect;
     public DcMotor motorCollectSlide, motorDepositSlide;
 
-    Arms (CRServo crServoCollect, Servo servoCollectWristLeft, Servo servoCollectWristRight, Servo servoDepositWrist, DcMotor motorCollectSlide, DcMotor motorDepositSlide){
+    Arms (CRServo crServoCollect, Servo servoCollectWrist, Servo servoDepositWristLeft, Servo servoDepositWristRight, DcMotor motorCollectSlide, DcMotor motorDepositSlide){
 
         this.crServoCollect = crServoCollect;
-        this.servoCollectWristLeft = servoCollectWristLeft;
-        this.servoCollectWristRight = servoCollectWristRight;
-        this.servoDepositWrist = servoDepositWrist;
+        this.servoCollectWrist = servoCollectWrist;
+        this.servoDepositWristLeft = servoDepositWristLeft;
+        this.servoDepositWristRight = servoDepositWristRight;
         this.motorCollectSlide = motorCollectSlide;
         this.motorDepositSlide = motorDepositSlide;
     }
@@ -33,11 +33,11 @@ public class Arms {
                 this.motorDepositSlide.setPower(position);
                 break;
             case "collect_wrist":
-                this.servoCollectWristLeft.setPosition(position);
-                this.servoCollectWristRight.setPosition(-position);
+                this.servoCollectWrist.setPosition(position);
                 break;
             case "deposit_wrist":
-                this.servoDepositWrist.setPosition(position);
+                this.servoDepositWristLeft.setPosition(position);
+                this.servoDepositWristRight.setPosition(-position);
                 break;
         }
 
