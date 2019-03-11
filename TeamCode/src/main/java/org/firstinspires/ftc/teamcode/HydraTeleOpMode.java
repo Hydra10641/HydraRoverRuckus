@@ -51,8 +51,11 @@ public class HydraTeleOpMode extends LinearOpMode {
     float depositExpansion = 0;
     float increment = 0.01f;
 
-    double turn;
-    double drive;
+    int Max_Position = 288;
+    int Min_Position = 0;
+    int depositPosition, collectPosition;
+
+    double turn, drive;
 
     @Override
     public void runOpMode() {
@@ -109,12 +112,12 @@ public class HydraTeleOpMode extends LinearOpMode {
             else if(gamepad1.dpad_right == true){
                 setWheelsSpeed();
                 speed = Range.clip(speed, 0, 1);
-                tesseract.wheels.setMotorsPower(0,speed);
+                tesseract.wheels.setMotorsPower(speed,-speed);
             }
             else if(gamepad1.dpad_left == true){
                 setWheelsSpeed();
                 speed = Range.clip(speed, 0, 1);
-                tesseract.wheels.setMotorsPower(speed,0);
+                tesseract.wheels.setMotorsPower(-speed,speed);
             }
             if(gamepad1.left_bumper == true){
                 setWheelsSpeed();
@@ -143,57 +146,72 @@ public class HydraTeleOpMode extends LinearOpMode {
                 tesseract.wheels.setMotorsPower(0,0);
             }
 
-            telemetry.addData("Stick position", -gamepad1.left_stick_y);
-            telemetry.update();
-
             //Arms moviment system
             collectArmsControls();
             depositArmsControls();
             crServoColectControls();
 
-            tesseract.arms.moveOnBy(Range.clip(-gamepad2.left_stick_y, -1, 1), "collect_wrist");
+            tesseract.arms.moveOnBy(Range.clip(-gamepad2.left_stick_y, 0, 1), "collect_wrist");
+            telemetry.addData("Servo positon: ", tesseract.arms.servoCollectWristLeft.getPosition());
+            telemetry.update();
             tesseract.arms.moveOnBy(Range.clip(-gamepad2.right_stick_y, 0, 1), "deposit_wrist");
 
         }
+        stop();
     }
 
     private void setWheelsSpeed() {
-        if (gamepad1.y == true){
-            speed += increment;
-        }
         if (gamepad1.a == true){
-            speed -= increment;
+            speed = 0f;
         }
-
+        if (gamepad1.x == true){
+            speed = 0.25f;
+        }
+        if (gamepad1.y == true){
+            speed = 0.5f;
+        }
+        if (gamepad1.b == true){
+            speed = 1f;
+        }
     }
 
-    public void depositArmsControls(){
+    public void collectArmsControls(){
         if(gamepad2.right_bumper == true || gamepad2.y){
-            collectExpansion = -0.5f;
+            if(collectPosition <= Max_Position){
+                collectExpansion = -0.5f;
+            }
+
         }
         else if(gamepad2.right_trigger > 0.3f || gamepad2.a){
-            collectExpansion = 0.5f;
+            if(collectPosition >= Min_Position){
+                collectExpansion = 0.5f;
+            }
+
         }
         else if(gamepad2.right_bumper == false || gamepad2.right_trigger <= 0.3f){
             collectExpansion = 0f;
         }
-        tesseract.arms.moveOnBy(collectExpansion, "deposit_slide");
-        telemetry.addData("DepositExpansion", depositExpansion);
+        tesseract.arms.moveOnBy(collectExpansion, "collect_slide");
+        telemetry.addData("CollectExpansion", collectExpansion);
         telemetry.update();
     }
 
-    public void collectArmsControls(){
+    public void depositArmsControls(){
         if(gamepad2.left_bumper == true || gamepad2.dpad_up){
-            collectExpansion = 0.5f;
+            if(depositPosition <= Max_Position){
+            depositExpansion = 0.5f;
+            }
         }
         else if(gamepad2.left_trigger > 0.3f || gamepad2.dpad_down){
-            collectExpansion = -0.5f;
+            if(depositPosition <= Max_Position) {
+                depositExpansion = -0.5f;
+            }
         }
         else if(gamepad2.left_bumper == false || gamepad2.left_trigger <= 0.3f){
-            collectExpansion = 0f;
+            depositExpansion = 0f;
         }
-        tesseract.arms.moveOnBy(collectExpansion, "collect_slide");
-        telemetry.addData("CollectExpansion", collectExpansion);
+        tesseract.arms.moveOnBy(depositExpansion, "deposit_slide");
+        telemetry.addData("DepositExpansion", depositExpansion);
         telemetry.update();
     }
 

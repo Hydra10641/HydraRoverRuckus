@@ -40,7 +40,8 @@ public class HydraAutonomous extends LinearOpMode {
         tesseract = new Robot(hardwareMap.get(DcMotor.class, "leftWheel"),
                                 hardwareMap.get(DcMotor.class, "rightWheel"),
                                 hardwareMap.get(CRServo.class, "crServoCollect"),
-                                hardwareMap.get(Servo.class, "servoCollectWrist"),
+                                hardwareMap.get(Servo.class, "servoCollectWristLeft"),
+                                hardwareMap.get(Servo.class, "servoCollectWristRight"),
                                 hardwareMap.get(Servo.class, "servoDepositWrist"),
                                 hardwareMap.get(DcMotor.class, "motorCollectSlide"),
                                 hardwareMap.get(DcMotor.class, "motorDepositSlide"),
@@ -68,17 +69,16 @@ public class HydraAutonomous extends LinearOpMode {
         tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         tesseract.arms.motorDepositSlide.setPower(0.5);
-        tesseract.arms.motorDepositSlide.setTargetPosition(1152);
-        while(tesseract.arms.motorDepositSlide.getCurrentPosition() < 1152){
+        tesseract.arms.motorDepositSlide.setTargetPosition(21000);
+        while(tesseract.arms.motorDepositSlide.getCurrentPosition() < 21000){
             telemtryUpdate("Posição Motor", tesseract.arms.motorDepositSlide.getCurrentPosition());
         }
     }
 
     private void removeHookLander() {
-        tesseract.wheels.walkCount(0.25, 90, "spin");
+        tesseract.wheels.walkCount(0.25, 180, "spin");
         tesseract.wheels.walkCount(-0.25, 10.0f, "standard");
-        tesseract.wheels.walkCount(-0.25, 90, "spin");
-        tesseract.wheels.walkCount(0.25, 15.0f, "standard");
+        tesseract.wheels.walkCount(-0.25, 180, "spin");
     }
 
     private void initAr() {
@@ -123,19 +123,17 @@ public class HydraAutonomous extends LinearOpMode {
                     break;
 
                 case LEFT:
-                    walkType = "spinSideLeft";
-                    encoderCount = 10;
-                    imageSearchTurn = imageSearchTurn - encoderCount;
+                    walkType = "spin";
+                    encoderCount = - 10;
                     break;
 
                 case RIGHT:
-                    walkType = "spinSideRight";
+                    walkType = "spin";
                     encoderCount = 10;
-                    imageSearchTurn = imageSearchTurn + encoderCount;
                     break;
             }
         } while (isEndOfRecognition(walkType, recognitionTimer.time()));
-
+        imageSearchTurn = imageSearchTurn + encoderCount;
         if (walkType != null) {
             tesseract.wheels.walkCount(0.75, encoderCount, walkType);
         }
