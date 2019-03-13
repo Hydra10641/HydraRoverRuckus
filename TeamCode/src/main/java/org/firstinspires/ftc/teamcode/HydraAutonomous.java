@@ -24,7 +24,8 @@ public class HydraAutonomous extends LinearOpMode {
     private String imageTarget;
 
     private double recognitionTime = 2;
-    private int imageSearchTurn = 135;
+    private int encoderCount = 0;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -76,9 +77,10 @@ public class HydraAutonomous extends LinearOpMode {
     }
 
     private void removeHookLander() {
-        tesseract.wheels.walkCount(0.25, 180, "spin");
-        tesseract.wheels.walkCount(-0.25, 10.0f, "standard");
-        tesseract.wheels.walkCount(-0.25, 180, "spin");
+        tesseract.wheels.walkCount(-0.25, -30, "spin");
+        tesseract.arms.motorDepositSlide.setTargetPosition(0);
+        while(tesseract.arms.motorDepositSlide.getCurrentPosition() > 15000){}
+        tesseract.wheels.walkCount(0.25, 30, "spin");
     }
 
     private void initAr() {
@@ -89,13 +91,16 @@ public class HydraAutonomous extends LinearOpMode {
     private void captureMineral() {
         mineralRecognition();
         // Turn on the collect servo motor
-        tesseract.arms.crServoCollect.setPower(0.79);
+        tesseract.arms.crServoCollect.setPower(-0.79);
         tesseract.arms.motorCollectSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         tesseract.arms.motorCollectSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         tesseract.arms.moveOnBy(0.5f, "collect_slide");
-        tesseract.arms.motorCollectSlide.setTargetPosition(3000);
+        tesseract.arms.motorCollectSlide.setTargetPosition(9000);
+        while(tesseract.arms.motorCollectSlide.getCurrentPosition() < 9000){}
         tesseract.arms.moveOnBy(-0.5f, "collect_slide");
         tesseract.arms.motorCollectSlide.setTargetPosition(0);
+        while(tesseract.arms.motorCollectSlide.getCurrentPosition() > 0){}
+        tesseract.wheels.walkCount(0.9, -encoderCount, "spin");
     }
 
     private void mineralRecognition() {
@@ -133,27 +138,22 @@ public class HydraAutonomous extends LinearOpMode {
                     break;
             }
         } while (isEndOfRecognition(walkType, recognitionTimer.time()));
-        imageSearchTurn = imageSearchTurn + encoderCount;
         if (walkType != null) {
             tesseract.wheels.walkCount(0.75, encoderCount, walkType);
         }
     }
 
     private void searchImage(){
-        tesseract.wheels.walkCount(0.4, -imageSearchTurn, "spin");
-        tesseract.wheels.walkCount(0.6, 30, "standard");
-        tesseract.wheels.walkCount(0.4, 90, "spin");
-        tesseract.wheels.walkOnBy(0.6, "standard");
-        while(getDistanceInCm() > 20){
-        }
-        tesseract.wheels.resetMotorAndEncoder();
+        tesseract.wheels.walkCount(0.6, 15.0f, "standard");
+        tesseract.wheels.walkCount(0.4, -90, "spin");
+        tesseract.wheels.walkCount(0.6, 40.0f, "standard");
+        tesseract.wheels.walkCount(0.4, 45, "spin");
     }
 
     private void areaRecognition() {
         vuforia.activate();
 
         String walkType = null;
-        int encoderCount = 0;
 
         ElapsedTime recognitionTimer = new ElapsedTime();
         recognitionTimer.reset();
@@ -181,6 +181,7 @@ public class HydraAutonomous extends LinearOpMode {
         } while (isEndOfRecognition(walkType, recognitionTimer.time()));
         telemtryUpdate("walkType", walkType);
         if (walkType != null) {
+            tesseract.wheels.walkCount(0.5, 10.0f, "standard");
             tesseract.wheels.walkCount(0.75, encoderCount, walkType);
         }
     }

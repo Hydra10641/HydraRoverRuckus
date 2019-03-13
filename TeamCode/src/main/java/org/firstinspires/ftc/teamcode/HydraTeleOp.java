@@ -15,7 +15,8 @@ public class HydraTeleOp extends LinearOpMode {
 
     Robot tesseract;
 
-    int MAX_RANGE = 30000;
+    int MAX_RANGE_COLLECT = 30000;
+    int MAX_RANGE_DEPOSIT = 20000;
 
     int encoderCollectSlide;
     int encoderDepositSlide;
@@ -69,9 +70,10 @@ public class HydraTeleOp extends LinearOpMode {
             encoderDepositSlide = tesseract.arms.motorDepositSlide.getCurrentPosition();
 
             if(gamepad1.left_stick_x != 0.0 || gamepad1.left_stick_y != 0.0){
-               turn = gamepad1.left_stick_x/2;
-               drive = -gamepad1.left_stick_y/2;
-               tesseract.wheels.setMotorsPower(Range.clip(drive + turn,-0.5,0.5), Range.clip(drive - turn,-0.5,0.5));
+               turn = gamepad1.left_stick_x;
+               drive = -gamepad1.left_stick_y;
+               tesseract.wheels.setMotorsPower(Range.clip(drive + turn,-0.75,0.75),
+                                               Range.clip(drive - turn,-0.75,0.75));
             } else if (gamepad1.dpad_up || gamepad1.dpad_down || gamepad1.dpad_left || gamepad1.dpad_right){
                moveByDpad();
             } else if (gamepad1.left_bumper || gamepad1.right_bumper ||
@@ -103,7 +105,7 @@ public class HydraTeleOp extends LinearOpMode {
             speed = 0;
         }
         if (gamepad1.x == true){
-            speed = 0.25;
+            speed = 0.5;
         }
         if (gamepad1.y == true){
             speed = 0.5f;
@@ -118,10 +120,14 @@ public class HydraTeleOp extends LinearOpMode {
         //This method controls the motors based on the state of the d-pad's buttons, returning the "standard" and "spin"
 
         if (gamepad1.dpad_up == true){
-            tesseract.wheels.setMotorsPower(speed, speed);
+            tesseract.wheels.setMotorsPower(speed - 0.1, speed);
+            telemetry.addData("EncoderLeftWheel:",tesseract.wheels.leftWheel.getCurrentPosition());
+            telemetry.addLine();
+            telemetry.addData("EncoderRightWheel:",tesseract.wheels.rightWheel.getCurrentPosition());
+            telemetry.update();
         }
         if (gamepad1.dpad_down == true){
-            tesseract.wheels.setMotorsPower(- speed, - speed);
+            tesseract.wheels.setMotorsPower(- speed + 0.1, - speed);
         }
         if (gamepad1.dpad_left == true){
             tesseract.wheels.setMotorsPower(- speed, speed);
@@ -139,14 +145,18 @@ public class HydraTeleOp extends LinearOpMode {
         if (gamepad1.left_bumper == true){
             tesseract.wheels.leftWheel.setPower(speed);
         }
+        else if (gamepad1.left_trigger >= 0.3f){
+            tesseract.wheels.leftWheel.setPower(-speed);
+        } else {
+            tesseract.wheels.leftWheel.setPower(0);
+        }
         if (gamepad1.right_bumper == true){
             tesseract.wheels.rightWheel.setPower(speed);
         }
-        if(gamepad1.left_trigger >= 0.3f){
-            tesseract.wheels.leftWheel.setPower(-speed);
-        }
-        if(gamepad1.right_trigger >= 0.3f){
+        else if (gamepad1.right_trigger >= 0.3f){
             tesseract.wheels.rightWheel.setPower(-speed);
+        } else {
+            tesseract.wheels.rightWheel.setPower(0);
         }
     }
 
@@ -155,20 +165,20 @@ public class HydraTeleOp extends LinearOpMode {
         // This method controls the expansion and retraction system of the collection arm
 
         if (encoderCollectSlide <= 0 || gamepad2.left_bumper == true || gamepad2.dpad_up == true){
-            if (encoderCollectSlide > MAX_RANGE){
+            if (encoderCollectSlide > MAX_RANGE_COLLECT){
                 collectExpansion = -1.0f;
             } else {
                 collectExpansion = 1.0f;
             }
         }
-        else if (encoderCollectSlide >= MAX_RANGE || gamepad2.left_trigger >= 0.3f || gamepad2.dpad_down == true){
+        else if (encoderCollectSlide >= MAX_RANGE_COLLECT || gamepad2.left_trigger >= 0.3f || gamepad2.dpad_down == true){
             collectExpansion = -1.0f;
         }
         else {
             collectExpansion = 0;
         }
         tesseract.arms.moveOnBy(collectExpansion, "collect_slide");
-        telemetry.addData("CollectExpansion", collectExpansion);
+        telemetry.addData("EncoderCollect:", encoderCollectSlide);
         telemetry.update();
     }
 
@@ -177,20 +187,20 @@ public class HydraTeleOp extends LinearOpMode {
         // This method controls the expansion and retraction system of the deposit arm
 
         if (encoderDepositSlide < 0 || gamepad2.right_bumper == true || gamepad2.y == true){
-            if (encoderDepositSlide > MAX_RANGE){
+            if (encoderDepositSlide > MAX_RANGE_DEPOSIT){
                 depositExpansion = -1.0f;
             } else {
                 depositExpansion = 1.0f;
             }
         }
-        else if (encoderDepositSlide > MAX_RANGE || gamepad2.right_trigger >= 0.3f || gamepad2.a == true){
+        else if (encoderDepositSlide > MAX_RANGE_DEPOSIT || gamepad2.right_trigger >= 0.3f || gamepad2.a == true){
             depositExpansion = -1.0f;
         }
         else {
             depositExpansion = 0;
         }
         tesseract.arms.moveOnBy(depositExpansion, "deposit_slide");
-        telemetry.addData("DepositExpansion", depositExpansion);
+        telemetry.addData("EncoderDeposit:", encoderDepositSlide);
         telemetry.addLine();
         telemetry.addData("EncoderDeposit:",encoderDepositSlide);
         telemetry.update();
@@ -201,10 +211,10 @@ public class HydraTeleOp extends LinearOpMode {
         //This method controls the direction of the continuous rotation servo of the collection system
 
         if(gamepad2.x == true){
-            tesseract.arms.crServoCollect.setPower(0.79);
+            tesseract.arms.crServoCollect.setPower(-0.79);
         }
         if(gamepad2.b == true){
-            tesseract.arms.crServoCollect.setPower(-0.79);
+            tesseract.arms.crServoCollect.setPower(0.79);
         }
     }
 }
