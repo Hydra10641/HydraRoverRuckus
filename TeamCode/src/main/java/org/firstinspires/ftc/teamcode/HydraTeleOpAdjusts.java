@@ -40,8 +40,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-@TeleOp(name="HydraTeleOpMode")
-public class HydraTeleOpMode extends LinearOpMode {
+@TeleOp(name="HydraTeleOpAdjusts")
+public class HydraTeleOpAdjusts extends LinearOpMode {
 
     // Declare OpMode members.
     Robot tesseract;

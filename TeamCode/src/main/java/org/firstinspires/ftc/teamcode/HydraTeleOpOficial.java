@@ -9,9 +9,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.Range;
 
-@TeleOp  (name = "HydraTeleOp")
+@TeleOp  (name = "HydraTeleOpOficial")
 
-public class HydraTeleOp extends LinearOpMode {
+public class HydraTeleOpOficial extends LinearOpMode {
 
     Robot tesseract;
 
