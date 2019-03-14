@@ -55,11 +55,12 @@ public class HydraAutonomous extends LinearOpMode {
         tesseract.wheels.leftWheel.setDirection(DcMotorSimple.Direction.REVERSE);
         tesseract.wheels.rightWheel.setDirection(DcMotorSimple.Direction.FORWARD);
         // Landing
-//        downLa
-// HookLander();
+        downLander();
+        removeHookLander();
         // Starting augmented reality and collecting gold
         initAr();
 //        captureMineral();
+        goForImageReference();
 //        sleep(10000);
 //        // Identifying the position of the robot in the arena
 //        searchImage();
@@ -82,10 +83,12 @@ public class HydraAutonomous extends LinearOpMode {
     }
 
     private void removeHookLander() {
-        tesseract.wheels.walkCount(-0.25, -30, "spin");
+        tesseract.wheels.walkCount(0.75, 30, "spin");
         tesseract.arms.motorDepositSlide.setTargetPosition(0);
-        while(tesseract.arms.motorDepositSlide.getCurrentPosition() > 15000){}
-        tesseract.wheels.walkCount(0.25, 30, "spin");
+        while(tesseract.arms.motorDepositSlide.getCurrentPosition() < 0){
+            telemtryUpdate("Posição Motor", tesseract.arms.motorDepositSlide.getCurrentPosition());
+        }
+        tesseract.wheels.walkCount(-0.75, -30, "spin");
     }
 
     private void initAr() {
@@ -93,8 +96,15 @@ public class HydraAutonomous extends LinearOpMode {
         objectReco = new ObjectReco(this, vuforia.getLocalizer());
     }
 
+    private void goForImageReference() {
+        tesseract.wheels.walkCount(-1, 45, "spin");
+        tesseract.wheels.walkCount(0.75, 40, "standard");
+        telemtryUpdate("Chegou", 45);
+        sleep(3000);
+    }
+
     private void captureMineral() {
-        // mineralRecognition();
+        mineralRecognition();
         // Turn on the collect servo motor
         tesseract.arms.crServoCollect.setPower(-0.79);
         tesseract.arms.motorCollectSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -105,7 +115,6 @@ public class HydraAutonomous extends LinearOpMode {
         tesseract.arms.moveOnBy(-0.5f, "collect_slide");
         tesseract.arms.motorCollectSlide.setTargetPosition(0);
         while(tesseract.arms.motorCollectSlide.getCurrentPosition() > 0){}
-        tesseract.wheels.walkCount(1, -encoderCount, "spin");
     }
 
     private void mineralRecognition() {
@@ -158,7 +167,7 @@ public class HydraAutonomous extends LinearOpMode {
     private void areaRecognition() {
         vuforia.activate();
 
-        String walkType = null;
+        int walkSide = 0;
 
         ElapsedTime recognitionTimer = new ElapsedTime();
         recognitionTimer.reset();
@@ -174,11 +183,11 @@ public class HydraAutonomous extends LinearOpMode {
                 switch (imageTarget) {
                     case "Blue-Rover":
                     case "Red-Footprint":
-                        encoderCount = -60;
+                        walkSide = -1;
                         break;
                     case "Front-Craters":
                     case "Back-Space":
-                        encoderCount = 60;
+                        walkSide = 1;
                         break;
                 }
 
@@ -186,7 +195,7 @@ public class HydraAutonomous extends LinearOpMode {
         } while (isEndOfRecognition(imageTarget, recognitionTimer.time()));
         if (imageTarget != null) {
             tesseract.wheels.walkCount(0.5, 15, "standard");
-            tesseract.wheels.walkCount(1, encoderCount, "spin");
+            tesseract.wheels.walkCount(walkSide, 60, "spin");
             telemtryUpdate("image", imageTarget);
         }
     }
