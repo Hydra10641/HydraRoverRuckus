@@ -16,8 +16,7 @@ public class Robot {
     Robot (DcMotor leftWheel,
            DcMotor rightWheel,
            CRServo crServoCollect,
-           Servo servoCollectWristLeft,
-           Servo servoCollectWristRight,
+           Servo servoCollectWrist,
            Servo servoDepositWrist,
            DcMotor motorCollectSlide,
            DcMotor motorDepositSlide,
@@ -33,8 +32,7 @@ public class Robot {
                                  distanceBetweenWheels);
 
         this.arms = new Arms(crServoCollect,
-                             servoCollectWristLeft,
-                             servoCollectWristRight,
+                             servoCollectWrist,
                              servoDepositWrist,
                              motorCollectSlide,
                              motorDepositSlide);

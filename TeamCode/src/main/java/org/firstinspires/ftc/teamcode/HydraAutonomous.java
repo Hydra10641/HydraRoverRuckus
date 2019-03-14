@@ -38,15 +38,14 @@ public class HydraAutonomous extends LinearOpMode {
         float distanceBetweenWheels = 34.5f;
 
         tesseract = new Robot(hardwareMap.get(DcMotor.class, "leftWheel"),
-                                hardwareMap.get(DcMotor.class, "rightWheel"),
-                                hardwareMap.get(CRServo.class, "crServoCollect"),
-                                hardwareMap.get(Servo.class, "servoCollectWristLeft"),
-                                hardwareMap.get(Servo.class, "servoCollectWristRight"),
-                                hardwareMap.get(Servo.class, "servoDepositWrist"),
-                                hardwareMap.get(DcMotor.class, "motorCollectSlide"),
-                                hardwareMap.get(DcMotor.class, "motorDepositSlide"),
-                                hardwareMap.get(LynxI2cColorRangeSensor.class, "distanceSensor"),
-                                wheelDiameter, gearRatio, distanceBetweenWheels);
+                hardwareMap.get(DcMotor.class, "rightWheel"),
+                hardwareMap.get(CRServo.class, "crServoCollect"),
+                hardwareMap.get(Servo.class, "servoCollectWrist"),
+                hardwareMap.get(Servo.class, "servoDepositWrist"),
+                hardwareMap.get(DcMotor.class, "motorCollectSlide"),
+                hardwareMap.get(DcMotor.class, "motorDepositSlide"),
+                hardwareMap.get(LynxI2cColorRangeSensor.class, "distanceSensor"),
+                wheelDiameter, gearRatio, distanceBetweenWheels);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
