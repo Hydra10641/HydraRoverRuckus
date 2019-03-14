@@ -190,7 +190,7 @@ public class HydraTeleOpAdjusts extends LinearOpMode {
 
         // This method controls the expansion and retraction system of the collection arm
 
-        if (encoderCollectSlide <= 0 || gamepad2.left_bumper == true || gamepad2.dpad_up == true){
+        if (gamepad2.left_bumper == true || gamepad2.dpad_up == true){
             collectExpansion = 1.0f;
 
         }
@@ -209,7 +209,7 @@ public class HydraTeleOpAdjusts extends LinearOpMode {
 
         // This method controls the expansion and retraction system of the deposit arm
 
-        if (encoderDepositSlide < 0 || gamepad2.right_bumper == true || gamepad2.y == true){
+        if (gamepad2.right_bumper == true || gamepad2.y == true){
             depositExpansion = 1.0f;
         }
         else if (gamepad2.right_trigger >= 0.3f || gamepad2.a == true){
