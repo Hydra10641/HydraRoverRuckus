@@ -60,7 +60,6 @@ public class HydraTeleOpAdjusts extends LinearOpMode {
     @Override
     public void runOpMode() {
         /*Here we declare the devices of our robot (servos, motors and sensors)
-         *You can choose between the Omni locomotion system (Omni)
          *Or the locomotion system with two traction engines (Wheels)
          */
         float wheelDiameter = 10.0f;
