@@ -15,7 +15,7 @@ public class HydraTeleOpOficial extends LinearOpMode {
 
     Robot tesseract;
 
-    int MAX_RANGE_COLLECT = 30000;
+    int MAX_RANGE_COLLECT = 25000;
     int MAX_RANGE_DEPOSIT = 20000;
 
     int encoderCollectSlide;

@@ -69,8 +69,8 @@ public class HydraAutonomous extends LinearOpMode {
         tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         tesseract.arms.motorDepositSlide.setPower(0.5);
-        tesseract.arms.motorDepositSlide.setTargetPosition(21000);
-        while(tesseract.arms.motorDepositSlide.getCurrentPosition() < 21000){
+        tesseract.arms.motorDepositSlide.setTargetPosition(17000);
+        while(tesseract.arms.motorDepositSlide.getCurrentPosition() < 17000){
             telemtryUpdate("Posição Motor", tesseract.arms.motorDepositSlide.getCurrentPosition());
         }
     }
