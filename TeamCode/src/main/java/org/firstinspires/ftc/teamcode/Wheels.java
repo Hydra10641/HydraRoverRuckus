@@ -82,14 +82,14 @@ public class Wheels {
         walkOnBy(power, walkType);
         switch(walkType) {
             case "standard":
-                waitEncoderCount(encoderConverter.centimeter(encoderCount));
+                waitEncoderCount(encoderConverter.centimeterLinear(encoderCount));
                 break;
             case "spin":
-                waitEncoderCount(encoderConverter.centimeter((int)encoderCount));
+                waitEncoderCount(encoderConverter.centimeterAngular(encoderCount));
                 break;
             case "spinSideLeft":
             case "spinSideRight":
-                waitEncoderCount(encoderConverter.centimeterEx((int)encoderCount));
+                waitEncoderCount(encoderConverter.centimeterAngularEx(encoderCount));
                 break;
         }
         resetMotorAndEncoder();

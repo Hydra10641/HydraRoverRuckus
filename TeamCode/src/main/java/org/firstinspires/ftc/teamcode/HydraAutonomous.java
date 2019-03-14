@@ -143,9 +143,9 @@ public class HydraAutonomous extends LinearOpMode {
     }
 
     private void searchImage(){
-        tesseract.wheels.walkCount(0.6, 15.0f, "standard");
+        tesseract.wheels.walkCount(0.6, 15, "standard");
         tesseract.wheels.walkCount(0.4, -90, "spin");
-        tesseract.wheels.walkCount(0.6, 40.0f, "standard");
+        tesseract.wheels.walkCount(0.6, 40, "standard");
         tesseract.wheels.walkCount(0.4, 45, "spin");
     }
 
@@ -180,7 +180,7 @@ public class HydraAutonomous extends LinearOpMode {
         } while (isEndOfRecognition(walkType, recognitionTimer.time()));
         telemtryUpdate("walkType", walkType);
         if (walkType != null) {
-            tesseract.wheels.walkCount(0.5, 10.0f, "standard");
+            tesseract.wheels.walkCount(0.5, 10, "standard");
             tesseract.wheels.walkCount(0.75, encoderCount, walkType);
         }
     }

@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 public class EncoderConverter {
 
-    /*Welcome, this is the team 10641(Hydra) code for convert centimeter in encoderCount, first applied in the
+    /*Welcome, this is the team 10641(Hydra) code for convert centimeterLinear in encoderCount, first applied in the
      *Rover Ruckus season.
      *First of all, we declare 3 floats attributes, corresponding to: wheel diameter, gear ratio and the distance
      * between wheels. They will be used in the calculations of this class.*/
@@ -29,11 +29,11 @@ public class EncoderConverter {
      * rotation = distance desired * distance between wheels (diameter) * PI * gear ratio.
      */
 
-    public int centimeter (float cmDistance){
-        float convertedValue, rotation;
-        rotation = cmDistance/(float)(this.wheelDiameter * this.gearRatio * Math.PI);
+    public int centimeterLinear(double cmDistance){
+        double convertedValue, rotation;
+        rotation = cmDistance/(this.wheelDiameter * this.gearRatio * Math.PI);
         convertedValue = rotation * 288;
-        return ((int) convertedValue);
+        return ((int)Math.round(convertedValue));
     }
 
     /* ANGULAR CONVERTER DESCRIPTION:
@@ -56,12 +56,8 @@ public class EncoderConverter {
      * arc desired = (distance between wheel * PI ) * gear ratio * angle X/ 360.
      */
 
-    public int centimeter (int angle){
-        float convertedValue, arc, rotation;
-        arc = (float)(angle/360 *(this.distanceBetweenWheels * this.gearRatio * Math.PI));
-        rotation = arc/wheelDiameter;
-        convertedValue = rotation * 288;
-        return ((int) convertedValue);
+    public int centimeterAngular(double angle){
+        return (centimeterLinear((angle/360)*wheelDiameter*Math.PI));
     }
 
     /* ANGULAR CONVERTER DESCRIPTION:
@@ -70,8 +66,7 @@ public class EncoderConverter {
      * of the radius (which is twice as large), we will use the previous method by doubling the value.
      */
 
-    public int centimeterEx (int angle){
-        return (centimeter(angle) * 2);
+    public int centimeterAngularEx(double angle){
+        return (centimeterAngular(angle) * 2);
     }
-
 }
