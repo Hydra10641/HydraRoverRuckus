@@ -201,11 +201,11 @@ public class HydraAutonomous extends LinearOpMode {
     }
 
     private void depositOfObjects() {
-        telemtryUpdate("Distancia", getDistanceInCm());
-//        while (getDistanceInCm() > 20 || getDistanceInCm() == NaN){
-//            telemtryUpdate("Distancia", getDistanceInCm());
-//            tesseract.wheels.walkOnBy(0.75, "standard");
-//        }
+//        telemtryUpdate("Distancia", Double.isNaN(getDistanceInCm()));
+        while (getDistanceInCm() > 20 || Double.isNaN(getDistanceInCm())){
+            telemtryUpdate("Distancia", getDistanceInCm());
+            tesseract.wheels.walkOnBy(0.50, "standard");
+        }
         tesseract.wheels.walkCount(0.75, 75, "standard");
         tesseract.wheels.setMotorsPower(0, 0);
         tesseract.arms.crServoCollect.setPower(-1);
