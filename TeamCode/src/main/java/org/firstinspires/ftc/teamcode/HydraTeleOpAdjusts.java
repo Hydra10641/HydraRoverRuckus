@@ -76,8 +76,7 @@ public class HydraTeleOpAdjusts extends HydraTeleOp {
             depositArmsControls();
             crServoCollectControls();
 
-            tesseract.arms.moveOnBy(Range.clip(-gamepad2.left_stick_y, 0.3f, 0.66f), "deposit_wrist");
-            tesseract.arms.moveOnBy(Range.clip(-gamepad2.right_stick_y, 0, 0.3f), "collect_wrist");
+            defineLimitServos();
 
             setWheelsSpeed();
         }
