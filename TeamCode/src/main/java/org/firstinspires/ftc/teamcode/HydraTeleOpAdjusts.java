@@ -43,22 +43,19 @@ import com.qualcomm.robotcore.util.Range;
 @TeleOp(name="HydraTeleOpAdjusts")
 public class HydraTeleOpAdjusts extends LinearOpMode {
 
-    // Declare OpMode members.
     Robot tesseract;
 
-    float speed = 0;
+    int encoderCollectSlide;
+    int encoderDepositSlide;
     float collectExpansion = 0;
     float depositExpansion = 0;
-    float increment = 0.01f;
 
-    int Max_Position = 288;
-    int Min_Position = 0;
-    int depositPosition, collectPosition;
-
-    double turn, drive;
+    double turn;
+    double drive;
+    double speed = 0;
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
         /*Here we declare the devices of our robot (servos, motors and sensors)
          *Or the locomotion system with two traction engines (Wheels)
          */
@@ -69,13 +66,14 @@ public class HydraTeleOpAdjusts extends LinearOpMode {
         tesseract = new Robot(hardwareMap.get(DcMotor.class, "leftWheel"),
                 hardwareMap.get(DcMotor.class, "rightWheel"),
                 hardwareMap.get(CRServo.class, "crServoCollect"),
-                hardwareMap.get(Servo.class, "servoCollectWristRight"),
                 hardwareMap.get(Servo.class, "servoCollectWristLeft"),
+                hardwareMap.get(Servo.class, "servoCollectWristRight"),
                 hardwareMap.get(Servo.class, "servoDepositWrist"),
                 hardwareMap.get(DcMotor.class, "motorCollectSlide"),
                 hardwareMap.get(DcMotor.class, "motorDepositSlide"),
                 hardwareMap.get(LynxI2cColorRangeSensor.class, "distanceSensor"),
                 wheelDiameter, gearRatio, distanceBetweenWheels);
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         //runtime.reset();
@@ -83,144 +81,159 @@ public class HydraTeleOpAdjusts extends LinearOpMode {
         tesseract.wheels.leftWheel.setDirection(DcMotorSimple.Direction.REVERSE);
         tesseract.wheels.rightWheel.setDirection(DcMotorSimple.Direction.FORWARD);
 
+        tesseract.arms.motorCollectSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         tesseract.arms.motorCollectSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
         // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
+        while (opModeIsActive()){
+
             //Locomotion movement system
 
-            if(gamepad1.left_stick_y <= -0.04f || gamepad1.left_stick_y >= 0.04f ||
-               gamepad1.left_stick_x <= -0.04f || gamepad1.left_stick_x >= 0.04f){
+            encoderCollectSlide = tesseract.arms.motorCollectSlide.getCurrentPosition();
+            encoderDepositSlide = tesseract.arms.motorDepositSlide.getCurrentPosition();
+
+            if(gamepad1.left_stick_x != 0.0 || gamepad1.left_stick_y != 0.0){
                 turn = gamepad1.left_stick_x;
                 drive = -gamepad1.left_stick_y;
-
-                tesseract.wheels.setMotorsPower(drive + turn, drive - turn);
-            }
-            else if(gamepad1.dpad_up == true){
-                setWheelsSpeed();
-                speed = Range.clip(speed, 0, 1);
-                tesseract.wheels.setMotorsPower(speed,speed);
-            }
-            else if(gamepad1.dpad_down == true){
-                setWheelsSpeed();
-                speed = Range.clip(speed, 0, 1);
-                tesseract.wheels.setMotorsPower(-speed,-speed);
-            }
-            else if(gamepad1.dpad_right == true){
-                setWheelsSpeed();
-                speed = Range.clip(speed, 0, 1);
-                tesseract.wheels.setMotorsPower(speed,-speed);
-            }
-            else if(gamepad1.dpad_left == true){
-                setWheelsSpeed();
-                speed = Range.clip(speed, 0, 1);
-                tesseract.wheels.setMotorsPower(-speed,speed);
-            }
-            if(gamepad1.left_bumper == true){
-                setWheelsSpeed();
-                speed = Range.clip(speed, 0, 1);
-                tesseract.wheels.leftWheel.setPower(speed);
-            }
-            if(gamepad1.right_bumper == true){
-                setWheelsSpeed();
-                speed = Range.clip(speed, 0, 1);
-                tesseract.wheels.rightWheel.setPower(speed);
-            }
-            if(gamepad1.left_trigger >= 0.04f){
-                setWheelsSpeed();
-                speed = Range.clip(speed, 0, 1);
-                tesseract.wheels.leftWheel.setPower(-speed);
-            }
-            if(gamepad1.right_trigger >= 0.04f){
-                setWheelsSpeed();
-                speed = Range.clip(speed, 0, 1);
-                tesseract.wheels.rightWheel.setPower(-speed);
-            }
-            else if(gamepad1.left_stick_y >= -0.04f || gamepad1.left_stick_y <= 0.04f ||
-                      gamepad1.left_stick_x >= -0.04f || gamepad1.left_stick_x <= 0.04f ||
-                      gamepad1.dpad_up == false || gamepad1.dpad_down == false ||
-                      gamepad1.dpad_right == false || gamepad1.dpad_left == false){
-                tesseract.wheels.setMotorsPower(0,0);
+                tesseract.wheels.setMotorsPower(Range.clip(drive + turn,-0.75,0.75),
+                        Range.clip(drive - turn,-0.75,0.75));
+            } else if (gamepad1.dpad_up || gamepad1.dpad_down || gamepad1.dpad_left || gamepad1.dpad_right){
+                moveByDpad();
+            } else if (gamepad1.left_bumper || gamepad1.right_bumper ||
+                    gamepad1.left_trigger > 0.3f || gamepad1.right_trigger > 0.3f){
+                moveByTrigger();
+            } else {
+                tesseract.wheels.setMotorsPower(0, 0);
             }
 
-            //Arms moviment system
-            collectArmsControls();
+            //Arms movement system
+            collectArmControls();
             depositArmsControls();
-            crServoColectControls();
+            crServoCollectControls();
 
-            tesseract.arms.moveOnBy(Range.clip(-gamepad2.left_stick_y, 0, 1), "collect_wrist");
-            telemetry.addData("Servo positon: ", tesseract.arms.servoCollectWristLeft.getPosition());
-            telemetry.update();
-            tesseract.arms.moveOnBy(Range.clip(-gamepad2.right_stick_y, 0, 1), "deposit_wrist");
+            tesseract.arms.moveOnBy(Range.clip(-gamepad2.left_stick_y, 0, 0.75f), "deposit_wrist");
+            tesseract.arms.moveOnBy(Range.clip(-gamepad2.right_stick_y, 0, 0.75f), "collect_wrist");
 
+            setWheelsSpeed();
         }
         stop();
     }
 
     private void setWheelsSpeed() {
+
+        /*This method controls the variable "speed", used in locomotion by d-pad, bumpers and triggers. The method has 4 standard velocities,
+         *being: off (0%), low (25%), medium (50%) and high (100%)*/
+
         if (gamepad1.a == true){
-            speed = 0f;
+            speed = 0;
         }
         if (gamepad1.x == true){
-            speed = 0.25f;
+            speed = 0.5;
         }
         if (gamepad1.y == true){
             speed = 0.5f;
         }
         if (gamepad1.b == true){
-            speed = 1f;
+            speed = 1;
         }
     }
 
-    public void collectArmsControls(){
-        if(gamepad2.right_bumper == true || gamepad2.y){
-            if(collectPosition <= Max_Position){
-                collectExpansion = -0.5f;
-            }
+    private void moveByDpad() {
+
+        //This method controls the motors based on the state of the d-pad's buttons, returning the "standard" and "spin"
+
+        if (gamepad1.dpad_up == true){
+            tesseract.wheels.setMotorsPower(speed - 0.1, speed);
+            telemetry.addData("EncoderLeftWheel:",tesseract.wheels.leftWheel.getCurrentPosition());
+            telemetry.addLine();
+            telemetry.addData("EncoderRightWheel:",tesseract.wheels.rightWheel.getCurrentPosition());
+            telemetry.update();
+        }
+        if (gamepad1.dpad_down == true){
+            tesseract.wheels.setMotorsPower(- speed + 0.1, - speed);
+        }
+        if (gamepad1.dpad_left == true){
+            tesseract.wheels.setMotorsPower(- speed, speed);
+        }
+        if (gamepad1.dpad_right == true){
+            tesseract.wheels.setMotorsPower(speed, - speed);
+        }
+    }
+
+    private void moveByTrigger() {
+
+        /*This method controls the engines based on the state of the bumpers and triggers, returning the methods
+        "spinSideLeft" and "spinSideRight"*/
+
+        if (gamepad1.left_bumper == true){
+            tesseract.wheels.leftWheel.setPower(speed);
+        }
+        else if (gamepad1.left_trigger >= 0.3f){
+            tesseract.wheels.leftWheel.setPower(-speed);
+        } else {
+            tesseract.wheels.leftWheel.setPower(0);
+        }
+        if (gamepad1.right_bumper == true){
+            tesseract.wheels.rightWheel.setPower(speed);
+        }
+        else if (gamepad1.right_trigger >= 0.3f){
+            tesseract.wheels.rightWheel.setPower(-speed);
+        } else {
+            tesseract.wheels.rightWheel.setPower(0);
+        }
+    }
+
+    private void collectArmControls() {
+
+        // This method controls the expansion and retraction system of the collection arm
+
+        if (encoderCollectSlide <= 0 || gamepad2.left_bumper == true || gamepad2.dpad_up == true){
+            collectExpansion = 1.0f;
 
         }
-        else if(gamepad2.right_trigger > 0.3f || gamepad2.a){
-            if(collectPosition >= Min_Position){
-                collectExpansion = 0.5f;
-            }
-
+        else if (gamepad2.left_trigger >= 0.3f || gamepad2.dpad_down == true){
+            collectExpansion = -1.0f;
         }
-        else if(gamepad2.right_bumper == false || gamepad2.right_trigger <= 0.3f){
-            collectExpansion = 0f;
+        else {
+            collectExpansion = 0;
         }
         tesseract.arms.moveOnBy(collectExpansion, "collect_slide");
-        telemetry.addData("CollectExpansion", collectExpansion);
+        telemetry.addData("EncoderCollect:", encoderCollectSlide);
         telemetry.update();
     }
 
-    public void depositArmsControls(){
-        if(gamepad2.left_bumper == true || gamepad2.dpad_up){
-            if(depositPosition <= Max_Position){
-            depositExpansion = 0.5f;
-            }
+    private void depositArmsControls() {
+
+        // This method controls the expansion and retraction system of the deposit arm
+
+        if (encoderDepositSlide < 0 || gamepad2.right_bumper == true || gamepad2.y == true){
+            depositExpansion = 1.0f;
         }
-        else if(gamepad2.left_trigger > 0.3f || gamepad2.dpad_down){
-            if(depositPosition <= Max_Position) {
-                depositExpansion = -0.5f;
-            }
+        else if (gamepad2.right_trigger >= 0.3f || gamepad2.a == true){
+            depositExpansion = -1.0f;
         }
-        else if(gamepad2.left_bumper == false || gamepad2.left_trigger <= 0.3f){
-            depositExpansion = 0f;
+        else {
+            depositExpansion = 0;
         }
         tesseract.arms.moveOnBy(depositExpansion, "deposit_slide");
-        telemetry.addData("DepositExpansion", depositExpansion);
+        telemetry.addData("EncoderDeposit:", encoderDepositSlide);
+        telemetry.addLine();
+        telemetry.addData("EncoderDeposit:",encoderDepositSlide);
         telemetry.update();
     }
 
-    public void crServoColectControls(){
-        if (gamepad2.x == true) {
-            tesseract.arms.crServoCollect.setPower(0.79);
-        }
-        if (gamepad2.b == true) {
+    private void crServoCollectControls(){
+
+        //This method controls the direction of the continuous rotation servo of the collection system
+
+        if(gamepad2.x == true){
             tesseract.arms.crServoCollect.setPower(-0.79);
         }
+        if(gamepad2.b == true){
+            tesseract.arms.crServoCollect.setPower(0.79);
+        }
     }
-
 }
