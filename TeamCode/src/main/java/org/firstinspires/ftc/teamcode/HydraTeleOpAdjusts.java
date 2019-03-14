@@ -113,8 +113,8 @@ public class HydraTeleOpAdjusts extends LinearOpMode {
             depositArmsControls();
             crServoCollectControls();
 
-            tesseract.arms.moveOnBy(Range.clip(-gamepad2.left_stick_y, 0, 0.75f), "deposit_wrist");
-            tesseract.arms.moveOnBy(Range.clip(-gamepad2.right_stick_y, 0, 0.75f), "collect_wrist");
+            tesseract.arms.moveOnBy(Range.clip(-gamepad2.left_stick_y, 0.2f, 0.65f), "deposit_wrist");
+            tesseract.arms.moveOnBy(Range.clip(-gamepad2.right_stick_y, 0, 0.3f), "collect_wrist");
 
             setWheelsSpeed();
         }
@@ -145,14 +145,14 @@ public class HydraTeleOpAdjusts extends LinearOpMode {
         //This method controls the motors based on the state of the d-pad's buttons, returning the "standard" and "spin"
 
         if (gamepad1.dpad_up == true){
-            tesseract.wheels.setMotorsPower(speed - 0.1, speed);
+            tesseract.wheels.setMotorsPower(speed, speed);
             telemetry.addData("EncoderLeftWheel:",tesseract.wheels.leftWheel.getCurrentPosition());
             telemetry.addLine();
             telemetry.addData("EncoderRightWheel:",tesseract.wheels.rightWheel.getCurrentPosition());
             telemetry.update();
         }
         if (gamepad1.dpad_down == true){
-            tesseract.wheels.setMotorsPower(- speed + 0.1, - speed);
+            tesseract.wheels.setMotorsPower(- speed, - speed);
         }
         if (gamepad1.dpad_left == true){
             tesseract.wheels.setMotorsPower(- speed, speed);
