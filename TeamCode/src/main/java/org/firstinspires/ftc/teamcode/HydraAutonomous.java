@@ -24,7 +24,7 @@ public class HydraAutonomous extends LinearOpMode {
     private ObjectReco objectReco;
 
     private ObjectReco.Position positionMineral;
-    private String imageTarget;
+    private String imageTarget = null;
 
     private double recognitionTime = 2;
     private int encoderCount = 0;
@@ -63,10 +63,10 @@ public class HydraAutonomous extends LinearOpMode {
 //        sleep(10000);
 //        // Identifying the position of the robot in the arena
 //        searchImage();
-        areaRecognition();
+//        areaRecognition();
 //        // De
 // positing the gold and the marker and ending the autonomous opmode
-        depositOfObjects();
+//        depositOfObjects();
 
         idle();
     }
@@ -75,8 +75,8 @@ public class HydraAutonomous extends LinearOpMode {
         tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         tesseract.arms.motorDepositSlide.setPower(0.5);
-        tesseract.arms.motorDepositSlide.setTargetPosition(17000);
-        while(tesseract.arms.motorDepositSlide.getCurrentPosition() < 17000){
+        tesseract.arms.motorDepositSlide.setTargetPosition(15000);
+        while(tesseract.arms.motorDepositSlide.getCurrentPosition() < 15000){
             telemtryUpdate("Posição Motor", tesseract.arms.motorDepositSlide.getCurrentPosition());
         }
     }
@@ -171,23 +171,23 @@ public class HydraAutonomous extends LinearOpMode {
                 imageTarget = vuforia.getVuMarkName();
                 telemtryUpdate("Image target:", imageTarget);
 
-                encoderCount = 180;
                 switch (imageTarget) {
                     case "Blue-Rover":
                     case "Red-Footprint":
-                        walkType = "spinSideRig+ht";
+                        encoderCount = -60;
                         break;
                     case "Front-Craters":
                     case "Back-Space":
-                        walkType = "spinSideLeft";
+                        encoderCount = 60;
                         break;
                 }
+
             }
-        } while (isEndOfRecognition(walkType, recognitionTimer.time()));
-        telemtryUpdate("image", imageTarget);
-        if (walkType != null) {
-            tesseract.wheels.walkCount(0.5, 10, "standard");
-            tesseract.wheels.walkCount(0.75, encoderCount, walkType);
+        } while (isEndOfRecognition(imageTarget, recognitionTimer.time()));
+        if (imageTarget != null) {
+            tesseract.wheels.walkCount(0.5, 15, "standard");
+            tesseract.wheels.walkCount(1, encoderCount, "spin");
+            telemtryUpdate("image", imageTarget);
         }
     }
 

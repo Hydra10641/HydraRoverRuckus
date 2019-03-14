@@ -57,7 +57,7 @@ public class EncoderConverter {
      */
 
     public int centimeterAngular(double angle){
-        return (centimeterLinear((angle/360)*wheelDiameter*Math.PI));
+        return (centimeterLinear((angle/360)*distanceBetweenWheels*Math.PI));
     }
 
     /* ANGULAR CONVERTER DESCRIPTION:
