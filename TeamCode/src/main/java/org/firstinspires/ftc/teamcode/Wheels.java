@@ -70,10 +70,10 @@ public class Wheels {
                 setMotorsPower(power,-power);
                 break;
             case "spinSideLeft":
-                setMotorsPower(1, 0);
+                setMotorsPower(power, 0);
                 break;
             case "spinSideRight":
-                setMotorsPower(0, 1);
+                setMotorsPower(0, power);
                 break;
         }
     }
