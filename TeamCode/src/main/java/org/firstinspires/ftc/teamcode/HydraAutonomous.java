@@ -212,10 +212,20 @@ public class HydraAutonomous extends LinearOpMode {
             tesseract.wheels.rightWheel.setPower(0.50);
         }
         tesseract.wheels.setMotorsPower(0, 0);
+        openSlide();
         tesseract.arms.servoCollectWrist.setPosition(1.6f);
         tesseract.arms.crServoCollect.setPower(-1);
         sleep(5000);
         tesseract.arms.crServoCollect.setPower(0);
+    }
+
+    private void openSlide() {
+        ElapsedTime recognitionTimer = new ElapsedTime();
+        recognitionTimer.reset();
+        while (recognitionTimer.time() < 2000) {
+            tesseract.arms.motorCollectSlide.setPower(1);
+        }
+        tesseract.arms.motorCollectSlide.setPower(0);
     }
 
     private double getDistanceInCm() {
