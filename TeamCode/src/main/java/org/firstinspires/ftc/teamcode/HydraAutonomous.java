@@ -60,10 +60,8 @@ public class HydraAutonomous extends LinearOpMode {
         // Starting augmented reality and collecting gold
         initAr();
 //        captureMineral();
-        goForImageReference();
-//        sleep(10000);
 //        // Identifying the position of the robot in the arena
-//        searchImage();
+        searchImage();
 //        areaRecognition();
 //        // De
 // positing the gold and the marker and ending the autonomous opmode
@@ -94,13 +92,6 @@ public class HydraAutonomous extends LinearOpMode {
     private void initAr() {
         vuforia = new VuforiaImageTarget();
         objectReco = new ObjectReco(this, vuforia.getLocalizer());
-    }
-
-    private void goForImageReference() {
-        tesseract.wheels.walkCount(-1, 45, "spin");
-        tesseract.wheels.walkCount(0.75, 40, "standard");
-        telemtryUpdate("Chegou", 45);
-        sleep(3000);
     }
 
     private void captureMineral() {
@@ -158,10 +149,9 @@ public class HydraAutonomous extends LinearOpMode {
     }
 
     private void searchImage(){
-        tesseract.wheels.walkCount(0.6, 15, "standard");
-        tesseract.wheels.walkCount(0.4, -90, "spin");
-        tesseract.wheels.walkCount(0.6, 40, "standard");
-        tesseract.wheels.walkCount(0.4, 45, "spin");
+        tesseract.wheels.walkCount(-1, 45, "spin");
+        tesseract.wheels.walkCount(0.75, 55, "standard");
+        tesseract.wheels.walkCount(-1, 90, "spin");
     }
 
     private void areaRecognition() {

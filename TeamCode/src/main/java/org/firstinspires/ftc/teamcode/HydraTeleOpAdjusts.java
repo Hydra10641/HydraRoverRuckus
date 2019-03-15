@@ -30,13 +30,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="HydraTeleOpAdjusts")
 public class HydraTeleOpAdjusts extends HydraTeleOp {
@@ -68,7 +65,7 @@ public class HydraTeleOpAdjusts extends HydraTeleOp {
         while (opModeIsActive()){
 
             //Locomotion movement system
-            refrashEncoderPosition();
+            refreshEncoderPosition();
             moveRobot();
 
             //Arms movement system
