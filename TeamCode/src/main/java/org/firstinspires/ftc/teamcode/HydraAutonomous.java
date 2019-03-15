@@ -55,17 +55,17 @@ public class HydraAutonomous extends LinearOpMode {
         tesseract.wheels.leftWheel.setDirection(DcMotorSimple.Direction.REVERSE);
         tesseract.wheels.rightWheel.setDirection(DcMotorSimple.Direction.FORWARD);
         // Landing
-        downLander();
-        removeHookLander();
-        // Starting augmented reality and collecting gold
+//        downLander();
+//        removeHookLander();
+//        // Starting augmented reality and collecting gold
         initAr();
-//        captureMineral();
-//        // Identifying the position of the robot in the arena
+////        captureMineral();
+////        // Identifying the position of the robot in the arena
         searchImage();
-//        areaRecognition();
+        areaRecognition();
 //        // De
 // positing the gold and the marker and ending the autonomous opmode
-//        depositOfObjects();
+        depositOfObjects();
 
         idle();
     }
@@ -149,9 +149,10 @@ public class HydraAutonomous extends LinearOpMode {
     }
 
     private void searchImage(){
-        tesseract.wheels.walkCount(-1, 45, "spin");
-        tesseract.wheels.walkCount(0.75, 55, "standard");
+        tesseract.wheels.walkCount(0.75, 50, "standard");
         tesseract.wheels.walkCount(-1, 90, "spin");
+        tesseract.wheels.walkCount(0.75, 55, "standard");
+        tesseract.wheels.walkCount(1, 45, "spin");
     }
 
     private void areaRecognition() {
@@ -201,14 +202,19 @@ public class HydraAutonomous extends LinearOpMode {
 
     private void depositOfObjects() {
 //        telemtryUpdate("Distancia", Double.isNaN(getDistanceInCm()));
-        while (getDistanceInCm() > 20 || Double.isNaN(getDistanceInCm())){
-            telemtryUpdate("Distancia", getDistanceInCm());
-            tesseract.wheels.walkOnBy(0.50, "standard");
+        tesseract.wheels.resetMotorAndEncoder();
+        int depositRotation = tesseract.wheels.encoderConverter.centimeterLinear(130);
+        while ((getDistanceInCm() > 20 || Double.isNaN(getDistanceInCm()))
+                && (tesseract.wheels.rightWheel.getCurrentPosition() < depositRotation
+                && tesseract.wheels.leftWheel.getTargetPosition() < depositRotation)){
+            telemtryUpdate("CurrentPosition", tesseract.wheels.leftWheel.getCurrentPosition());
+            tesseract.wheels.leftWheel.setPower(0.50);
+            tesseract.wheels.rightWheel.setPower(0.50);
         }
-        tesseract.wheels.walkCount(0.75, 75, "standard");
         tesseract.wheels.setMotorsPower(0, 0);
+        tesseract.arms.servoCollectWrist.setPosition(1.6f);
         tesseract.arms.crServoCollect.setPower(-1);
-        sleep(2000);
+        sleep(5000);
         tesseract.arms.crServoCollect.setPower(0);
     }
 
