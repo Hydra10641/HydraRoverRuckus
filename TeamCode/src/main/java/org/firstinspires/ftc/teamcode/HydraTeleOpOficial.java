@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 public class HydraTeleOpOficial extends HydraTeleOp {
 
     int MAX_RANGE_COLLECT = 30000;
-    int MAX_RANGE_DEPOSIT = 20000;
+    int MAX_RANGE_DEPOSIT = 17000;
 
     @Override
     public void runOpMode() throws InterruptedException {

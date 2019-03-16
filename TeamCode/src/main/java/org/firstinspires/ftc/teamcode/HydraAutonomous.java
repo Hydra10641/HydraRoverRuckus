@@ -55,25 +55,23 @@ public class HydraAutonomous extends LinearOpMode {
         tesseract.wheels.leftWheel.setDirection(DcMotorSimple.Direction.REVERSE);
         tesseract.wheels.rightWheel.setDirection(DcMotorSimple.Direction.FORWARD);
         // Landing
-//        downLander();
-//        removeHookLander();
+        downLander();
+        removeHookLander();
 //        // Starting augmented reality and collecting gold
         initAr();
 ////        captureMineral();
 ////        // Identifying the position of the robot in the arena
-//        searchImage();
-//        areaRecognition();
+        searchImage();
+        areaRecognition();
 //        // De
 // positing the gold and the marker and ending the autonomous opmode
-//        depositOfObjects();
-        tesseract.arms.crServoCollect.setPower(0.79);
-        sleep(10000);
-        tesseract.arms.crServoCollect.setPower(0);
+        depositOfObjects();
 
         idle();
     }
 
     private void downLander() {
+        tesseract.arms.servoDepositWrist.setPosition(0.66f);
         tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         tesseract.arms.motorDepositSlide.setPower(0.5);
@@ -188,7 +186,7 @@ public class HydraAutonomous extends LinearOpMode {
             }
         } while (isEndOfRecognition(imageTarget, recognitionTimer.time()));
         if (imageTarget != null) {
-            tesseract.wheels.walkCount(0.5, 15, "standard");
+            tesseract.wheels.walkCount(1, 15, "standard");
             tesseract.wheels.walkCount(walkSide, 60, "spin");
             telemtryUpdate("image", imageTarget);
         }
