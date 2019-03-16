@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 public class HydraTeleOpOficial extends HydraTeleOp {
 
     int MAX_RANGE_COLLECT = 30000;
-    int MAX_RANGE_DEPOSIT = 20000;
+    int MAX_RANGE_DEPOSIT = -20000;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -82,14 +82,14 @@ public class HydraTeleOpOficial extends HydraTeleOp {
         // This method controls the expansion and retraction system of the deposit arm
 
         if (encoderDepositSlide < 0 || gamepad2.right_bumper == true || gamepad2.y == true){
-            if (encoderDepositSlide > MAX_RANGE_DEPOSIT){
-                depositExpansion = -1.0f;
-            } else {
+            if (encoderDepositSlide < MAX_RANGE_DEPOSIT){
                 depositExpansion = 1.0f;
+            } else {
+                depositExpansion = -1.0f;
             }
         }
-        else if (encoderDepositSlide > MAX_RANGE_DEPOSIT || gamepad2.right_trigger >= 0.3f || gamepad2.a == true){
-            depositExpansion = -1.0f;
+        else if (encoderDepositSlide < MAX_RANGE_DEPOSIT || gamepad2.right_trigger >= 0.3f || gamepad2.a == true){
+            depositExpansion = 1.0f;
         }
         else {
             depositExpansion = 0;

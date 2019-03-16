@@ -104,10 +104,10 @@ public class HydraTeleOpAdjusts extends HydraTeleOp {
         // This method controls the expansion and retraction system of the deposit arm
 
         if (gamepad2.right_bumper == true || gamepad2.y == true){
-            depositExpansion = 1.0f;
+            depositExpansion = -1.0f;
         }
         else if (gamepad2.right_trigger >= 0.3f || gamepad2.a == true){
-            depositExpansion = -1.0f;
+            depositExpansion = 1.0f;
         }
         else {
             depositExpansion = 0;
