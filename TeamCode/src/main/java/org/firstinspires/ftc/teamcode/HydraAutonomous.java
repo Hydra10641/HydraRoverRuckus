@@ -61,11 +61,14 @@ public class HydraAutonomous extends LinearOpMode {
         initAr();
 ////        captureMineral();
 ////        // Identifying the position of the robot in the arena
-        searchImage();
-        areaRecognition();
+//        searchImage();
+//        areaRecognition();
 //        // De
 // positing the gold and the marker and ending the autonomous opmode
-        depositOfObjects();
+//        depositOfObjects();
+        tesseract.arms.crServoCollect.setPower(0.79);
+        sleep(10000);
+        tesseract.arms.crServoCollect.setPower(0);
 
         idle();
     }
@@ -213,16 +216,16 @@ public class HydraAutonomous extends LinearOpMode {
         }
         tesseract.wheels.setMotorsPower(0, 0);
         openSlide();
-        tesseract.arms.servoCollectWrist.setPosition(1.6f);
-        tesseract.arms.crServoCollect.setPower(-1);
-        sleep(5000);
+        tesseract.arms.servoDepositWrist.setPosition(1.6f);
+        tesseract.arms.crServoCollect.setPower(0.79);
+        sleep(10000);
         tesseract.arms.crServoCollect.setPower(0);
     }
 
     private void openSlide() {
         ElapsedTime recognitionTimer = new ElapsedTime();
         recognitionTimer.reset();
-        while (recognitionTimer.time() < 2000) {
+        while (recognitionTimer.time() < 5) {
             tesseract.arms.motorCollectSlide.setPower(1);
         }
         tesseract.arms.motorCollectSlide.setPower(0);
