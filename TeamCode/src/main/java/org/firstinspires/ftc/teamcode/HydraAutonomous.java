@@ -55,22 +55,23 @@ public class HydraAutonomous extends LinearOpMode {
         tesseract.wheels.leftWheel.setDirection(DcMotorSimple.Direction.REVERSE);
         tesseract.wheels.rightWheel.setDirection(DcMotorSimple.Direction.FORWARD);
         // Landing
-        downLander();
-        removeHookLander();
-//        // Starting augmented reality and collecting gold
+//        downLander();
+//        removeHookLander();
+        // Starting augmented reality and collecting gold
         initAr();
-////        captureMineral();
+//        captureMineral();
+//        pushMineral();
 ////        // Identifying the position of the robot in the arena
-        searchImage();
-        areaRecognition();
-// positing the gold and the marker and ending the autonomous opmode
+//        searchImage();
+//        areaRecognition();
+//// positing the gold and the marker and ending the autonomous opmode
         depositOfObjects();
 
         idle();
     }
 
     private void downLander() {
-        tesseract.arms.servoDepositWrist.setPosition(0.66f);
+        tesseract.arms.servoCollectWrist.setPosition(0.66f);
         tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         tesseract.arms.motorDepositSlide.setPower(0.5);
@@ -87,6 +88,10 @@ public class HydraAutonomous extends LinearOpMode {
             telemtryUpdate("Posição Motor", tesseract.arms.motorDepositSlide.getCurrentPosition());
         }
         tesseract.wheels.walkCount(-0.75, 30, "spin");
+    }
+
+    private void pushMineral() {
+        tesseract.wheels.walkCount(0.75, 30, "standard");
     }
 
     private void initAr() {
@@ -149,10 +154,9 @@ public class HydraAutonomous extends LinearOpMode {
     }
 
     private void searchImage(){
-        tesseract.wheels.walkCount(0.75, 50, "standard");
-        tesseract.wheels.walkCount(-1, 75, "spin");
-        tesseract.wheels.walkCount(0.75, 70, "standard");
-        tesseract.wheels.walkCount(1, 30, "spin");
+        tesseract.wheels.walkCount(-0.50, 85, "spin");
+        tesseract.wheels.walkCount(0.75, 80, "standard");
+        tesseract.wheels.walkCount(0.50, 30, "spin");
     }
 
     private void areaRecognition() {
@@ -185,7 +189,6 @@ public class HydraAutonomous extends LinearOpMode {
             }
         } while (isEndOfRecognition(imageTarget, recognitionTimer.time()));
         if (imageTarget != null) {
-            tesseract.wheels.walkCount(1, 15, "standard");
             tesseract.wheels.walkCount(walkSide, 70, "spin");
             telemtryUpdate("image", imageTarget);
         }
@@ -202,17 +205,19 @@ public class HydraAutonomous extends LinearOpMode {
 
     private void depositOfObjects() {
         tesseract.wheels.resetMotorAndEncoder();
-        int depositRotation = tesseract.wheels.encoderConverter.centimeterLinear(130);
-        while ((getDistanceInCm() > 30 || Double.isNaN(getDistanceInCm()))
-                && (tesseract.wheels.rightWheel.getCurrentPosition() < depositRotation
-                && tesseract.wheels.leftWheel.getTargetPosition() < depositRotation)){
-            telemtryUpdate("CurrentPosition", tesseract.wheels.leftWheel.getCurrentPosition());
-            tesseract.wheels.leftWheel.setPower(0.50);
-            tesseract.wheels.rightWheel.setPower(0.50);
-        }
-        tesseract.wheels.setMotorsPower(0, 0);
-        openSlide();
+//        int depositRotation = tesseract.wheels.encoderConverter.centimeterLinear(130);
+//        while ((getDistanceInCm() > 30 || Double.isNaN(getDistanceInCm()))
+//                && (tesseract.wheels.rightWheel.getCurrentPosition() < depositRotation
+//                && tesseract.wheels.leftWheel.getTargetPosition() < depositRotation)){
+//            telemtryUpdate("CurrentPosition", tesseract.wheels.leftWheel.getCurrentPosition());
+//            tesseract.wheels.leftWheel.setPower(0.50);
+//            tesseract.wheels.rightWheel.setPower(0.50);
+//        }
+//        tesseract.wheels.setMotorsPower(0, 0);
+        tesseract.arms.servoDepositWrist.setPosition(0.7f);
+        tesseract.wheels.walkCount(0.75, 60, "standard");
         tesseract.arms.servoDepositWrist.setPosition(1.6f);
+        openSlide();
         tesseract.arms.crServoCollect.setPower(0.79);
         sleep(10000);
         tesseract.arms.crServoCollect.setPower(0);
@@ -221,7 +226,7 @@ public class HydraAutonomous extends LinearOpMode {
     private void openSlide() {
         ElapsedTime recognitionTimer = new ElapsedTime();
         recognitionTimer.reset();
-        while (recognitionTimer.time() < 5) {
+        while (recognitionTimer.time() < 7) {
             tesseract.arms.motorCollectSlide.setPower(1);
         }
         tesseract.arms.motorCollectSlide.setPower(0);

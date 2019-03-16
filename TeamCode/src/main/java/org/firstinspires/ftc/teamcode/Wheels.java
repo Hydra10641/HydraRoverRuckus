@@ -1,7 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.internal.opmode.TelemetryImpl;
 
 public class Wheels {
 
@@ -92,7 +96,18 @@ public class Wheels {
                 waitEncoderCount(encoderConverter.centimeterAngularEx(encoderCount));
                 break;
         }
+        braking(power);
         resetMotorAndEncoder();
+    }
+
+    private void braking(double power) {
+        leftWheel.setPower(-power);
+        rightWheel.setPower(-power);
+        ElapsedTime recognitionTimer = new ElapsedTime();
+        recognitionTimer.reset();
+        while (recognitionTimer.time() < 0.01) {}
+        leftWheel.setPower(0);
+        rightWheel.setPower(0);
     }
 
 }
