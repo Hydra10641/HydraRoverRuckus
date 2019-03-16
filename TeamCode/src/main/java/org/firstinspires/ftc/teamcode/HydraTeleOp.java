@@ -32,8 +32,8 @@ public class HydraTeleOp extends LinearOpMode {
     }
 
     protected void defineLimitServos() {
-        tesseract.arms.moveOnBy(Range.clip(-gamepad2.left_stick_y, 0.7f, 2.0f), "deposit_wrist");
-        tesseract.arms.moveOnBy(Range.clip(-gamepad2.right_stick_y, 0, 0.3f), "collect_wrist");
+        tesseract.arms.moveOnBy(Range.clip(-gamepad2.left_stick_y, 0.7f, 2.0f), "collect_wrist");
+        tesseract.arms.moveOnBy(Range.clip(-gamepad2.right_stick_y, 0, 0.66f), "deposit_wrist");
     }
 
     protected void refreshEncoderPosition() {

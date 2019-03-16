@@ -31,11 +31,11 @@ public class Arms {
             case "deposit_slide":
                 this.motorDepositSlide.setPower(position);
                 break;
-            case "deposit_wrist":
+            case "collect_wrist":
                 this.servoDepositWrist.setPosition(position);
                 break;
-            case "collect_wrist":
-                this.servoCollectWrist.setPosition(1 - position);
+            case "deposit_wrist":
+                this.servoCollectWrist.setPosition(position);
                 break;
         }
 
