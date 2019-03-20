@@ -18,7 +18,9 @@ public class Wheels {
 
     Wheels(DcMotor leftWheel, DcMotor rightWheel, float wheelDiameter, float gearRatio, float distanceBetweenWheel) {
         this.rightWheel = rightWheel;
+        this.rightWheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.leftWheel = leftWheel;
+        this.leftWheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.encoderConverter = new EncoderConverter(wheelDiameter, gearRatio, distanceBetweenWheel);
     }
 
@@ -100,7 +102,7 @@ public class Wheels {
         resetMotorAndEncoder();
     }
 
-    private void braking(double power) {
+    public void braking(double power) {
         leftWheel.setPower(-power);
         rightWheel.setPower(-power);
         ElapsedTime recognitionTimer = new ElapsedTime();
