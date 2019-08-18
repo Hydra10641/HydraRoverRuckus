@@ -15,12 +15,9 @@ public class Robot {
 
     Robot (DcMotor leftWheel,
            DcMotor rightWheel,
-           CRServo crServoCollect,
            Servo servoCollectWrist,
-           Servo servoDepositWrist,
            DcMotor motorCollectSlide,
            DcMotor motorDepositSlide,
-           LynxI2cColorRangeSensor  distanceSensor,
            float wheelDiameter,
            float gearRatio,
            float distanceBetweenWheels) {
@@ -31,13 +28,9 @@ public class Robot {
                                  gearRatio,
                                  distanceBetweenWheels);
 
-        this.arms = new Arms(crServoCollect,
-                             servoCollectWrist,
-                             servoDepositWrist,
+        this.arms = new Arms(servoCollectWrist,
                              motorCollectSlide,
                              motorDepositSlide);
-
-        this.distanceSensor = distanceSensor;
     }
 
 }

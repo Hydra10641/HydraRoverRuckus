@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.internal.opmode.TelemetryImpl;
 
 public class Wheels {
 
-    /*Welcome, this is the team 10641(Hydra) code for the normals wheels locomotion system, first applied in the
+    /*Welcome, this is the team 16052(Hydra) code for the normals wheels locomotion system, first applied in the
      *Rover Ruckus season.
      *First of all, we declare 2 attributes of type Dc Motor, corresponding to the motors used on the robot locomotion.*/
 
@@ -24,7 +24,7 @@ public class Wheels {
         this.encoderConverter = new EncoderConverter(wheelDiameter, gearRatio, distanceBetweenWheel);
     }
 
-    /*Here we create three methods that we will use repetitively in the methods for locomotion. The description of each
+    /*Here we create three methods that we'll use repetitively in the methods for locomotion. The description of each
      *one is within the same.*/
 
     public void resetMotorAndEncoder() {
@@ -98,7 +98,7 @@ public class Wheels {
                 waitEncoderCount(encoderConverter.centimeterAngularEx(encoderCount));
                 break;
         }
-        braking(power);
+        //braking(power);
         resetMotorAndEncoder();
     }
 
