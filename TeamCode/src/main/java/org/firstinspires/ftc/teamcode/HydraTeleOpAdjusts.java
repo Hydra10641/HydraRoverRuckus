@@ -47,11 +47,12 @@ public class HydraTeleOpAdjusts extends HydraTeleOp {
         float gearRatio = 1.0f;
         float distanceBetweenWheels = 35.0f;
 
-        tesseract = new Robot(hardwareMap.get(DcMotor.class, "leftWheel"),
-                hardwareMap.get(DcMotor.class, "rightWheel"),
-                hardwareMap.get(Servo.class, "servoCollectWrist"),
-                hardwareMap.get(DcMotor.class, "motorCollectSlide"),
-                hardwareMap.get(DcMotor.class, "motorDepositSlide"),
+        tesseract = new Robot(hardwareMap.get(DcMotor.class, "leftMotor"),
+                hardwareMap.get(DcMotor.class, "rightMotor"),
+                hardwareMap.get(Servo.class, "rightColectServo"),
+                hardwareMap.get(Servo.class, "leftColectServo"),
+                hardwareMap.get(DcMotor.class, "colectMotor"),
+                hardwareMap.get(DcMotor.class, "landerMotor"),
                 wheelDiameter, gearRatio, distanceBetweenWheels);
 
         // Wait for the game to start (driver presses PLAY)

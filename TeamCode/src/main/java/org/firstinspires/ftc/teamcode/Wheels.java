@@ -98,7 +98,6 @@ public class Wheels {
                 waitEncoderCount(encoderConverter.centimeterAngularEx(encoderCount));
                 break;
         }
-        //braking(power);
         resetMotorAndEncoder();
     }
 

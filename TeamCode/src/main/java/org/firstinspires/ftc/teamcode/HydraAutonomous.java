@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+/*package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -34,7 +34,7 @@ public class HydraAutonomous extends LinearOpMode {
         /* Here we declare the devices of our robot (servos, motors and sensors)
          * and the Vuforia's localizer.
          * Or the locomotion system with two traction engines (Wheels)
-         */
+
         float wheelDiameter = 10.0f;
         float gearRatio = 1.0f;
         float distanceBetweenWheels = 34.5f;
@@ -252,3 +252,4 @@ public class HydraAutonomous extends LinearOpMode {
         return tesseract.distanceSensor.getDistance(DistanceUnit.CM);
     }
 }
+*/

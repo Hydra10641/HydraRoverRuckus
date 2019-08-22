@@ -32,8 +32,7 @@ public class HydraTeleOp extends LinearOpMode {
     }
 
     protected void defineLimitServos() {
-        tesseract.arms.moveOnBy(Range.clip(-gamepad2.left_stick_y, 0.7f, 2.4f), "collect_wrist");
-        tesseract.arms.moveOnBy(Range.clip(-gamepad2.right_stick_y, 0, 0.66f), "deposit_wrist");
+        tesseract.arms.moveOnBy(Range.clip(-gamepad2.left_stick_y, 0f, 2f), "collect_wrist");
     }
 
     protected void refreshEncoderPosition() {
@@ -121,15 +120,4 @@ public class HydraTeleOp extends LinearOpMode {
         }
     }
 
-    protected void crServoCollectControls(){
-
-        //This method controls the direction of the continuous rotation servo of the collection system
-
-        if(gamepad2.x == true){
-            tesseract.arms.crServoCollect.setPower(-0.79);
-        }
-        if(gamepad2.b == true){
-            tesseract.arms.crServoCollect.setPower(0.79);
-        }
-    }
 }

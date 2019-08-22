@@ -9,13 +9,12 @@ public class Arms {
     /*Welcome, this is the team 16052(Hydra) code for the arms system, first applied in the Rover Ruckus season.
     First of all, we declare 4 attributes of type Servo, corresponding to the servos used on the arms system.*/
 
-    public Servo servoDepositWrist, servoCollectWrist;
-    public CRServo crServoCollect;
+    public Servo leftServoCollectWrist, rightServoCollectWrist;
     public DcMotor motorCollectSlide, motorDepositSlide;
 
-    Arms (Servo servoCollectWrist, DcMotor motorCollectSlide, DcMotor motorDepositSlide){
-
-        this.servoCollectWrist = servoCollectWrist;
+    Arms (Servo rightServoCollectWrist, Servo leftServoCollectWrist, DcMotor motorCollectSlide, DcMotor motorDepositSlide){
+        this.rightServoCollectWrist = rightServoCollectWrist;
+        this.leftServoCollectWrist = leftServoCollectWrist;
         this.motorCollectSlide = motorCollectSlide;
         this.motorDepositSlide = motorDepositSlide;
     }
@@ -28,9 +27,11 @@ public class Arms {
                 break;
             case "deposit_slide":
                 this.motorDepositSlide.setPower(position);
+                motorDepositSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 break;
             case "collect_wrist":
-                this.servoCollectWrist.setPosition(position);
+                this.leftServoCollectWrist.setPosition(position);
+                this.rightServoCollectWrist.setPosition(2.4 - position);
                 break;
         }
 

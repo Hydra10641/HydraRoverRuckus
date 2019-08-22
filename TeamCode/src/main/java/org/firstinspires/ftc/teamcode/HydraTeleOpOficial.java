@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.DcMotorImpl;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -22,11 +24,12 @@ public class HydraTeleOpOficial extends HydraTeleOp {
         float gearRatio = 1.0f;
         float distanceBetweenWheels = 35.0f;
 
-        tesseract = new Robot(hardwareMap.get(DcMotor.class, "leftWheel"),
-                hardwareMap.get(DcMotor.class, "rightWheel"),
-                hardwareMap.get(Servo.class, "servoCollectWrist"),
-                hardwareMap.get(DcMotor.class, "motorCollectSlide"),
-                hardwareMap.get(DcMotor.class, "motorDepositSlide"),
+        tesseract = new Robot(hardwareMap.get(DcMotor.class, "leftMotor"),
+                hardwareMap.get(DcMotor.class, "rightMotor"),
+                hardwareMap.get(Servo.class, "rightColectServo"),
+                hardwareMap.get(Servo.class, "leftColectServo"),
+                hardwareMap.get(DcMotor.class, "colectMotor"),
+                hardwareMap.get(DcMotor.class, "landerMotor"),
                 wheelDiameter, gearRatio, distanceBetweenWheels);
 
         // Wait for the game to start (driver presses PLAY)
@@ -43,7 +46,6 @@ public class HydraTeleOpOficial extends HydraTeleOp {
             //Arms movement system
             collectArmControls();
             depositArmsControls();
-            crServoCollectControls();
 
             defineLimitServos();
 
@@ -51,8 +53,46 @@ public class HydraTeleOpOficial extends HydraTeleOp {
         }
         stop();
     }
-
     private void collectArmControls() {
+
+        // This method controls the expansion and retraction system of the collection arm
+
+        if (gamepad2.left_bumper == true || gamepad2.dpad_up == true){
+            collectExpansion = 1.0f;
+
+        }
+        else if (gamepad2.left_trigger >= 0.3f || gamepad2.dpad_down == true){
+            collectExpansion = -1.0f;
+        }
+        else {
+            collectExpansion = 0;
+        }
+        tesseract.arms.moveOnBy(collectExpansion, "collect_slide");
+        telemetry.addData("EncoderCollect:", encoderCollectSlide);
+        telemetry.update();
+    }
+
+    private void depositArmsControls() {
+
+        // This method controls the expansion and retraction system of the deposit arm
+
+        if (gamepad2.right_bumper == true || gamepad2.y == true){
+            depositExpansion = 1.0f;
+        }
+        else if (gamepad2.right_trigger >= 0.3f || gamepad2.a == true){
+            depositExpansion = -1.0f;
+        }
+        else {
+            depositExpansion = 0f;
+        }
+
+        tesseract.arms.moveOnBy(depositExpansion, "deposit_slide");
+        telemetry.addData("EncoderDeposit:", encoderDepositSlide);
+        telemetry.addLine();
+        telemetry.addData("EncoderDeposit:",encoderDepositSlide);
+        telemetry.update();
+    }
+    /*private void collectArmControls() {
 
         // This method controls the expansion and retraction system of the collection arm
 
@@ -96,5 +136,5 @@ public class HydraTeleOpOficial extends HydraTeleOp {
         telemetry.addLine();
         telemetry.addData("EncoderDeposit:",encoderDepositSlide);
         telemetry.update();
-    }
+    }*/
 }

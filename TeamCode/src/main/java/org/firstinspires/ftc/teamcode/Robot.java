@@ -15,9 +15,10 @@ public class Robot {
 
     Robot (DcMotor leftWheel,
            DcMotor rightWheel,
-           Servo servoCollectWrist,
-           DcMotor motorCollectSlide,
-           DcMotor motorDepositSlide,
+           Servo rightColectServo,
+           Servo leftColectServo,
+           DcMotor colectMotor,
+           DcMotor landerMotor,
            float wheelDiameter,
            float gearRatio,
            float distanceBetweenWheels) {
@@ -28,9 +29,10 @@ public class Robot {
                                  gearRatio,
                                  distanceBetweenWheels);
 
-        this.arms = new Arms(servoCollectWrist,
-                             motorCollectSlide,
-                             motorDepositSlide);
+        this.arms = new Arms(rightColectServo,
+                             leftColectServo,
+                             colectMotor,
+                             landerMotor);
     }
 
 }
