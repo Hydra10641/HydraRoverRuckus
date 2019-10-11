@@ -49,10 +49,7 @@ public class HydraTeleOpAdjusts extends HydraTeleOp {
 
         tesseract = new Robot(hardwareMap.get(DcMotor.class, "leftMotor"),
                 hardwareMap.get(DcMotor.class, "rightMotor"),
-                hardwareMap.get(Servo.class, "rightColectServo"),
-                hardwareMap.get(Servo.class, "leftColectServo"),
-                hardwareMap.get(DcMotor.class, "colectMotor"),
-                hardwareMap.get(DcMotor.class, "landerMotor"),
+                hardwareMap.get(DcMotor.class, "collectMotor"),
                 wheelDiameter, gearRatio, distanceBetweenWheels);
 
         // Wait for the game to start (driver presses PLAY)

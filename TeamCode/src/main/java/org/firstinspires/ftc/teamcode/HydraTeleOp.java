@@ -27,8 +27,8 @@ public class HydraTeleOp extends LinearOpMode {
 
         tesseract.arms.motorCollectSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         tesseract.arms.motorCollectSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        /*tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        tesseract.arms.motorDepositSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);*/
     }
 
     protected void defineLimitServos() {
@@ -37,7 +37,7 @@ public class HydraTeleOp extends LinearOpMode {
 
     protected void refreshEncoderPosition() {
         encoderCollectSlide = tesseract.arms.motorCollectSlide.getCurrentPosition();
-        encoderDepositSlide = tesseract.arms.motorDepositSlide.getCurrentPosition();
+        //encoderDepositSlide = tesseract.arms.motorDepositSlide.getCurrentPosition();
     }
 
     protected void moveRobot() {

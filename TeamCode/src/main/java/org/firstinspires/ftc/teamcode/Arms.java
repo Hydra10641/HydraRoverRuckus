@@ -18,21 +18,26 @@ public class Arms {
         this.motorCollectSlide = motorCollectSlide;
         this.motorDepositSlide = motorDepositSlide;
     }
+
+    Arms (DcMotor motorCollectSlide){
+        this.motorCollectSlide = motorCollectSlide;
+    }
     /*Here we create one method that we will use to set the arms position.*/
 
     public void moveOnBy(double position, String moveType){
         switch (moveType){
             case "collect_slide":
                 this.motorCollectSlide.setPower(position);
+                motorCollectSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 break;
-            case "deposit_slide":
+            /*case "deposit_slide":
                 this.motorDepositSlide.setPower(position);
                 motorDepositSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 break;
             case "collect_wrist":
                 this.leftServoCollectWrist.setPosition(position);
                 this.rightServoCollectWrist.setPosition(2.4 - position);
-                break;
+                break;*/
         }
 
     }
